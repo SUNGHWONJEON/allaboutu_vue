@@ -1,0 +1,46 @@
+sup {line-height:1em;}
+sub {line-height:1em;}
+
+
+
+@font-face {
+	font-family: Poppins-Bold;
+	src: local(Poppins-Bold),
+		/*url(./font/Poppins-Bold.ttf) format('truetype'),*/
+		url(./font/Poppins-Bold.otf) format('opentype');
+}
+
+@font-face {
+	font-family: Poppins-Medium;
+	src: local(Poppins-Medium),
+		url(./font/Poppins-Medium.ttf) format('embedded-opentype'),
+		url(./font/Poppins-Medium.otf) format('woff');
+}
+
+@font-face {
+	font-family: Poppins-Regular;
+	src: local(Poppins-Regular),
+		url(./font/Poppins-Regular.ttf) format('embedded-opentype'),
+		url(./font/Poppins-Regular.otf) format('woff');
+}
+
+@font-face {
+	font-family: Poppins-Light;
+	src: local(Poppins-Light),
+		url(./font/Poppins-Light.ttf) format('embedded-opentype'),
+		/*url(./font/Poppins-Light.otf) format('woff');*/
+}
+
+
+
+@font-face {
+	font-family: Noto Sans KR;
+	src: local("Noto Sans KR")
+	  , url(./font/NotoSansKR-Regular.otf) format('opentype');
+}
+
+@font-face {
+	font-family: "Noto Sans KR Bold";
+	src: local("Noto Sans Bold")
+	  , url(./font/NotoSansKR-Bold.otf) format('opentype');
+}

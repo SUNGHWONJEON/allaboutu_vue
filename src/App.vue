@@ -1,26 +1,28 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <router-view /><!--페이지 이동이 표시될 영역을 의미함-->
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  name: 'App'
+  ,mounted() { //이벤트 : 이 컴포넌트(App.vue)마운트 되면
+    this.fnMain()
+
+  }
+  ,methods: { //함수 정의
+    fnMain() {
+      this.$router.push({
+        path: './' //PageMain이 동작됨 -> 라우터로 동작되는 것은 router-view에 표시됨
+      })
+    }
+
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import '@/assets/css/main.css' 
 </style>
