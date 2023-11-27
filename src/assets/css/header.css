@@ -98,7 +98,7 @@
 .header_menu .header_text ul{
 	width: 100%;
     height: 100%;
-    max-width: 600px;
+    max-width: 700px;
     display: inline-flex;
     justify-content: space-between;
     margin: 5px 0px 0px;
@@ -112,7 +112,7 @@
 	position: relative;
 }
 
-.header_menu .header_text ul li a {
+.header_menu .header_text ul li button {
 	color: #000;
 	text-transform: uppercase;
 	font-weight: 300;
@@ -121,6 +121,7 @@
 	position: relative;
 	text-decoration : none;
 	line-height: 22px;
+	cursor: pointer;
 }
 
 /*
@@ -143,10 +144,10 @@
     transform: scale(0);
 }
 */
-.header_menu .header_text ul li.active a {
+.header_menu .header_text ul li.active button {
 	color: #ec5264;
 }
-.header_menu .header_text ul li a:hover {
+.header_menu .header_text ul li button:hover {
 	color: #ec5264;
 }
 

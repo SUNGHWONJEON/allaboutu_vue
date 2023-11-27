@@ -8,6 +8,13 @@ import { createRouter, createWebHistory } from "vue-router";
 //라우터가 연결할 페이지(컴포넌트) 임포트
 import PageLogin from '@/views/member/PageLogin.vue'
 import PageMain from '@/views/common/PageMain.vue'
+import StyleMain from '@/views/style/StyleMain.vue'
+import CodyMain from '@/views/cody/CodyMain.vue'
+import FaceMain from '@/views/face/FaceMain.vue'
+import PersonalMain from '@/views/personal/PersonalMain.vue'
+import AdminMain from '@/views/admin/AdminMain.vue'
+import BoardMain from '@/views/board/BoardMain.vue'
+import NoticeMain from '@/views/notice/NoticeMain.vue'
 
 
 //각 페이지 컴포넌트에 대한 url path 지정
@@ -16,13 +23,48 @@ import PageMain from '@/views/common/PageMain.vue'
 const routes = [
     {
         path: '/',
+        name: 'PageMain',
+        component: PageMain
+    },
+    {
+        path: '/main',
         name: 'PageLogin',
         component: PageLogin
     },
     {
-        path: '/main',
-        name: 'PageMain',
-        component: PageMain
+        path: '/style',
+        name: 'StyleMain',
+        component: StyleMain
+    },
+    {
+        path: '/cody',
+        name: 'CodyMain',
+        component: CodyMain
+    },
+    {
+        path: '/face',
+        name: 'FaceMain',
+        component: FaceMain
+    },
+    {
+        path: '/personal',
+        name: 'PersonalMain',
+        component: PersonalMain
+    },
+    {
+        path: '/admin',
+        name: 'AdminMain',
+        component: AdminMain
+    },
+    {
+        path: '/board',
+        name: 'BoardMain',
+        component: BoardMain
+    },
+    {
+        path: '/notice',
+        name: 'NoticeMain',
+        component: NoticeMain
     }
 ]
 
