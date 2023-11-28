@@ -1,7 +1,8 @@
 <template>
-    <div>
-        퍼스널컬러 매칭
+    <div class="person-top">
+        sdfsdf
     </div>
+    <button>사진찍기</button>
 </template>
 
 <script>
@@ -9,3 +10,8 @@ export default ({
     
 })
 </script>
+<style>
+.person-top {
+    margin: 80px;
+}
+</style>
