@@ -1,6 +1,6 @@
 <template>
     <div>
-        얼굴매칭
+        얼굴매칭.
     </div>
 </template>
 
