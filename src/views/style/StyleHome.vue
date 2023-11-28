@@ -1,6 +1,6 @@
 <template>
     <div>
-        스타일매치elelel
+        스타일매치
     </div>
 </template>
 
