@@ -1,7 +1,9 @@
 <template>
-    <PageHeader /><!-- 헤더 컴포넌트 -->
-    <BoardHome /><!-- 공지사항 컴포넌트 -->
-    <PageFooter /><!-- 푸터 컴포넌트 -->
+    <div class="board-main-container">
+        <PageHeader /><!-- 헤더 컴포넌트 -->
+        <BoardHome /><!-- 게시판 컴포넌트 -->
+        <PageFooter /><!-- 푸터 컴포넌트 -->
+    </div>
 </template>
 
 <script>
@@ -18,3 +20,6 @@ export default ({
     }
 })
 </script>
+
+<style>
+</style>
