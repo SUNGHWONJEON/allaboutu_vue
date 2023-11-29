@@ -79,6 +79,7 @@ const routes = [
         name: 'RecommandMain',
         component: RecommandMain
     },
+    {
         path: '/notice/write',
         name: 'NoticeWrite',
         component: NoticeWrite
