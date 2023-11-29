@@ -1,25 +1,23 @@
 <template>
     <div class="content">
         <table>
-            <caption class="table-caption">게시판 목록</caption>
+            <caption class="table-caption">회원 목록</caption>
             <tr>
-                <th>게시번호</th>
-                <th>신고번호</th>
-                <th>사유</th>
-                <th>상세설명</th>
-                <th>게시글삭제</th>
+                <th>아이디</th>
+                <th>이메일</th>
+                <th>핸드폰 번호</th>
+                <th>가입일</th>
+                <th>상태</th>
                 <th>제한횟수</th>
                 <th>로그인제한</th>
                 <th>완료</th>
             </tr>
             <tr>
-                <td>2</td>
-                <td>2023110101</td>
-                <td>싸움 유도</td>
-                <td>지역감정 유발</td>
-                <td>
-                    <button class="delete-btn" @click="confirmDelete">삭제</button>
-                </td>
+                <td>minji000</td>
+                <td>minji000@gmail.com</td>
+                <td>010-2222-3333</td>
+                <td>2023/11/23</td>
+                <td>제재</td>
                 <td>2</td>
                 <td>
                     <select>
@@ -29,7 +27,7 @@
                         <option value="영구정지">영구정지</option>
                     </select> 
                 </td>
-                <td><input type="submit" value="완료"></td>
+                <td><input type="button" value="완료"></td>
             </tr>
         </table>
     </div>
@@ -43,30 +41,14 @@
 </template>
 
 <script>
-export default {
-  methods: {
-    confirmDelete() {
-      if (confirm("게시글을 삭제하시겠습니까?")) {
-        // 여기에 실제 삭제 로직을 추가하세요.
-        console.log("게시글 삭제 수행");
-      } else {
-        console.log("삭제 취소");
-      }
-    },
-  },
-};
+export default ({
+    
+})
 </script>
 <style>
 .content {
     display: flex;
     justify-content: center;
-}
-.delete-btn {
-    background-color: #ff0000; /* 적절한 색상으로 변경 가능 */
-    color: #fff; /* 텍스트 색상을 밝게 설정 */
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
 }
 table {
     border-collapse: collapse;
