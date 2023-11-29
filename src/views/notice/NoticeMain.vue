@@ -1,6 +1,14 @@
 <template>
     <PageHeader /><!-- 헤더 컴포넌트 -->
-    <NoticeHome /><!-- 공지사항 컴포넌트 -->
+    
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div class="contents-boxes">
+                <NoticeHome /><!-- 공지사항 컴포넌트 -->
+            </div>
+        </div>
+    </div>
+
     <PageFooter /><!-- 푸터 컴포넌트 -->
 </template>
 
