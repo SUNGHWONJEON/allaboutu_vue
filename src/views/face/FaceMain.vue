@@ -1,6 +1,14 @@
 <template>
     <PageHeader /><!-- 헤더 컴포넌트 -->
-    <FaceHome /><!-- 페이스 컴포넌트 -->
+
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div class="contents-boxes">
+                <FaceHome /><!-- 페이스 컴포넌트 -->
+            </div>
+        </div>
+    </div>
+    
     <PageFooter /><!-- 푸터 컴포넌트 -->
 </template>
 
