@@ -1,9 +1,6 @@
 <template>
     <div class="board-list-section">
-        <Board />
-        <Board />
-        <Board />
-        <Board />
+        <Board v-for="board in boards" :key="board.boardNum" :board="board" />
     </div>
 </template>
 
@@ -14,7 +11,23 @@ export default {
     name: 'BoardList',
     components: {
         Board
-    }
+    },
+    data() {
+        return {
+            boards: [],
+        }
+    },
+    // 로드하면서 실행하는 함수로 created와 mounted가 있음
+    // created는 데이터 초기화의 목적, mounted는 DOM 조작에 대한 목적
+    created() { // 로드될 때 실행할 함수
+        this.$axios.get('/boards')
+        .then((res) => {
+            this.boards = res.data
+            console.log(this.boards)
+        }).catch((err) => {
+            console.log(err)
+        });
+    },
 }
 </script>
 
