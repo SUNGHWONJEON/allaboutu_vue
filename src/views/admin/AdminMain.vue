@@ -10,6 +10,7 @@
 
 <script>
 import AdminHome from '@/views/admin/AdminHome.vue'
+import AdminUser from '@/views/admin/AdminUser.vue'
 
 export default ({
     name: 'AdminMain'
