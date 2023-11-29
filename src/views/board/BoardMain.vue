@@ -1,9 +1,15 @@
 <template>
-    <div class="board-main-container">
-        <PageHeader /><!-- 헤더 컴포넌트 -->
-        <BoardHome /><!-- 게시판 컴포넌트 -->
-        <PageFooter /><!-- 푸터 컴포넌트 -->
+    <PageHeader /><!-- 헤더 컴포넌트 -->
+
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div class="contents-boxes">
+                <BoardHome /> <!-- 게시판 컴포넌트 -->
+            </div>
+        </div>
     </div>
+
+    <PageFooter /><!-- 푸터 컴포넌트 -->
 </template>
 
 <script>
@@ -18,8 +24,12 @@ export default ({
         ,BoardHome
         ,PageFooter
     }
+    ,created() {
+        this.$router.push({path: 'board'})
+    },
 })
 </script>
 
 <style>
+
 </style>

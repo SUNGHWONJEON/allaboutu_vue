@@ -1,27 +1,62 @@
 <template>
-    <Community />
-    <BoardRank />
-    <BoardWriteBtn />
-    <Chatbot />
+    <div class="community-container">
+        <NoticeBanner />
+        <BoardList />
+    </div>
+    
+    <div class="absolute-elements">
+        <!-- 주간 인기글 Best5 -->
+        <BoardRank />
+        
+        <!-- 글쓰기 버튼 -->
+        <router-link to="/boards/write">
+            <img class="board-write-btn" src="@/assets/images/community/board_write_btn.png">
+        </router-link>
+        
+        <!-- 챗봇 버튼 -->
+        <router-link to="/boards/write">
+            <img class="chatbot-btn" src="@/assets/images/community/chatbot_icon.png">
+        </router-link>
+    </div>
 </template>
 
 <script>
-import Community from './Community.vue';
+import NoticeBanner from './NoticeBanner.vue';
+import BoardList from './BoardList.vue';
 import BoardRank from './BoardRank.vue';
-import BoardWriteBtn from './BoardWriteBtn.vue';
-import Chatbot from './Chatbot.vue';
 
 export default {
-    name: 'PageCommunity',
+    name: 'BoardHome',
     components: {
-        Community,
+        NoticeBanner,
+        BoardList,
         BoardRank,
-        BoardWriteBtn,
-        Chatbot
     }
 }
 </script>
 
 <style>
+.community-container {
+    border: 1px solid red;
+    width: 640px;
+    height: 85vh;
+}
 
+.board-write-btn {
+    position: absolute;
+    top: 90vh;
+    left: 800px;
+    width: 50px;
+    height: 50px;
+    border: 1px solid blue;
+}
+
+.chatbot-btn {
+    position: absolute;
+    top: 90vh;
+    left: 880px;
+    width: 50px;
+    height: 50px;
+    border: 1px solid blue;
+}
 </style>
