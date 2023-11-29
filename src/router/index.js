@@ -15,7 +15,7 @@ import PersonalMain from '@/views/personal/PersonalMain.vue'
 import AdminMain from '@/views/admin/AdminMain.vue'
 import BoardMain from '@/views/board/BoardMain.vue'
 import NoticeMain from '@/views/notice/NoticeMain.vue'
-
+import boardjs from '@/router/board.js'
 
 //각 페이지 컴포넌트에 대한 url path 지정
 //routes는 고정변수임
@@ -65,7 +65,8 @@ const routes = [
         path: '/notice',
         name: 'NoticeMain',
         component: NoticeMain
-    }
+    },
+    ...boardjs
 ]
 
 const router = createRouter({
