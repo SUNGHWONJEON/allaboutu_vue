@@ -9,7 +9,7 @@
         <div class="rank-writer">
             작성자
         </div>
-    </div>  
+    </div>
 </template>
 
 <script>

@@ -16,8 +16,12 @@ export default ({
     ,components:{
         BoardHome
     }
+    ,created() {
+        this.$router.push({path: 'board'})
+    },
 })
 </script>
 
 <style>
+
 </style>
