@@ -1,20 +1,20 @@
 <template>
-    <PageHeader /><!-- 헤더 컴포넌트 -->
-    <PageHome /><!-- 홈 컴포넌트 -->
-    <PageFooter /><!-- 푸터 컴포넌트 -->
+    <main class="main-wrapper">
+        <PageSlide /><!-- 슬라이드 컴포넌트 -->
+        <PageHome /><!-- 홈 컴포넌트 -->
+    </main>
 </template>
 
 <script>
-import PageHeader from '@/views/common/PageHeader.vue'
+
 import PageHome from '@/views/common/PageHome.vue'
-import PageFooter from '@/views/common/PageFooter.vue'
+import PageSlide from '@/views/common/PageSlide.vue'
 
 export default ({
     name: 'PageMain'
     ,components:{
-        PageHeader
-        ,PageHome
-        ,PageFooter
+        PageHome
+        ,PageSlide
     }
 })
 </script>

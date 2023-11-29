@@ -16,7 +16,9 @@ import AdminMain from '@/views/admin/AdminMain.vue'
 import BoardMain from '@/views/board/BoardMain.vue'
 import NoticeMain from '@/views/notice/NoticeMain.vue'
 import RecommandMain from '@/views/recommand/RecommandMain.vue'
-
+import NoticeWrite from '@/views/notice/NoticeWrite.vue';
+import NoticeDetail from '@/views/notice/NoticeDetail.vue';
+import BoardWrite from '@/views/board/BoardWrite.vue'
 
 //각 페이지 컴포넌트에 대한 url path 지정
 //routes는 고정변수임
@@ -63,6 +65,11 @@ const routes = [
         component: BoardMain
     },
     {
+        path: '/boards/write',
+        name: 'BoardWrite',
+        component: BoardWrite
+    },
+    {
         path: '/notice',
         name: 'NoticeMain',
         component: NoticeMain
@@ -71,6 +78,15 @@ const routes = [
         path: '/recommand',
         name: 'RecommandMain',
         component: RecommandMain
+    },
+        path: '/notice/write',
+        name: 'NoticeWrite',
+        component: NoticeWrite
+    },
+    {
+        path: '/notice/detail',
+        name: 'NoticeDetail',
+        component: NoticeDetail
     }
 ]
 
