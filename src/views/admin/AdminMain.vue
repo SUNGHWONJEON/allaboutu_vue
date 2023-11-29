@@ -15,6 +15,13 @@ export default ({
     name: 'AdminMain'
     ,components:{
         AdminHome
+        ,AdminUser
     }
 })
 </script>
+
+<style>
+.main-container {
+    display: flex;
+}
+</style>
