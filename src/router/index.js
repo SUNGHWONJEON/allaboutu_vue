@@ -15,6 +15,7 @@ import PersonalMain from '@/views/personal/PersonalMain.vue'
 import AdminMain from '@/views/admin/AdminMain.vue'
 import BoardMain from '@/views/board/BoardMain.vue'
 import NoticeMain from '@/views/notice/NoticeMain.vue'
+import RecommandMain from '@/views/recommand/RecommandMain.vue'
 import NoticeWrite from '@/views/notice/NoticeWrite.vue';
 import NoticeDetail from '@/views/notice/NoticeDetail.vue';
 import BoardWrite from '@/views/board/BoardWrite.vue'
@@ -74,6 +75,10 @@ const routes = [
         component: NoticeMain
     },
     {
+        path: '/recommand',
+        name: 'RecommandMain',
+        component: RecommandMain
+    },
         path: '/notice/write',
         name: 'NoticeWrite',
         component: NoticeWrite
