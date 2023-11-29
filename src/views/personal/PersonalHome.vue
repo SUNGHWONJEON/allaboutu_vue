@@ -1,6 +1,6 @@
 <template>
     <div class="person-top">
-        sdfsdf
+        ???
     </div>
     <button>사진찍기</button>
 </template>
