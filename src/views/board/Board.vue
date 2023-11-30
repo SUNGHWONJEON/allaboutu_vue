@@ -3,7 +3,7 @@
         <ProfileHeader />
         <div class="board-title-section">
             <div class="board-category">
-                { 카테고리 }
+                카테고리
             </div>
             <div class="board-title">
                 {{ board.boardTitle }}
