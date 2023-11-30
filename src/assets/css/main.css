@@ -22,10 +22,17 @@ body {
 .main-container {
     margin: 0 auto;
     min-height: 600px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
 }
 
 .main-container.first-box {
     height: 693px;
+}
+
+.main-con {
+
 }
 
 .margin-top-70{
@@ -121,11 +128,13 @@ body {
 .slide_text_large {
     width: 100%;
     margin-left: 20px;
+    white-space: pre-line;
 }
 
 .slide_text_small {
     width: 100%;
     margin-left: 20px;
+    white-space: pre-line;
 }
 
 
