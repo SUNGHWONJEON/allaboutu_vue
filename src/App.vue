@@ -15,11 +15,6 @@ export default {
   ,components:{
     PageHeader
     ,PageFooter
-  },
-  data(){
-    return {
-      headerClass: 'default-header'// 기본 헤더 스타일 클래스
-    }
   }
   ,mounted() { //이벤트 : 이 컴포넌트(App.vue)마운트 되면
     this.fnMain()
@@ -37,16 +32,6 @@ export default {
 </script>
 
 <style>
-@import '@/assets/css/main.css';
-
-.default-header {
-  background-color: rgba(255,255,255,0.9);
-  box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
-}
-
-.main-page-header {
-  background: none;
-	box-shadow: 0px 0px 0px rgba(91, 91, 91, 0);
-}
+@import '@/assets/css/main.css'
 
 </style>

@@ -1,6 +1,127 @@
 
-.pic-box {
-    border: 1px solid #eee;
-    width: 100%;
+.pic-titile {
+    font-family: Poppins-Bold;
+    font-weight: 600;
+    font-size: 40px;
+}
 
+.pic-box {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0px;
+}
+
+.pic-upload-box {
+    width: 400px;
+}
+
+.pic-upload {
+    position: relative;
+    border: 1px solid #e2e2e2;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pic-upload-box label {
+    display: inline-block;
+    padding: .5em .75em;
+    color: #808080;
+    font-size: inherit;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: #fdfdfd;
+    cursor: pointer;
+    border: 1px solid #e2e2e2;
+    border-bottom-color: #e2e2e2;
+    border-radius: .25em;
+}
+
+
+
+.my-img-box{
+    display: none;
+    /*width: calc(100% - 10px);*/
+    height: auto;
+    height: calc(100% - 10px);
+}
+
+.pic-upload-box label.pic-label {
+    border: none;
+    position: absolute;
+    width: 100%;
+    padding: 0;
+    height: 100%;
+    background: none;
+    text-indent: -99999px;
+}
+
+.pic-upload-box input[type="file"] {  /* 파일 필드 숨기기 */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip:rect(0,0,0,0);
+    border: 0;
+}
+
+.pic-btn-box {
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.pic-btn {
+    width: 48%;
+    height: 30px;
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 2px;
+    color: #646464;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.pic-btn:last-child {
+    margin-right: 0px;
+}
+
+.pic-btn:hover {
+    background-color: #ec5264;
+    color: #fff;
+}
+
+
+.pic-inputbox {
+    /*
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    */
+    margin-right: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid #e2e2e2;
+    padding: 15px 15px 5px 15px;
+    margin-left: 15px;
+}
+
+.pic-input-div {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.pic-input-div input {
+    margin-left: 10px;
+    width: 40px;
 }
