@@ -62,4 +62,5 @@ export default {
   background: none;
   box-shadow: 0px 0px 0px rgba(91, 91, 91, 0);
 }
+
 </style>

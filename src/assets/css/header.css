@@ -156,7 +156,7 @@
     transform: scale(0);
 }
 */
-.header_menu .header_text ul li.active button {
+.header_menu .header_text ul li button.active {
 	color: #ec5264;
 }
 .header_menu .header_text ul li button:hover {

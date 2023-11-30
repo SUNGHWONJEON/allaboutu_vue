@@ -1,20 +1,82 @@
 <template>
-    <div class="pic-box">
+    <div class="pic-title-box">
         <div class="pic-titile">
-            사진을 업로드하세요.
+            PHOTO
         </div>
-        <div class="pic-img-box">
-            
+        <div class="pic-titile-sub">
+            전신 사진을 업로드하세요.
         </div>
     </div>
+    
+    
+    <div class="pic-box">
+        <div class="pic-upload-box">
+            <div class="pic-upload">
+                <label for="pic_up" ref="pic_label" :class="{ 'pic-label': imageUploaded}">업로드</label>
+                <input class="pic-img-box" id="pic_up" type="file" @change="handleFileUpload" accept="image/*">
+                <img class="my-img-box" :src="imageUrl" v-if="imageUrl" :style="{ display: imageUrl ? 'block' : 'none' }">
+            </div>
+            
+            <div class="pic-btn-box">
+                <!--<button class="pic-btn" v-on:click="fnUpClick">사진찍기</button>-->
+                <button class="pic-btn" v-on:click="fnTypeClick">치수보기</button>
+            </div>
+        </div>
+
+        <div class="pic-inputbox">
+            <div class="pic-input-div">
+                <input type="text">성별을 입력해주세요.
+            </div>
+            <div class="pic-input-div">
+                <input type="number">나이를 입력해주세요.
+            </div>
+            <div class="pic-input-div">
+                <input type="number">키를 입력해주세요.
+            </div>
+            <div class="pic-input-div">
+                <input type="number">몸무게를 입력해주세요.
+            </div>
+        </div>
+
+    </div>
+
+    
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default ({
-    
+    setup() {
+        const imageFile = ref(null);
+        const imageUrl = ref(null);
+        const imageUploaded = ref(false);
+
+        const handleFileUpload = (event) => {
+            const file = event.target.files[0];
+            imageFile.value = file;
+            imageUrl.value = URL.createObjectURL(file);
+            imageUploaded.value = true;
+        };
+
+        return {
+            imageFile,
+            imageUrl,
+            imageUploaded,
+            handleFileUpload
+        };
+    },
+    methods: {
+        fnUpClick(){
+
+        },
+        fnTypeClick(){
+
+        }
+    }
 })
 </script>
 
 <style>
-@import '@/assets/css/base_pic.css' 
+@import '@/assets/css/base_pic.css';
 </style>
