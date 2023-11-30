@@ -22,7 +22,7 @@
                 <div class="header_right_widget">
                     <!-- 로그인되어 있을 때 --> 
                     <template v-if="isLoggedIn">
-                        <img src="@/assets/images/launcher.png" style="width: 30px; height: 30px">
+                        <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px">
                         <div>{{ username }} 님</div>
                         <router-link to="/logout">
                             <div class="myinfo-box-div">
@@ -34,7 +34,7 @@
                     <template v-else>
                         <router-link to="/login">
                             <div class="myinfo-box-div">
-                                <img src="@/assets/images/launcher.png" style="width: 30px; height: 30px">
+                                <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px">
                                 <div @click="login">로그인</div>
                             </div>
                         </router-link>
