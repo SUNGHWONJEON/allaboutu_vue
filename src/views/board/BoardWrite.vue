@@ -67,9 +67,9 @@ export default {
         return {
             selectedCategory: '',
             categories: [
-                { id: 'daily', value: 'daily', label: '일상' },
-                { id: 'beauty', value: 'beauty', label: '뷰티' },
-                { id: 'fashion', value: 'fashion', label: '패션' },
+                { id: 'daily', value: '3', label: '일상' },
+                { id: 'beauty', value: '1', label: '뷰티' },
+                { id: 'fashion', value: '2', label: '패션' },
             ],
             inputHashtag: '', // 입력한 해시태그
             registeredHashtags: [], // 등록된 해시태그 배열
@@ -118,6 +118,25 @@ export default {
                 }, 3000);
                 return;
             }
+
+            this.$axios.post('/boards', {
+                userNum: 2, // 임시 writer id
+                categoryNum: this.selectedCategory,
+                boardTitle: this.title,
+                boardContent: this.content,
+                hashtags: this.registeredHashtags,
+                images: this.selectedImages,
+            })
+            .then(res => {
+                alert('게시글 등록 성공');
+
+                // 게시글 등록 후 게시판 목록으로 이동
+                this.$router.push('/board');
+            })
+            .catch(err => {
+                alert('게시글 등록 실패');
+                console.log(err);
+            })
         },
         checkMaxLength() {
             if(this.content.length > this.contentMaxLength) {

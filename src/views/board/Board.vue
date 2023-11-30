@@ -32,7 +32,6 @@
         
         <!-- 댓글 목록 -->
         <Comment :comments="this.comments" />
-        <!-- <CommentList :comments="comments" /> -->
     </div>
 </template>
 
@@ -56,31 +55,12 @@ export default {
     },
     data() {
         return {
-            // comments: this.board.comments,
-            comments: [
-                {
-                    commentNum: '1',
-                    userId: 'winter1225',
-                    content: '눈이 와요. 눈이 와',
-                    createDate: '23. 12. 25'
-                },
-                {
-                    commentNum: '2',
-                    userId: 'winter1225',
-                    content: '눈이 와요. 눈이 와',
-                    createDate: '23. 12. 25'
-                },
-                {
-                    commentNum: '3',
-                    userId: 'winter1225',
-                    content: '눈이 와요. 눈이 와',
-                    createDate: '23. 12. 25'
-                }
-            ]
+            comments: this.board.comments,
         }
     },
     created() {
         console.log(this.board)
+        console.log(this.comments)
     },
 }
 </script>
