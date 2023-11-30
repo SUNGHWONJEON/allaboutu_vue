@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <PageHeader /><!-- 헤더 컴포넌트 -->
-      <router-view /><!--페이지 이동이 표시될 영역을 의미함-->
-    <PageFooter /><!-- 푸터 컴포넌트 -->
+    <!-- v-if 를 사용하여 로그인 페이지에서만 Header와 Footer를 감추도록 설정 -->
+    <PageHeader v-if="showHeader" />
+    <router-view />
+    <PageFooter v-if="showFooter" />
   </div>
 </template>
 
@@ -11,42 +12,55 @@ import PageHeader from '@/views/common/PageHeader.vue'
 import PageFooter from '@/views/common/PageFooter.vue'
 
 export default {
-  name: 'App'
-  ,components:{
-    PageHeader
-    ,PageFooter
+  name: 'App',
+  components: {
+    PageHeader,
+    PageFooter
   },
-  data(){
+  data() {
     return {
-      headerClass: 'default-header'// 기본 헤더 스타일 클래스
+      showHeader: true, // Header를 보이게 할지 여부
+      showFooter: true  // Footer를 보이게 할지 여부
+    };
+  },
+  watch: {
+    '$route'() {
+      // 라우트 변경 시 실행되는 watch
+      this.updateHeaderFooterVisibility();
     }
-  }
-  ,mounted() { //이벤트 : 이 컴포넌트(App.vue)마운트 되면
-    this.fnMain()
-
-  }
-  ,methods: { //함수 정의
+  },
+  mounted() {
+    // 초기 로딩 시 실행
+    this.updateHeaderFooterVisibility();
+  },
+  methods: {
+    // Login 페이지와 Enroll 페이지가 열리면 Header, Footer 숨기는 처리
+    updateHeaderFooterVisibility() {
+      const isLoginPage = this.$route.path === '/login';
+      const isEnrollPage = this.$route.path === '/enroll';
+      this.showHeader = !isLoginPage && !isEnrollPage;
+      this.showFooter = !isLoginPage && !isEnrollPage;
+    },
     fnMain() {
       this.$router.push({
-        path: './' //PageMain이 동작됨 -> 라우터로 동작되는 것은 router-view에 표시됨
-      })
+        path: './'
+      });
     }
-
   }
-}
+};
 </script>
 
 <style>
 @import '@/assets/css/main.css';
 
 .default-header {
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
 }
 
 .main-page-header {
   background: none;
-	box-shadow: 0px 0px 0px rgba(91, 91, 91, 0);
+  box-shadow: 0px 0px 0px rgba(91, 91, 91, 0);
 }
 
 </style>

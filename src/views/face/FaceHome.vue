@@ -1,41 +1,67 @@
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center">
-        <!-- Photo upload box -->
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-            <div class="mb-4">
-                <label for="photo-upload" class="cursor-pointer">
-                    <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-64 w-64 mx-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7l9 9 9-9" />
-                        </svg>
-                        <span class="text-gray-700">사진을 올려주세요</span>
-                    </div>
-                </label>
-                <input id="photo-upload" type="file" class="hidden" accept="image/*" />
-            </div>
-            <!-- Buttons -->
-            <div class="flex justify-center gap-4">
-                <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l">
-                    사진 업로드
-                </button>
-                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r">
-                    완료
-                </button>
-            </div>
+    <div class="pic-title-box">
+        <div class="pic-titile">
+            PHOTO
+        </div>
+        <div class="pic-titile-sub">
+            얼굴 사진을 업로드하세요.
         </div>
     </div>
+    
+    
+    <div class="pic-box">
+        <div class="pic-upload-box">
+            <div class="pic-upload">
+                <label for="pic_up" ref="pic_label" :class="{ 'pic-label': imageUploaded}">업로드</label>
+                <input class="pic-img-box" id="pic_up" type="file" @change="handleFileUpload" accept="image/*">
+                <img class="my-img-box" :src="imageUrl" v-if="imageUrl" :style="{ display: imageUrl ? 'block' : 'none' }">
+            </div>
+            
+            <div class="pic-btn-box">
+                <!--<button class="pic-btn" v-on:click="fnUpClick">사진찍기</button>-->
+                <button class="pic-btn" v-on:click="fnTypeClick">적용한 사진 보기</button>
+            </div>
+        </div>
+
+    </div>
+
+    
 </template>
 
+<script>
+import { ref } from 'vue';
+
+export default ({
+    setup() {
+        const imageFile = ref(null);
+        const imageUrl = ref(null);
+        const imageUploaded = ref(false);
+
+        const handleFileUpload = (event) => {
+            const file = event.target.files[0];
+            imageFile.value = file;
+            imageUrl.value = URL.createObjectURL(file);
+            imageUploaded.value = true;
+        };
+
+        return {
+            imageFile,
+            imageUrl,
+            imageUploaded,
+            handleFileUpload
+        };
+    },
+    methods: {
+        fnUpClick(){
+
+        },
+        fnTypeClick(){
+
+        }
+    }
+})
+</script>
+
 <style>
-.centered-text {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50vh;
-}
-
-div > div:last-child {
-  margin-top: 20px;
-}
+@import '@/assets/css/base_pic.css';
 </style>
-

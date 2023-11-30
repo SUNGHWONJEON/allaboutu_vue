@@ -12,11 +12,11 @@
                 <th>로그인제한</th>
                 <th>완료</th>
             </tr>
-            <tr>
-                <td>minji000</td>
-                <td>minji000@gmail.com</td>
-                <td>010-2222-3333</td>
-                <td>2023/11/23</td>
+            <tr v-for="(member, index) in members" :key="index">
+                <td>{{ member.userId }}</td>
+                <td>{{ member.userEmail }}</td>
+                <td>{{ member.userPhone }}</td>
+                <td>{{ member.enrolleDate }}</td>
                 <td>제재</td>
                 <td>2</td>
                 <td>
@@ -42,7 +42,21 @@
 
 <script>
 export default ({
-    
+    name: 'memberList',
+    data() {
+        return {
+            members: [],
+        }
+    },
+    mounted(){
+        this.$axios.get('/members')
+        .then((res) => {
+            this.members = res.data
+            console.log(res.data)
+        }).catch((err) => {
+            console.log(err)
+        });
+    },
 })
 </script>
 <style>

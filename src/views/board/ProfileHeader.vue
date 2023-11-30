@@ -1,7 +1,7 @@
 <template>
     <div class="profile-section">
         <div class="profile-image">
-            <img alt="이미지">
+            <img src="@/assets/images/community/chatbot_icon.png">
         </div>
         <div class="profile-text">
             <div class="profile-name">
@@ -26,7 +26,6 @@ export default {
     flex-direction: row;
     height: 50px;
     border: 1px solid green;
-    
 }
 
 .profile-image {
@@ -37,6 +36,8 @@ export default {
 }
 
 .profile-image img {
+    width: 50px;
+    height: 50px;
     margin: auto;
 }
 
@@ -45,5 +46,9 @@ export default {
     width: 400px;
     height: 100%;
     text-align: left;
+}
+
+.profile-text div {
+    height: 25px;
 }
 </style>

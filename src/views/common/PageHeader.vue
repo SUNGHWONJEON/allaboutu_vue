@@ -12,7 +12,7 @@
             <div class="header_text center">
                 <ul>
                     <li v-for="(item, i) in selList" :key="i">
-                        <button v-on:click="pageLink(i)">{{ item.text }}</button>
+                        <button ref="btns" v-on:click="pageLink(i)" v-if="i !== 0">{{ item.text }}</button>
                     </li>
                 </ul>
             </div>
@@ -22,7 +22,7 @@
                 <div class="header_right_widget">
                     <!-- 로그인되어 있을 때 --> 
                     <template v-if="isLoggedIn">
-                        <img src="@/assets/images/launcher.png" style="width: 30px; height: 30px">
+                        <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px">
                         <div>{{ username }} 님</div>
                         <router-link to="/logout">
                             <div class="myinfo-box-div">
@@ -34,7 +34,7 @@
                     <template v-else>
                         <router-link to="/login">
                             <div class="myinfo-box-div">
-                                <img src="@/assets/images/launcher.png" style="width: 30px; height: 30px">
+                                <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px">
                                 <div @click="login">로그인</div>
                             </div>
                         </router-link>
@@ -52,55 +52,50 @@
 export default ({
     data(){
         return {
-            /*
-            <li><button v-on:click="pageLink(1)">NOTICE</button></li>
-                    <li><button v-on:click="pageLink(2)">PERSONAL COLOR</button></li>
-                    <li><button v-on:click="pageLink(3)">STYLE MATCH</button></li>
-                    <li><button v-on:click="pageLink(4)">FACE MATCH</button></li>
-                    <li><button v-on:click="pageLink(5)">COMMUNITY</button></li>
-                    <li><button v-on:click="pageLink(6)">ADMIN</button></li>
-                    */
-
             selList: [
                 {
                     id: 0
                     ,text: 'HOME'
                     ,path: '/'
+                    ,isActive: false
                 },
                 {
                     id: 1
                     ,text: 'NOTICE'
                     ,path: '/notice'
+                    ,isActive: false
                 },
                 {
                     id: 2
                     ,text: 'PERSONAL COLOR'
                     ,path: '/personal'
+                    ,isActive: false
                 },
                 {
                     id: 3
                     ,text: 'STYLE MATCH'
                     ,path: '/style'
+                    ,isActive: false
                 },
                 {
                     id: 4
                     ,text: 'FACE MATCH'
                     ,path: '/face'
+                    ,isActive: false
                 },
                 {
                     id: 5
                     ,text: 'COMMUNITY'
                     ,path: '/board'
+                    ,isActive: false
                 },
                 {
                     id: 6
                     ,text: 'ADMIN'
                     ,path: '/admin'
+                    ,isActive: false
                 }
-            ],
-
-            selectCount : 3
-            ,btnList: []
+            ]
         }
     },
     beforeUnmount() {
@@ -117,36 +112,6 @@ export default ({
                 headerElement.classList.add('main');
             } else {
                 headerElement.classList.remove('main');
-            }
-
-            switch (to.name) {
-                case 'FaceMain':
-                    
-                    break;
-                case 'StyleMain':
-                    
-                    break;
-                case 'FaceMain':
-                    
-                    break;
-                case 'CodyMain':
-                    
-                    break;
-                case 'PersonalMain':
-                    
-                    break;
-                case 'AdminMain':
-                    
-                    break;
-                case 'BoardMain':
-                    
-                    break;
-                case 'NoticeMain':
-                    
-                    break;
-                default:
-
-                    break;
             }
         }
     },
@@ -184,7 +149,20 @@ export default ({
         },
         //링크 
         pageLink (id) {
+
+            this.$refs.btns.forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // 현재 클릭한 버튼을 활성화 처리
+            if(id > 0){
+                const btn = this.$refs.btns[id-1];
+                //console.log('btn : ' + btn);
+                btn.classList.add('active');
+            }
+            
             this.$router.push({ path: this.selList[id].path })
+            //this.$router.go(this.$router.currentRoute);
         }
     }
 })
