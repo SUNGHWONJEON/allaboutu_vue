@@ -1,8 +1,13 @@
 <template>
     <div class="main-wrapper">
         <div class="main-container">
-            <div class="contents-boxes">
-                <AdminHome /><!-- 관리자 컴포넌트 -->
+            <div>
+                <div class="contents-boxes">
+                    <AdminHome /><!-- 관리자 컴포넌트 -->
+                </div>
+                <div class="contents-boxes">
+                    <AdminUser /><!-- 관리자 컴포넌트 -->
+                </div>
             </div>
         </div>
     </div>
@@ -24,5 +29,7 @@ export default ({
 <style>
 .main-container {
     display: flex;
+    flex-direction: column-reverse;
+    align-items: stretch;
 }
 </style>
