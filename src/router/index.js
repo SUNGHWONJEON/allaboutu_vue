@@ -7,6 +7,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 //라우터가 연결할 페이지(컴포넌트) 임포트
 import PageLogin from '@/views/member/PageLogin.vue'
+import PageEnroll from '@/views/member/PageEnroll.vue'
 import PageMain from '@/views/common/PageMain.vue'
 import StyleMain from '@/views/style/StyleMain.vue'
 import CodyMain from '@/views/cody/CodyMain.vue'
@@ -33,6 +34,11 @@ const routes = [
         path: '/login',
         name: 'PageLogin',
         component: PageLogin
+    },
+    {
+        path: '/enroll',
+        name: 'enroll',
+        component: PageEnroll
     },
     {
         path: '/style',
