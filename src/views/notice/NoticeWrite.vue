@@ -12,24 +12,37 @@
                 <div class="notice-1">
                     <h5 class="cartegory">공지유형</h5>
                     <form id="radioform">
-                      <input type="radio"  class="cartegory1" name="group1" value="option1" checked  >일반 공지
-                      <input type="radio"  class="cartegory1" name="group1" value="option2"  >이벤트
+                      <input type="radio"  class="cartegory1" v-model="noticeType" value="option1" checked  @change="handleEventRadio"  >일반 공지
+                      <input type="radio"  class="cartegory1" v-model="noticeType" value="option2" @change="handleEventRadio" >이벤트
+                      <div  class="eventn" v-if="showEventCalendar">
+                          <label for="startDate">이벤트 시작일:</label>
+                          <input type="date" id="startDate" v-model="startDate" />
+            
+                          <label for="endDate">이벤트 종료일:</label>
+                          <input type="date" id="endDate" v-model="endDate" />
+                      </div>
+                    
                       <input type="checkbox"  class="cartegory1" name="group1" value="option3" @change="toggleCalendar">필독공지  
                       <input type="date"  v-if="showCalendar"  v-model="deadlineDate">
-                    </form>  
+                      <div v-if="showCalendar1">
+                      
+                    </div>
+                  </form>  
+
+             
                 </div>
-                   <div class="notice-contents1">
-                    <input type="text" size="60" v-model="title" class="w3-input w3-border" placeholder="제목을 입력해주세요.">
-                  </div>
-                </div>
+
+                <div class="notice-contents1">
+                  <input type="text" size="60" v-model="title" class="w3-input w3-border" placeholder="제목을 입력해주세요." />
+               </div>
                 
                 <div class="notice-contents">
                   <textarea id="" cols="100" rows="30" v-model="contents" class="w3-input w3-border" style="resize: none;">
                   </textarea>
                 </div>
-
+              </div>
                 <hr>
-                    <h4>첨부파일</h4>
+                    <h4 class="attach">첨부파일</h4>
                 <hr>
                 <div class="b1">
                 <button class="re"  @click="registerNotice">등록</button>
@@ -43,14 +56,14 @@
 </template>
         
 <script>
-import PageFooter from "../common/PageFooter.vue";
+
 import PageHeader from "../common/PageHeader.vue";
 
 export default {
   name: 'NoticeWrite',
   components: {
     PageHeader,
-    PageFooter
+    
   },
 
   data() {
@@ -58,6 +71,7 @@ export default {
       title: "",
       contents: "",
       showCalendar: false,
+      showEventCalendar: false,
       noticeType: "option1",
       deadlineDate: "",
     };
@@ -65,6 +79,21 @@ export default {
   methods: {
     toggleCalendar() {
       this.showCalendar = !this.showCalendar;
+    },
+    
+     handleEventRadio() {
+      if (this.noticeType === 'option2') {
+        // 이벤트 라디오 버튼을 선택했을 때 실행되는 로직
+        // 여기에 이벤트 시작일과 종료일을 설정하는 로직을 추가하세요.
+        // 예시로 현재 날짜로 초기화하는 코드를 추가했습니다.
+        const currentDate = new Date();
+        this.showEventCalendar = true;
+        this.startDate = currentDate.toISOString().split('T')[0]; // 현재 날짜
+        this.endDate = ''; // 이벤트 종료일 초기화
+      } else {
+        this.showEventCalendar = false; // 이벤트 라디오 버튼이 아닌 경우 날짜 상자 감추기
+        
+      }
     },
   },
 
@@ -86,9 +115,28 @@ export default {
 
 
 <style>
-     
+    
+    hr{
+      width:900px;
+    }    
      .cartegory1{
       margin-left:20px;
+      
+     }
+    
+    .cartegory{
+      font-size: 25px;
+      margin-left: 20px;
+    }
+
+     .eventn{
+      text-align: center;
+      display: flex;
+      margin:30px 0 30px;
+     }
+
+     .attach{
+      text-align: left;
      }
 
      .noticebox{
@@ -96,17 +144,15 @@ export default {
       margin-left: 0px;
      }
 
-     .no{
-
-      margin:0px 200px;
-     }
 
      .title1{
       font-size: 35px;
+      margin-left:350px;
      }
 
      .insert{
        font-size: 22px;
+       margin-left:350px;
      }
      
     #radioform{
@@ -116,9 +162,11 @@ export default {
      
     }
 
-     .notice-contents{
-      margin:30px;
-     }
+    .notice-contents1{
+      margin-left: 30px;
+    }
+
+    
      
     
 </style>
