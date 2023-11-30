@@ -13,14 +13,14 @@
                 <th>완료</th>
             </tr>
             <tr>
-                <td>2</td>
-                <td>2023110101</td>
-                <td>싸움 유도</td>
-                <td>지역감정 유발</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
                 <td>
                     <button class="delete-btn" @click="confirmDelete">삭제</button>
                 </td>
-                <td>2</td>
                 <td>
                     <select>
                         <option value="0">0일</option>
@@ -44,16 +44,17 @@
 
 <script>
 export default {
-  methods: {
-    confirmDelete() {
-      if (confirm("게시글을 삭제하시겠습니까?")) {
-        // 여기에 실제 삭제 로직을 추가하세요.
-        console.log("게시글 삭제 수행");
-      } else {
-        console.log("삭제 취소");
-      }
+    methods: {
+        confirmDelete() {
+        if (confirm("게시글을 삭제하시겠습니까?")) {
+
+            console.log("게시글 삭제 수행");
+        } else {
+            console.log("삭제 취소");
+        }
+        },
     },
-  },
+    
 };
 </script>
 <style>
