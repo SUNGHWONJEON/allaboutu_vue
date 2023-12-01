@@ -20,6 +20,7 @@ import RecommandMain from '@/views/recommand/RecommandMain.vue'
 import NoticeWrite from '@/views/notice/NoticeWrite.vue';
 import NoticeDetail from '@/views/notice/NoticeDetail.vue';
 import BoardWrite from '@/views/board/BoardWrite.vue'
+import PageMyPage from '@/views/member/PageMyPage.vue';
 
 //각 페이지 컴포넌트에 대한 url path 지정
 //routes는 고정변수임
@@ -94,6 +95,27 @@ const routes = [
         path: '/notice/detail',
         name: 'NoticeDetail',
         component: NoticeDetail
+    },
+    {
+        path: '/boards/write/:boardNum',
+        name: 'BoardWriteForEdit',
+        component: BoardWrite,
+        beforeEnter: (to, from, next) => {
+            // const userAccessPermission = checkUserPermission();
+            const userAccessPermission = true;
+
+            if (userAccessPermission) {
+                next();
+            } else {
+                alert('접근 권한이 없습니다.');
+                next('/');
+            }
+        },
+    },
+    {
+        path: '/member/mypage',
+        name: 'PageMyPage',
+        component: PageMyPage
     }
 ]
 

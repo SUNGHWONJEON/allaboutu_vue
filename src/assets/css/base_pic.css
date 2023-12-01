@@ -105,6 +105,7 @@
     top: 0px;
     right: 0px;
     */
+    width: 230px;
     margin-right: 50px;
     display: flex;
     flex-direction: column;
@@ -115,13 +116,15 @@
 }
 
 .pic-input-div {
+    width: 100%;
     display: flex;
-    flex-direction: row-reverse;
     margin-bottom: 10px;
     align-items: center;
+    justify-content: space-between;
 }
 
 .pic-input-div input {
     margin-left: 10px;
     width: 40px;
+    border: 1px solid #e2e2e2;
 }

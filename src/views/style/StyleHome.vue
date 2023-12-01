@@ -25,16 +25,20 @@
 
         <div class="pic-inputbox">
             <div class="pic-input-div">
-                <input type="text">성별을 입력해주세요.
+                <span>성별을 입력해주세요.</span>
+                <input type="text">
             </div>
             <div class="pic-input-div">
-                <input type="number">나이를 입력해주세요.
+                <span>나이를 입력해주세요.</span>
+                <input type="number">
             </div>
             <div class="pic-input-div">
-                <input type="number">키를 입력해주세요.
+                <span>키를 입력해주세요.</span>
+                <input type="number">
             </div>
             <div class="pic-input-div">
-                <input type="number">몸무게를 입력해주세요.
+                <span>몸무게를 입력해주세요.</span>
+                <input type="number">
             </div>
         </div>
 
@@ -67,11 +71,8 @@ export default ({
         };
     },
     methods: {
-        fnUpClick(){
-
-        },
         fnTypeClick(){
-
+            
         }
     }
 })
