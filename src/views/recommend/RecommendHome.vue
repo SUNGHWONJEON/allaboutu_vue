@@ -5,7 +5,7 @@
                 <div class="col">
                 </div>
                 <div class="col">
-                    <div id="logo3" class="mt-5">All About U</div>
+                    <div id="logo3" class="contents-boxes">마이페이지</div>
                     <h5 class="mt-4">email</h5>
                     <div>{{ infor.userEmail }}</div>
                     <h5 class="mt-4">이름</h5>
@@ -39,8 +39,8 @@ export default ({
         return{
             infor: {
                 userName: '홍길동'
-                ,userEmail: 'x'
-                ,userPhone: '000'
+                ,userEmail: 'useremail@test.org'
+                ,userPhone: '010-5555-7777'
             }
         }
     },
