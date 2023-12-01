@@ -65,6 +65,7 @@ export default {
     },
     data() {
         return {
+            boardNum: null,
             selectedCategory: '',
             categories: [
                 { id: 'daily', value: '3', label: '일상' },
@@ -81,6 +82,14 @@ export default {
             content: '',
             contentMaxLength: 500, // 내용 최대 글자수
             selectedImages: [],
+            tempUserNum: 2, // 임시로 로그인한 유저 번호
+        }
+    },
+    created() {
+        if (this.$route.params.boardNum) {
+            this.boardNum = this.$route.params.boardNum;
+            this.getBoard(this.boardNum);
+            console.log(this.$route.params.boardNum);
         }
     },
     computed: {
@@ -120,11 +129,11 @@ export default {
             }
 
             this.$axios.post('/boards', {
-                userNum: 2, // 임시 writer id
+                userNum: this.tempUserNum,
                 categoryNum: this.selectedCategory,
                 boardTitle: this.title,
                 boardContent: this.content,
-                hashtags: this.registeredHashtags,
+                hashtags: this.changeHashtagObject(this.registeredHashtags),
                 images: this.selectedImages,
             })
             .then(res => {
@@ -164,6 +173,26 @@ export default {
             // 이미지 클릭 시 이미지 삭제
             this.selectedImages.splice(index, 1);
         },
+        getBoard(boardNum) {
+            this.$axios.get('/boards/' + boardNum)
+                .then(res => {
+                    console.log(res.data);
+                    this.title = res.data.boardTitle;
+                    this.content = res.data.boardContent;
+                    this.selectedCategory = res.data.categoryNum;
+                    this.registeredHashtags = res.data.hashtags.length > 0 ? res.data.hashtags : [];
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        changeHashtagObject(registeredHashtags) {
+            const hashtags = [];
+            registeredHashtags.forEach(hashtag => {
+                hashtags.push({ hashtag: hashtag });
+            });
+            return hashtags;
+        }
     },
 }
 </script>
