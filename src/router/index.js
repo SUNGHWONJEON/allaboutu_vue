@@ -84,7 +84,7 @@ const routes = [
     {
         path: '/recommend',
         name: 'RecommendMain',
-        component: RecommandMain
+        component: RecommendMain
     },
     {
         path: '/notice/write',
