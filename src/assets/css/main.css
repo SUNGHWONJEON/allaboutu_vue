@@ -21,9 +21,11 @@ body {
 
 .main-container {
     margin: 0 auto;
-    min-height: 600px;
+    min-height: 700px;
+    height: 100%;
     display: flex;
     text-align: center;
+    align-items: stretch;
     flex-direction: column;
 }
 
@@ -389,6 +391,11 @@ body {
 
 .displayData{
     margin-top: 10px;
+}
+
+.myinfo-box-div img{
+    border-radius: 100%;
+    border: 1px solid rgb(255,255,255, .3);
 }
 
 /*모션*/
