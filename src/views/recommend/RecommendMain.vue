@@ -3,7 +3,7 @@
     <div class="main-wrapper">
         <div class="main-container">
             <div class="contents-boxes">
-                <RecommandHome /><!-- 페이스 컴포넌트 -->
+                <RecommendHome /><!-- 페이스 컴포넌트 -->
             </div>
         </div>
     </div>
@@ -12,14 +12,14 @@
 
 <script>
 import PageHeader from '@/views/common/PageHeader.vue'
-import RecommandHome from '@/views/recommand/RecommandHome.vue'
+import RecommendHome from '@/views/recommend/RecommendHome.vue'
 import PageFooter from '@/views/common/PageFooter.vue'
 
 export default ({
-    name: 'RecommandMain'
+    name: 'RecommendMain'
     ,components:{
         PageHeader
-        ,RecommandHome
+        ,RecommendHome
         ,PageFooter
     }
 })

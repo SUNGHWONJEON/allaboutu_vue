@@ -29,7 +29,10 @@
       <tbody>            
          <tr v-for="(row, noticeNum) in list" :key="noticeNum">   
           <td>{{ row.noticeNum }}</td>     
-          <td><a v-on:click="fnNoticeView(`${row.noticeNum}`)" :style="{ color: row.noticeTitle ? 'blue' : '', textDecoration: 'none' }" class="hover-effect">{{ row.noticeTitle }}</a></td>
+          <!-- <td><a v-on:click="fnNoticeView(`${row.noticeNum}`)" :style="{ color: row.noticeTitle ? 'blue' : '', textDecoration: 'none' }" class="hover-effect">{{ row.noticeTitle }}</a></td> -->
+          <td>
+          <router-link :to="{ path: '/notice/detail', query: { noticeNum: row.noticeNum } }" :style="{ color: row.noticeTitle ? 'blue' : '', textDecoration: 'none' }" class="hover-effect">{{ row.noticeTitle }}</router-link>
+        </td>
           <td>{{ row.userNum }}</td>
           <td>{{ row.writeDate }}</td>
           <td>{{row.originalFileName}}</td>
@@ -69,9 +72,8 @@
 
     </div>
 
-    <router-link to="/notice/detail">
-         <button class="register" @click="fnPage()">공지사항 페이지</button>
-    </router-link>
+    
+
   </div>
 </template>
 

@@ -5,7 +5,7 @@
         </div>
         <div class="profile-text">
             <div class="profile-name">
-                닉네임
+                {{ userName }}({{ userId }})
             </div>
             <div class="profile-hashtag">
                 해시태그
@@ -17,6 +17,10 @@
 <script>
 export default {
     name: 'ProfileHeader',
+    props: {
+        userId: 'userId',
+        userName: 'userName',
+    }
 }
 </script>
 
@@ -24,6 +28,7 @@ export default {
 .profile-section {
     display: flex;
     flex-direction: row;
+    width: 100%;
     height: 50px;
     border: 1px solid green;
 }
@@ -43,7 +48,7 @@ export default {
 
 .profile-text {
     border: 1px solid blue;
-    width: 400px;
+    width: 100%;
     height: 100%;
     text-align: left;
 }
