@@ -1,100 +1,79 @@
 <template>
-   
-         <PageHeader/>
-    <div class="main-wrapper">
-        <div class="main-container">
-            <div class="contents-boxes">
-              <div class="no">
-                <p class="insert">공지사항 상세페이지</p>
-                 <h5 class="text5"> [공지] </h5>
-                <div class="text">
-                      <p class="time">2023.11.29</p>
-                      <p class="read">조회 수 </p>
-                </div>
-                <hr>
-                <div class="noticebox">
-                   <div class="notice-contents1">
-                    <input type="text" size="60" v-model="title" class="w3-input w3-border" placeholder="제목을 입력해주세요.">
-                  </div>
-                </div>
-                
-                <div class="notice-contents">
-                  <textarea id="" cols="100" rows="30" v-model="contents" class="w3-input w3-border" style="resize: none;">
-                  </textarea>
-                </div>
-
-                <hr>
-                    <h4>첨부파일</h4>
-                <hr>
-                <div class="b1">
-                    <button class="re">수정</button>
-                    <button class="can">삭제</button>
-                    <button >이전 페이지로 이동</button>
-                </div>
-              </div>
-            </div>
+  
+  <div class="main-wrapper">
+  <div class="main-container">
+     <div class>
+        <h3>{{ noticeTitle }}</h3>
+        <div>
+          <p>{{ readCount }}</p>
+          <br>
+          <span>{{ writeDate }}</span>
         </div>
-    </div>      
-    <PageFooter />
-
+      </div>
+      <div class="board-contents">
+        <span>{{ noticeContents }}</span>
+      </div>
+      <hr>
+      <h4 class="attach">첨부파일</h4>
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="fileInput" id="fileInput" accept=".jpg, .jpeg, .png" required>
+        <button type="submit"></button>
+      </form>
+      <hr>
+      <div>
+        <input type="button" class="regi" @click="writeNotice" value="수정 페이지로 이동">
+        <input type="button" class="can" @click="goBack" value="취소">
+      </div>
+    </div>
+  </div>
 </template>
 
-
-
 <script>
-import PageFooter from "../common/PageFooter.vue";
-import PageHeader from "../common/PageHeader.vue";
- document.getElementsByName('group1').forEach(radio => {
-        radio.addEventListener('change', () => {
-            console.log(`선택된 옵션: ${radio.value}`);
-        });
-    });
-
+import axios from 'axios';
 
 export default {
-   name:'NoticeDetail',
-   
-}
+  name: 'NoticeDetail',
+  data() {
+    return {
+      noticeTitle: '',
+      noticeContents: '',
+      writeDate: '',
+      readCount: ''
+    };
+  },
+  mounted() {
+    const noticeNum = this.$route.params.noticeNum;
+    this.getNoticeDetails(noticeNum);
+  },
+  methods: {
+    getNoticeDetails(noticeNum) {
+        this.$axios.get('/notices/' +  noticeNum)
+        .then(res => {
+          console.log(response.data); // 확인용 콘솔 로그
+          const noticeData = response.data;
+          this.noticeTitle = noticeData.noticeTitle;
+          this.noticeContents = noticeData.noticeContents;
+          this.writeDate = noticeData.writeDate;
+          this.readCount = noticeData.readCount;
+        })
+        .catch(err => {
+          alert('게시글 조회 실패');
+          console.log(err);
+        })
+    },
+  },
+};
+
 </script>
 
-<style>
-      .text{
-        display:flex;
-      }
+<style scoped>
+     p{
+    margin-top:150px;
+   }
 
-      .text p {
-        font-size: 15px;
-      }
-
-     .time{
-        margin-right: 20px;
-      }
-      .text5{
-        font-size: 25px;
-        margin-right: 8px;
-      }  
-
-     .cartegory1{
-      margin-left:20px;
-     }
-
-     .noticebox{
-      text-align: left;
-      margin-left: 80px;
-     }
-
-     .no{
-
-      margin:0px 200px;
-     }
-
-     .title1{
-      font-size: 35px;
-     }
-
-     .insert{
-       font-size: 22px;
-     }
+   .inserttitle{
+     margin: 20px 0px;
+   }
      
     #radioform{
       
@@ -103,20 +82,28 @@ export default {
      
     }
 
-     .notice-contents{
-      margin:30px;
-     }
-    
-    .b1 {
-      margin-left: 600px;
+    .notice-contents1{
+      margin-left: 30px;
     }
-   .b1 button {
-      margin-top: 40px;
-      margin-left: 5px;
-      color: blue;
-   }
 
-   #datetime{
-    display: none;
-   }
+    .regi{
+      
+    background-color: #ad578c; 
+    color: #fff; 
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    margin-right : 70px;
+     
+  }
+
+   .can{
+      
+    background-color: #ad578c; 
+    color: #fff; 
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+     
+  }
 </style>
