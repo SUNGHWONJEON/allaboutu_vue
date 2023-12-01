@@ -16,10 +16,11 @@ import PersonalMain from '@/views/personal/PersonalMain.vue'
 import AdminMain from '@/views/admin/AdminMain.vue'
 import BoardMain from '@/views/board/BoardMain.vue'
 import NoticeMain from '@/views/notice/NoticeMain.vue'
-import RecommendMain from '@/views/recommend/RecommendMain.vue'
+import RecommandMain from '@/views/recommand/RecommandMain.vue'
 import NoticeWrite from '@/views/notice/NoticeWrite.vue';
 import NoticeDetail from '@/views/notice/NoticeDetail.vue';
 import BoardWrite from '@/views/board/BoardWrite.vue'
+import PageMyPage from '@/views/member/PageMyPage.vue';
 
 //각 페이지 컴포넌트에 대한 url path 지정
 //routes는 고정변수임
@@ -81,9 +82,9 @@ const routes = [
         component: NoticeMain
     },
     {
-        path: '/recommend',
-        name: 'RecommendMain',
-        component: RecommendMain
+        path: '/recommand',
+        name: 'RecommandMain',
+        component: RecommandMain
     },
     {
         path: '/notice/write',
@@ -94,6 +95,27 @@ const routes = [
         path: '/notice/detail',
         name: 'NoticeDetail',
         component: NoticeDetail
+    },
+    {
+        path: '/boards/write/:boardNum',
+        name: 'BoardWriteForEdit',
+        component: BoardWrite,
+        beforeEnter: (to, from, next) => {
+            // const userAccessPermission = checkUserPermission();
+            const userAccessPermission = true;
+
+            if (userAccessPermission) {
+                next();
+            } else {
+                alert('접근 권한이 없습니다.');
+                next('/');
+            }
+        },
+    },
+    {
+        path: '/member/mypage',
+        name: 'PageMyPage',
+        component: PageMyPage
     }
 ]
 
@@ -104,4 +126,3 @@ const router = createRouter({
 
 //이 js파일 밖에서 import한 대상이 사용할 수 있게 처리함
 export default router
-
