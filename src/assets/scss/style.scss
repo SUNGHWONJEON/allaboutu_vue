@@ -1,5 +1,6 @@
 
 $borderColor : #e2e2e2;
+$fontColorHigh : #ec5264;
 
 .style-reco {
     display: block;
@@ -38,13 +39,48 @@ $borderColor : #e2e2e2;
             font-size: 20px;
             font-weight: bold;
             margin-top: 15px;
+            margin-bottom: 10px;
             border-bottom: 1px solid $borderColor;
         }
         .style-exp-con {
-            font-size: 14px;
+            font-size: 15px;
             padding: 15px;
             white-space: pre-line;
+
+            .style-sub-box {
+                .style-sub-con {
+                    margin-bottom: 30px;
+
+                    .style-sub-title {
+                        font-size: 17px;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                        color: $fontColorHigh;
+                    }
+                    .style-sub-imgcon {
+                        .style-sub-imgbox {
+                            display: flex;
+                            justify-content: center;
+
+                            img {
+                                /*max-width: 420px;*/
+                                width: 48%;
+                                max-height: 600px;
+                                border: 1px solid $borderColor;
+                                padding: 5px;
+                                margin: 1%;
+                            }
+
+                            img.width100 {
+                                width: 100%;
+                                max-width: none;
+                            }
+                        }
+                    }
+                    
+                }
+                
+            }
         }
-        
     }
 }
