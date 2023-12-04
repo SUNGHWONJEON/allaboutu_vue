@@ -1,5 +1,5 @@
 <template>
-    <div class="style-reco">
+    <div class="style-reco" ref="style_recommand" v-if="this.styleNum != -1">
         <div class="style-item-con">
             <div class="style-item-box" v-for="style in styles" :key="style.id">
                 <button class="style-item" ref="style_btn" 
@@ -15,23 +15,30 @@
                 </button>
             </div>
         </div>
+
         <div class="style-exp-box">
-            <div class="style-title">{{ styles[styleNum-1].title }}</div>
+            <div class="style-title">{{ this.$styleType.num === this.styleNum ? 
+                this.$styleType.style : this.styles[this.styleNum - 1].title }}</div>
+            <button></button>
             <div class="style-exp-con">
-                {{ styles[styleNum-1].exp }}
+                <StyleSub ref="style_sub"/>
             </div>
+
         </div>
     </div>
 </template>
 
 <script>
+import StyleSub from '@/views/style/StyleSub.vue';
+import {ref} from "vue";
+
 export default {
+    components: {
+        StyleSub
+    },
     data() {
         return {
-
-            //나의 스타일!! 
-            styleNum: 1
-            
+            styleNum: this.$styleType.num
             //스타일 이미지
             ,styles: [
                 {
@@ -56,7 +63,8 @@ export default {
                     ,title: '모래시계형'
                     ,index: 0
                     ,active: ''
-                    ,exp: '상체와 하체의 균형감이 좋고 허리가 가는 체형입니다. \n곡선미가 있는 여성스러운 느낌의 체형입니다.'
+                    ,exp: '상체와 하체의 균형감이 좋고 허리가 가는 체형입니다. \
+                    \n곡선미가 있는 여성스러운 느낌의 체형입니다.'
                 },
                 {
                     id: 3
@@ -78,7 +86,8 @@ export default {
                     ,title: '둥근체형'
                     ,index: 0
                     ,active: ''
-                    ,exp: '등과 팔이 크고 둥글며 가슴과 몸통 허리, 복부, 엉덩이, 다리가 발달되어 신체에 살이 많아 보이는 체형입니다.'
+                    ,exp: '등과 팔이 크고 둥글며 가슴과 몸통 허리, 복부, 엉덩이, 다리가 발달되어 \
+                    \n신체에 살이 많아 보이는 체형입니다.'
                 },
                 {
                     id: 5
@@ -89,18 +98,23 @@ export default {
                     ,title: '삼각체형'
                     ,index: 0
                     ,active: ''
-                    ,exp: '좁은 어깨와 넓은 엉덩이를 가지고 있어 상반신이 작고 등이 좁으며 허리는 가늘고 길며 다리가 짧아 보이는 체형입니다.'
+                    ,exp: '좁은 어깨와 넓은 엉덩이를 가지고 있어 상반신이 작고 등이 좁으며 \
+                    \n허리는 가늘고 길며 다리가 짧아 보이는 체형입니다.'
                 }
             ]
-            ,activeStyle: null 
+            ,activeStyle: null
         }
     },
+    
     mounted() {
         this.styles.forEach(item => {
             if(item.id == this.styleNum){
                 this.styles[item.id-1].active = 'active';
             }
         });
+        
+        this.$styleType.style = '고객님의 체형은 ' + this.styles[this.$styleType.num - 1].title + '입니다.';
+        this.$refs.style_sub.changeStyle(this.styleNum);
     },
     methods: {
 
@@ -120,10 +134,11 @@ export default {
             this.styles.forEach(item => {
                 item.active = '';
             });
-
+            
             this.styles[style.id-1].active = 'active';
+            this.$refs.style_sub.changeStyle(this.styleNum);
         }
-    },
+    }
 }
 </script>
 

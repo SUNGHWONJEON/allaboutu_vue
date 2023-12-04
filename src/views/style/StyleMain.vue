@@ -2,8 +2,9 @@
     <div class="main-wrapper">
         <div class="main-container">
             <div class="contents-boxes">
-                <StyleHome /><!-- 스타일 컴포넌트 -->
-                <StyleRecommand /><!-- 스타일 추천 컴포넌트 -->
+                <StyleHome @show-component="showComponent" /><!-- 스타일 컴포넌트 -->
+                <StyleRecommand v-if="isComponentVisible" /><!-- 스타일 추천 컴포넌트 -->
+                
             </div>
         </div>
     </div>
@@ -18,6 +19,16 @@ export default ({
     ,components:{
         StyleHome,
         StyleRecommand
+    },
+    data(){
+        return {
+            isComponentVisible: false
+        }
+    },
+    methods: {
+        showComponent() {
+            this.isComponentVisible = true;
+        }
     }
 })
 </script>

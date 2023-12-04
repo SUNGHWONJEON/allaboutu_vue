@@ -31,7 +31,7 @@
           <td>{{ row.noticeNum }}</td>     
           <!-- <td><a v-on:click="fnNoticeView(`${row.noticeNum}`)" :style="{ color: row.noticeTitle ? 'blue' : '', textDecoration: 'none' }" class="hover-effect">{{ row.noticeTitle }}</a></td> -->
           <td>
-          <router-link :to="{ path: '/notice/detail', query: { noticeNum: row.noticeNum } }" :style="{ color: row.noticeTitle ? 'blue' : '', textDecoration: 'none' }" class="hover-effect">{{ row.noticeTitle }}</router-link>
+          <router-link :to="{ path: '/notices/details/' + noticeNum }" :style="{ color: row.noticeTitle ? 'blue' : '', textDecoration: 'none' }" class="hover-effect">{{ row.noticeTitle }}</router-link>
         </td>
           <td>{{ row.userNum }}</td>
           <td>{{ row.writeDate }}</td>
@@ -39,7 +39,7 @@
          </tr>
       </tbody>
     </table>
-      <router-link to="/notice/write">
+      <router-link to="/notices/write">
          <button class="register" @click="fnPage()">글쓰기</button>
       </router-link>
 

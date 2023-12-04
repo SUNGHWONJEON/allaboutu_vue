@@ -17,7 +17,6 @@
             <input type="date" id="startDate" v-model="startDate" />
             <label for="endDate">이벤트 종료일:</label>
             <input type="date" id="endDate" v-model="endDate" />
-            
             <div v-if="showCalendar1"></div>
           </div>
         </form>  
@@ -111,7 +110,7 @@ export default {
                 alert('게시글 등록 성공');
 
                 // 게시글 등록 후 게시판 목록으로 이동
-                this.$router.push('/notice');
+                this.$router.push('/notices');
             })
             .catch(err => {
                 alert('게시글 등록 실패');
