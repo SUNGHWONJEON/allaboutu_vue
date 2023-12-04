@@ -10,7 +10,7 @@ module.exports = defineConfig({
 
   lintOnSave:false,
   outputDir: "../allaboutu_springboot/src/main/resources/static",
-  /*
+  
   devServer: {
     proxy: {
       '/': {
@@ -20,6 +20,6 @@ module.exports = defineConfig({
     }
 
   }
-  */
+  
   
 })
