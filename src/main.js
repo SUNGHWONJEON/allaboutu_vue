@@ -17,6 +17,9 @@ const vuetify = createVuetify({
 //전역변수 지정
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$serverURL = '//loacalhost:2222'
+app.config.globalProperties.$styleType = {
+    num: -1
+}
 
 //앱에 라우터 사용 지정
 app

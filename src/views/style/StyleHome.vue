@@ -50,7 +50,8 @@
 <script>
 import { ref } from 'vue';
 
-export default ({
+export default {
+    emits: ['show-component'],
     setup() {
         const imageFile = ref(null);
         const imageUrl = ref(null);
@@ -73,9 +74,13 @@ export default ({
     methods: {
         fnTypeClick(){
             
+
+
+            this.$styleType.num = 1;
+            this.$emit('show-component');
         }
     }
-})
+}
 </script>
 
 <style>

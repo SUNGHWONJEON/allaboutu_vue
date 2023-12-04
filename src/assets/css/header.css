@@ -378,7 +378,7 @@
 
 @media screen and (max-width: 980px) {
 	.header {
-		display: none;
+		/*display: none;*/
 	}
 
 	.mobile_header {
