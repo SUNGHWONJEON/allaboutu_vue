@@ -87,12 +87,12 @@ const routes = [
         component: RecommendMain
     },
     {
-        path: '/notice/write',
+        path: '/notices/write',
         name: 'NoticeWrite',
         component: NoticeWrite
     },
     {
-        path: '/notice/detail',
+        path: '/notices/detail/:noticeNum',
         name: 'NoticeDetail',
         component: NoticeDetail
     },
