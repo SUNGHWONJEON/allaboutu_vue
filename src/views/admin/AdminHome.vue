@@ -16,7 +16,7 @@
                 <!-- <th class="th">로그인제한여부</th> -->
                 <th class="th">완료</th>
             </tr>
-            <tr v-for="(report, index) in reports" :key="index">
+            <tr v-for="(report, index) in reports" :key="index" @click="showDetail(report)">
                 <td>{{ report.boardNum }}</td>
                 <td>{{ report.reportNum }}</td>
                 <td>{{ report.reportCause }}</td>
@@ -29,6 +29,13 @@
                 </td> -->
                 <td><input type="submit" value="완료"></td>
             </tr>
+            <div v-if="selectedReport" class="popup">
+                <div class="popup-content">
+                    <span class="close" @click="closePopup">&times;</span>
+                    <h2>{{ selectedReport.boardTitle }}</h2>
+                    <p>{{ selectedReport.boardContent }}</p>
+                </div>
+            </div>
         </table>
     </div>
     <div class="page-btn">
@@ -46,13 +53,32 @@ export default {
     data() {
         return {
             reports: [],
+            selectedReport: null,
         }
     },
     methods: {
+        showDetail(report){
+            this.selectedReport = {
+                boardTitle: report.boardTitle,
+                boardContent: report.boardContent,
+            };
+            this.$axios.get(`reports/${report.boardNum}`)
+            .then((res) => {
+                this.reports = res.data.content;
+            })
+            .catch((err) => {
+                    console.log(err);
+            });
+            document.body.style.overflow = "hidden";
+        },
+        closePopup(){
+            this.selectedReport = null;
+            document.body.style.overflow = "";
+        },
         confirmDelete(report) {
             console.log(report.boardNum);
             if (confirm("게시글을 신고 처리 하시겠습니까?")) {
-                this.$axios.patch(`/reports/${report.boardNum}`)
+                this.$axios.put(`/reports/${report.boardNum}`)
                 .then(() => {
                     console.log("게시글 삭제 성공");
                     this.reports = this.reports.filter(r => r.boardNum !== report.boardNum);
@@ -119,6 +145,33 @@ th, td {
 }
 .page-btn {
     margin-top: 20px;
+}
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fefefe;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 </style>
