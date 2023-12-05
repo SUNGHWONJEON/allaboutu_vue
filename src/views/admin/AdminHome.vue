@@ -12,30 +12,23 @@
                 <th class="th">신고번호</th>
                 <th class="th">사유</th>
                 <th class="th">상세설명</th>
-                <th class="th">게시글삭제</th>
-                <!-- <th class="th">로그인제한여부</th> -->
+                <th class="th">게시글삭제일</th>
+                <th class="th">게시글삭제</th> 
                 <th class="th">완료</th>
             </tr>
-            <tr v-for="(report, index) in reports" :key="index" @click="showDetail(report)">
+            <tr v-for="(report, index) in reports" :key="index">
+                <!--  @click="showDetail(report)" -->
                 <td>{{ report.boardNum }}</td>
                 <td>{{ report.reportNum }}</td>
                 <td>{{ report.reportCause }}</td>
                 <td>{{ report.reportReason }}</td>
+                <td>{{ report.deleteDate }}</td>
                 <td>
                     <button class="delete-btn" @click="confirmDelete(report)">삭제</button>
+
                 </td>
-                <!-- <td>
-                    <v-if></v-if>
-                </td> -->
                 <td><input type="submit" value="완료"></td>
             </tr>
-            <div v-if="selectedReport" class="popup">
-                <div class="popup-content">
-                    <span class="close" @click="closePopup">&times;</span>
-                    <h2>{{ selectedReport.boardTitle }}</h2>
-                    <p>{{ selectedReport.boardContent }}</p>
-                </div>
-            </div>
         </table>
     </div>
     <div class="page-btn">
@@ -52,43 +45,27 @@ export default {
     name: 'reports',
     data() {
         return {
+            
             reports: [],
             selectedReport: null,
         }
     },
     methods: {
-        showDetail(report){
-            this.selectedReport = {
-                boardTitle: report.boardTitle,
-                boardContent: report.boardContent,
-            };
-            this.$axios.get(`reports/${report.boardNum}`)
-            .then((res) => {
-                this.reports = res.data.content;
-            })
-            .catch((err) => {
-                    console.log(err);
-            });
-            document.body.style.overflow = "hidden";
-        },
-        closePopup(){
-            this.selectedReport = null;
-            document.body.style.overflow = "";
-        },
         confirmDelete(report) {
             console.log(report.boardNum);
             if (confirm("게시글을 신고 처리 하시겠습니까?")) {
-                this.$axios.put(`/reports/${report.boardNum}`)
+                this.$axios.patch(`/reports/${report.boardNum}`)
                 .then(() => {
-                    console.log("게시글 삭제 성공");
-                    this.reports = this.reports.filter(r => r.boardNum !== report.boardNum);
+                    console.log("게시글 신고 처리 성공");
+                    //this.reports = this.reports.filter(r => r.boardNum !== report.boardNum);
+                    this.reports = this.reports.filter(r => r.deleteDate != null);
                 })
                 .catch((err) => {
                     console.log(err);
                 });
             } else {
                 console.log("삭제 취소");
-            }
+            } 
         },
     },
     mounted() {

@@ -145,7 +145,8 @@ export default {
             this.$axios.delete('/boards/' + boardNum)
                 .then(res => {
                     alert('게시글이 삭제되었습니다.');
-                    this.$router.push('/board');
+                    // this.$router.push('/board');
+                    this.$router.go(0);
                 })
                 .catch(err => {
                     alert('게시글 삭제에 실패하였습니다.');

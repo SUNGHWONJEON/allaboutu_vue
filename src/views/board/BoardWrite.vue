@@ -18,14 +18,16 @@
                         </div>
                         <div class="board-input-section">
                             <div class="board-write-title">
-                                <input type="text" v-model="title" maxlength="40" placeholder="제목을 입력하세요." required>
+                                <input type="text" v-model="boardTitle" maxlength="40" placeholder="제목을 입력하세요." required>
                                 <div>{{ titleCount }} / {{ titleMaxLength }}</div>
                             </div>
                             <div class="board-write-content">
-                                <textarea v-model="content" @input="checkMaxLength" placeholder="내용을 입력하세요." required></textarea>
+                                <textarea v-model="boardContent" @input="checkMaxLength" placeholder="내용을 입력하세요." required></textarea>
                                 <div>{{ contentCount }} / {{ contentMaxLength }}</div>
-                                <img src="@/assets/images/community/camera.png" class="attach-btn" @click="openImageUploader">
-                                <input type="file" @change="handleImageUpload" accept="image/*" ref="imageInput" multiple style="display: none;">
+                                <input type="file" id="upload-image" @change="getFileName($event.target.files)" accept="image/*" ref="imageInput" multiple hidden>
+                                <label for="upload-image">
+                                    <img src="@/assets/images/community/camera.png" class="attach-btn">
+                                </label>
                             </div>
                             <div class="image-gallery" v-if="selectedImages.length > 0">
                                 <div v-for="(image, index) in selectedImages" :key="index" class="selected-image">
@@ -45,7 +47,6 @@
                             </div>
                             <div class="register-btn-area">
                                 <button @click="writeBoard()">등록하기</button>
-                                <button @click="testSendImages()">이미지 업로드</button>
                             </div>
                         </div>
                     </div>
@@ -78,13 +79,14 @@
                 maxHashtags: 5, // 최대 해시태그 등록 개수
                 hashtagWarning: '', // 해시태그 중복 경고메시지
                 categoryWarning: '', // 카테고리 선택 경고메시지
-                title: '',
+                boardTitle: '',
                 titleMaxLength: 40, // 제목 최대 글자수
-                content: '',
+                boardContent: '',
                 contentMaxLength: 500, // 내용 최대 글자수
                 selectedImages: [],
                 attachments: [],
                 tempUserNum: 2, // 임시로 로그인한 유저 번호
+                instance: null,
             }
         },
         created() {
@@ -96,10 +98,10 @@
         },
         computed: {
             titleCount() {
-                return this.title.length;
+                return this.boardTitle.length;
             },
             contentCount() {
-                return this.content.length;
+                return this.boardContent.length;
             },
         },
         methods: {
@@ -130,15 +132,21 @@
                     return;
                 }
 
-                const sendData = {
-                    userNum: this.tempUserNum,
-                    categoryNum: this.selectedCategory,
-                    boardTitle: this.title,
-                    boardContent: this.content,
-                    hashtags: this.registeredHashtags,
-                };
+                const sendData = new FormData();
+                sendData.append('userNum', this.tempUserNum);
+                sendData.append('categoryNum', this.selectedCategory);
+                sendData.append('boardTitle', this.boardTitle);
+                sendData.append('boardContent', this.boardContent);
+                sendData.append('hashtags', this.changeHashtagObject(this.registeredHashtags));
+                for (let i = 0; i < this.attachments.length; i++) {
+                    sendData.append('attachments', this.attachments[i]);
+                }
 
-                this.$axios.post('/boards', sendData)
+                this.$axios.post('/boards', sendData, {
+                    header: {
+                        'Context-Type': 'multipart/form-data',
+                    }
+                })
                 .then(res => {
                     alert('게시글 등록 성공');
 
@@ -150,66 +158,22 @@
                     console.log(err);
                 })
             },
-            testSendImages() {
-                // 이미지를 서버로 전송하는 메소드
-                const formData = new FormData();
-
-                console.log(this.selectedImages);
-
-                // 첨부된 모든 이미지를 FormData에 추가
-                this.selectedImages.forEach(image => {
-                    const file = this.dataURItoBlob(image); // 이미지 URL을 Blob으로 변환
-                    formData.append('attachments', file, `image_${index}.png`); // 파일 이름 지정
-                    console.log(file);
-                });
-
-                console.log(formData);
-
-                // 서버로 이미지 업로드 요청
-                this.$axios.post('/boards/images', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-                .then(res => {
-                    alert('이미지 업로드 성공');
-                    console.log(res.data);
-                })
-                .catch(err => {
-                    alert('이미지 업로드 실패');
-                    console.log(err);
-                });
-            },
-            dataURItoBlob(dataURI) {
-                const byteString = atob(dataURI.split(',')[1]);
-                const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-                const ab = new ArrayBuffer(byteString.length);
-                const ia = new Uint8Array(ab);
-                for (let i = 0; i < byteString.length; i++) {
-                    ia[i] = byteString.charCodeAt(i);
-                }
-                return new Blob([ab], { type: mimeString });
-            },
             checkMaxLength() {
-                if(this.content.length > this.contentMaxLength) {
-                    this.content = this.content.slice(0, this.contentMaxLength);
+                if(this.boardContent.length > this.contentMaxLength) {
+                    this.boardContent = this.boardContent.slice(0, this.contentMaxLength);
                 }
             },
-            openImageUploader() {
-                // 파일 input 엘리먼트를 클릭하여 파일 업로드 창을 염
-                this.$refs.imageInput.click();
-            },
-            handleImageUpload(event) {
-                const files = event.target.files;
-
+            getFileName(files) {
                 if(files) {
                     for(let i = 0; i < files.length; i++) {
                         const file = files[i];
                         if (file.type.startsWith('image/')) {
                             // 이미지 파일이면 URL.createObjectURL을 사용하여 이미지를 표시
                             this.selectedImages.push(URL.createObjectURL(file));
+                            this.attachments.push(file);
                         }
                     }
+                    console.log(this.attachments);
                 }
             },
             removeSelectedImage(index) {
@@ -220,8 +184,8 @@
                 this.$axios.get('/boards/' + boardNum)
                     .then(res => {
                         console.log(res.data);
-                        this.title = res.data.boardTitle;
-                        this.content = res.data.boardContent;
+                        this.boardTitle = res.data.boardTitle;
+                        this.boardContent = res.data.boardContent;
                         this.selectedCategory = res.data.categoryNum;
                         this.registeredHashtags = res.data.hashtags.length > 0 ? res.data.hashtags : [];
                     })
