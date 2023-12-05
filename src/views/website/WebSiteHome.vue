@@ -34,25 +34,24 @@
 #logo3{color: pink;font: italic 4em "Fira Sans", serif;}
 </style>
 <script>
-// import * as module from '@'
-export default ({
+export default {
     name: 'PageMyPage',
-        data(){
-        return{
+    data() {
+        return {
             infor: {
-                userName: '홍길동'
-                ,userEmail: 'useremail@test.org'
-                ,userPhone: '010-1234-5678'
+                userName: '홍길동',
+                userEmail: 'useremail@test.org',
+                userPhone: '010-1234-5678'
             }
-        }
+        };
     },
-    method: {
-        updatePwd(){
-            
+    methods: {
+        updatePwd() {
+            // 비밀번호 수정 로직 작성
         },
-        openPhone(){
-
+        openPhone() {
+            // 전화번호 변경 로직 작성
         }
     }
-})
+};
 </script>
