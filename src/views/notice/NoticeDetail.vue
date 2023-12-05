@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     getNoticeDetails(noticeNum) {
-        this.$axios.get('/notices/' + noticeNum)
+        this.$axios.get('/notices' + noticeNum)
         .then(res => {
           this.noticeTitle = res.data.noticeTitle;
           this.noticeContents = res.data.noticeContents;

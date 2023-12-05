@@ -20,7 +20,7 @@
         <tr>
             <td align = "right" > </td>
             <td colspan = "2">
-                <input type = "submit" value="글 등록" />
+                <input type = "submit" value="글 수정 페이지로 이동 " />
                 <input type= button value="목록보기" />
             </td>
         </tr>
@@ -30,7 +30,13 @@
 
 <script>
 export default {
-   name:'NoticeWrite',
+   name:'NoticeUpdate',
+   data() {
+    return {
+      noticeTitle: '',
+      noticeContents: '',
+    };
+  },
    
 }
 </script>
