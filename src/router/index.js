@@ -16,11 +16,13 @@ import PersonalMain from '@/views/personal/PersonalMain.vue'
 import AdminMain from '@/views/admin/AdminMain.vue'
 import BoardMain from '@/views/board/BoardMain.vue'
 import NoticeMain from '@/views/notice/NoticeMain.vue'
-import RecommendMain from '@/views/recommend/RecommendMain.vue'
+import WebSiteMain from '@/views/website/WebSiteMain.vue'
 import NoticeWrite from '@/views/notice/NoticeWrite.vue';
 import NoticeDetail from '@/views/notice/NoticeDetail.vue';
 import BoardWrite from '@/views/board/BoardWrite.vue'
 import PageMyPage from '@/views/member/PageMyPage.vue';
+import AdminUser from '@/views/admin/AdminUser.vue'
+import AdminHome from '@/views/admin/AdminHome.vue'
 
 //각 페이지 컴포넌트에 대한 url path 지정
 //routes는 고정변수임
@@ -67,6 +69,16 @@ const routes = [
         component: AdminMain
     },
     {
+        path: '/reports',
+        name: 'AdminUser',
+        component: AdminUser
+    },
+    {
+        path: '/admins',
+        name: 'AdminHome',
+        component: AdminHome
+    },
+    {
         path: '/board',
         name: 'BoardMain',
         component: BoardMain
@@ -82,9 +94,9 @@ const routes = [
         component: NoticeMain
     },
     {
-        path: '/recommend',
-        name: 'RecommendMain',
-        component: RecommendMain
+        path: '/website',
+        name: 'WebSiteMain',
+        component: WebSiteMain
     },
     {
         path: '/notices/write',
