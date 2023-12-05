@@ -46,9 +46,19 @@
       
     </div>
 
-    
+     <!-- 페이징 버튼 추가 -->
+      <div>
+        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+        <span>페이지 {{ currentPage }}</span>
+        <button @click="nextPage" :disabled="currentPage === totalPages">다음</button>
+      </div>
 
-  </div>
+      <router-link to="/notices/write">
+        <button class="register" @click="fnPage()">글쓰기</button>
+      </router-link>
+    </div>
+
+
 </template>
 
 <script>
