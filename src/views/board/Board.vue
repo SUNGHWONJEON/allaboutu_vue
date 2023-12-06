@@ -3,9 +3,22 @@
         <div class="board-profile-section">
             <ProfileHeader :userId="board.userId" :userName="board.userName" />
             <div class="board-context-menu">
-                <div @click="editBoard(board.boardNum)">수정</div>
-                <div @click="deleteBoard(board.boardNum)">삭제</div>
-                <div @click="reportBoard(board.boardNum)">신고</div>
+                <button @click="editBoard(board.boardNum)">수정</button>
+                <button @click="deleteBoard(board.boardNum)">삭제</button>
+                <button @click="reportBoard(board.boardNum)">신고</button>
+            </div>
+            <div class="report-popup" v-if="showReportPopup">
+                <h2>게시글 신고</h2>
+                <select v-model="reportCause">
+                    <option value="" disabled selected>신고 사유</option>
+                    <option value="욕설">욕설</option>
+                    <option value="광고">광고</option>
+                    <option value="음란성">음란성</option>
+                    <option value="기타">기타</option>
+                </select>
+                <textarea v-model="reportReason" placeholder="신고 내용을 작성해주세요."></textarea>
+                <button @click="submitReport">제출</button>
+                <button @click="showReportPopup = false">취소</button>
             </div>
         </div>
         <div class="board-title-section">
@@ -16,11 +29,17 @@
                 {{ board.boardTitle }}
             </div>
             <div class="board-date">
-                {{ board.createDate }}
+                {{ formattedCreateDate }}
             </div>
         </div>
         <div class="board-content">
-            {{ board.boardContent }}
+            <span>{{ board.boardContent }}</span>
+            <div class="board-content-images">
+                <img v-for="image in board.attachments"
+                    :key="image.id.attachNum"
+                    :src="'/boards/image/' + image.renameFileName"
+                    :alt="image.originalFileName" />
+            </div>
         </div>
         <div class="board-hashtag-list" v-if="hashtags.length > 0">
             <span v-for="hashtag in hashtags" :key="hashtag">
@@ -50,7 +69,9 @@
         </div>
         
         <!-- 댓글 목록 -->
-        <Comment :comments="this.comments" />
+        <Comment :comments="this.comments"
+            @reply-posted="loadComments"
+            @comment-deleted="loadComments" />
     </div>
 </template>
 
@@ -58,6 +79,8 @@
 import ProfileHeader from './ProfileHeader.vue';
 import CommentList from './CommentList.vue';
 import Comment from './Comment.vue';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 export default {
     name: 'Board',
@@ -78,6 +101,12 @@ export default {
             hashtags: this.board.hashtags,
             isLiked: false,
             tempUserNum: 2, // 임시로 로그인한 유저 번호
+            showReportPopup: false,
+            reportBoardNum: '', // 신고 당한 게시글 번호
+            reportCause: '', // 신고 사유
+            reportReason: '', // 신고 내용
+            reportUserNum: '', // 신고한 유저 번호
+            newCommentText: '', // 댓글 내용
         }
     },
     created() {
@@ -89,6 +118,11 @@ export default {
             .catch(err => {
                 console.log(err);
             });
+    },
+    computed: {
+        formattedCreateDate() {
+            return moment(this.board.createDate).fromNow();
+        }
     },
     methods: {
         postComment() {
@@ -104,10 +138,22 @@ export default {
             this.$axios.post('/boards/' + newComment.boardNum + '/comments', newComment)
                 .then(res => {
                     alert('댓글이 등록되었습니다.')
-                    // 댓글 목록 갱신(미구현)
+                    
+                    // 댓글 목록 업데이트
+                    this.loadComments();
                 })
                 .catch(err => {
                     alert('댓글 등록에 실패하였습니다.')
+                    console.log(err);
+                });
+        },
+        loadComments() {
+            // 댓글 목록 업데이트
+            this.$axios.get('/boards/' + this.board.boardNum + '/comments')
+                .then(res => {
+                    this.comments = res.data;
+                })
+                .catch(err => {
                     console.log(err);
                 });
         },
@@ -154,10 +200,27 @@ export default {
                 });
         },
         reportBoard(boardNum) {
+            this.showReportPopup = true;
+            this.reportBoardNum = boardNum;
+            this.reportUserNum = this.tempUserNum;
+        },
+        submitReport() {
+            const reportData = {
+                boardNum: this.reportBoardNum,
+                reportUserNum: this.reportUserNum,
+                reportCause: this.reportCause,
+                reportReason: this.reportReason,
+            };
+            
             // 게시글 신고
-            this.$axios.post('/boards/' + boardNum + '/reports')
+            this.$axios.post('/boards/' + this.reportBoardNum + '/reports', reportData)
                 .then(res => {
                     alert('게시글이 신고되었습니다.');
+                    this.showReportPopup = false;
+                    this.reportBoardNum = '';
+                    this.reportCause = '';
+                    this.reportReason = '';
+                    this.reportUserNum = '';
                 })
                 .catch(err => {
                     alert('게시글 신고에 실패하였습니다.');
@@ -168,7 +231,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+* {
+    line-height: 1.2;
+    text-align: left;
+}
+
 .board-container {
     border: 1px solid blud;
     width: 600px;
@@ -201,7 +269,17 @@ export default {
 
 .board-content {
     border: 1px solid blue;
-    height: 150px;
+    min-height: 100px;
+    padding: 10px;
+}
+.board-content span {
+    margin: 10px;
+}
+.board-content-images img {
+    max-width: 300px;
+    max-height: 250px;
+    margin: 10px;
+    border-radius: 10px;
 }
 
 .info-section {
@@ -277,5 +355,17 @@ export default {
 
 .board-profile-section {
     display: flex;
+}
+
+.board-context-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.board-context-menu button {
+    border: 1px solid gray;
+    width: 50px;
+    height: 30px;
+    text-align: center;
 }
 </style>

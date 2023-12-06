@@ -41,12 +41,15 @@
                                     <button @click="addHashtag">추가</button>
                                     <div v-if="hashtagWarning" class="warning-hashtag">{{ hashtagWarning }}</div>
                                 </div>
-                                <div class="registered-hastags" v-if="registeredHashtags.length > 0">
-                                    <div v-for="hashtag in registeredHashtags" :key="hashtag">{{ '#' + hashtag }}</div>
+                                <div class="registered-hashtags" v-if="registeredHashtags.length > 0">
+                                    <div v-for="hashtag in registeredHashtags" :key="hashtag">
+                                        <span @click="cancelRegistration(hashtag)">{{ '#' + hashtag }}</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="register-btn-area">
                                 <button @click="writeBoard()">등록하기</button>
+                                <button @click="testWriteBoard()">테스트</button>
                             </div>
                         </div>
                     </div>
@@ -79,14 +82,13 @@
                 maxHashtags: 5, // 최대 해시태그 등록 개수
                 hashtagWarning: '', // 해시태그 중복 경고메시지
                 categoryWarning: '', // 카테고리 선택 경고메시지
-                boardTitle: '',
+                boardTitle: '', // 게시글 제목
+                boardContent: '', // 게시글 내용
                 titleMaxLength: 40, // 제목 최대 글자수
-                boardContent: '',
                 contentMaxLength: 500, // 내용 최대 글자수
                 selectedImages: [],
                 attachments: [],
                 tempUserNum: 2, // 임시로 로그인한 유저 번호
-                instance: null,
             }
         },
         created() {
@@ -133,11 +135,14 @@
                 }
 
                 const sendData = new FormData();
-                sendData.append('userNum', this.tempUserNum);
-                sendData.append('categoryNum', this.selectedCategory);
-                sendData.append('boardTitle', this.boardTitle);
-                sendData.append('boardContent', this.boardContent);
-                sendData.append('hashtags', this.changeHashtagObject(this.registeredHashtags));
+                const board = {
+                    userNum: this.tempUserNum,
+                    categoryNum: this.selectedCategory,
+                    boardTitle: this.boardTitle,
+                    boardContent: this.boardContent,
+                };
+                sendData.append('board', new Blob([JSON.stringify(board)], { type: 'application/json' }));
+                sendData.append('hashtags', new Blob([JSON.stringify(this.registeredHashtags)], { type: 'application/json' }));
                 for (let i = 0; i < this.attachments.length; i++) {
                     sendData.append('attachments', this.attachments[i]);
                 }
@@ -157,6 +162,28 @@
                     alert('게시글 등록 실패');
                     console.log(err);
                 })
+            },
+            testWriteBoard() {
+                const sendData = new FormData();
+                for (let i = 0; i < this.attachments.length; i++) {
+                    sendData.append('attachments', this.attachments[i]);
+                }
+
+                this.$axios.post('/boards', sendData, {
+                    header: {
+                        'Context-Type': 'multipart/form-data',
+                    }
+                })
+                .then(res => {
+                    alert('게시글 등록 성공');
+
+                    // 게시글 등록 후 게시판 목록으로 이동
+                    this.$router.push('/board');
+                })
+                .catch(err => {
+                    alert('게시글 등록 실패');
+                    console.log(err);
+                });
             },
             checkMaxLength() {
                 if(this.boardContent.length > this.contentMaxLength) {
@@ -196,15 +223,23 @@
             changeHashtagObject(registeredHashtags) {
                 const hashtags = [];
                 registeredHashtags.forEach(hashtag => {
-                    hashtags.push({ hashtag: hashtag });
+                    hashtags.push({
+                        hashtagNum: null,
+                        hashtag: hashtag
+                    });
                 });
                 return hashtags;
+            },
+            cancelRegistration(hashtag) {
+                // 클릭한 해시태그를 목록에서 제거
+                const index = this.registeredHashtags.indexOf(hashtag);
+                this.registeredHashtags.splice(index, 1);
             }
         },
     }
     </script>
 
-    <style>
+    <style scoped>
     .category-section {
         border: 1px solid blue;
         width: 600px;
@@ -259,7 +294,7 @@
     }
     .board-write-title div {
         position: absolute;
-        top: 157px;
+        top: 151px;
         right: 340px;
         color: gray;
     }
@@ -278,7 +313,7 @@
     }
     .board-write-content div {
         position: absolute;
-        top: 325px;
+        top: 315px;
         right: 340px;
         color: gray;
     }
@@ -324,7 +359,7 @@
         font-size: 12px;
     }
 
-    .registered-hastags {
+    .registered-hashtags {
         border: 1px solid blue;
         width: 550px;
         height: 50px;
@@ -332,13 +367,14 @@
         flex-direction: row;
         margin-top: 10px;
     }
-    .registered-hastags div {
+    .registered-hashtags div {
         border: 1px solid blue;
         border-radius: 5px;
         width: auto;
-        height: 20px;
+        height: 30px;
         margin: 10px;
         padding: 5px;
+        cursor: pointer;
     }
     .register-btn-area {
         width: 100%;
@@ -354,7 +390,7 @@
 
     .attach-btn {
         position: absolute;
-        top: 310px;
+        top: 300px;
         left: 40px;
         width: 40px;
         color: gray;

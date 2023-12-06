@@ -16,7 +16,7 @@
                 <input class="pic-img-box" type="file" id="pic_up"
                     @change="handleFileUpload" accept="image/*"
                 >
-                <img class="my-img-box" 
+                <img class="my-img-box" ref="img_box"
                     :src="imageUrl" v-if="imageUrl" 
                     :style="{ display: imageUrl ? 'block' : 'none' }"
                 >
@@ -87,11 +87,36 @@ export default {
         };
     },
     methods: {
+        callPythonApi(url_1, url_2, url_3) {
+            const apiUrl = 'http://localhost:4444/api';
+            const requestBody = { 
+                dir_path: url_1,
+                org_path: url_2,
+                image_path: url_3
+            };
+
+            this.$axios.post(apiUrl, requestBody, {
+                headers:{'Content-Type': 'application/json'}
+            })
+            .then(res => {
+                console.log('callPythonApi res.data : ' + res.data);
+                console.log('callPythonApi res.data str : ' +  JSON.stringify(res.data));
+                console.log('url_1 + res.data.change_path : ' +  (url_1 + res.data.change_path));
+                const url = '../../allaboutu_springboot/src/main/resources/style_upload/';
+                this.imageUrl = url + res.data.change_path;
+
+
+            })
+            .catch(error => {
+                //에러 처리
+                console.error(error);
+            });
+        },
         fnTypeClick(){
             
             this.$styleType.num = 1;
             this.$emit('show-component');
-
+            
             const formData = new FormData();
             console.log('this.imageFile.value : ' + this.imageFile.value);
             formData.append('file', this.imageFile);
@@ -104,8 +129,10 @@ export default {
             })
             .then(res => {
                 alert('사진 등록 성공');
-                console.log('res : ' + res);
+                console.log('res.data : ' + res.data);
                 console.log('res stringify : ' + JSON.stringify(res))
+                this.callPythonApi(res.data[0], res.data[1], res.data[2]);
+                
             })
             .catch(err => {
                 alert('게시글 등록 실패');

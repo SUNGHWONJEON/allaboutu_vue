@@ -7,14 +7,14 @@
                 <tr>
                     <th>순위</th>
                     <th>제목</th>
-                    <th>작성자</th>
+                    <th>작성일</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="board in boards" :key="board.rank">
-                    <td>{{ board.rank }}</td>
-                    <td>{{ board.title }}</td>
-                    <td>{{ board.writer }}</td>
+                    <td width="50">{{ board.rank }}</td>
+                    <td width="300">{{ board.title }}</td>
+                    <td width="100">{{ formattedCreateDate(board.createDate) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -22,6 +22,9 @@
 </template>
 
 <script>
+import moment from 'moment';
+import 'moment/locale/ko';
+
 export default {
     name: 'BoardRank',
     components: {
@@ -57,24 +60,26 @@ export default {
             ]
         }
     },
+    methods: {
+        formattedCreateDate(createDate) {
+            return moment(createDate).fromNow();
+        }
+    },
 }
 </script>
 
 <style>
 .rank-container {
-    border: 1px solid blue;
-    position: absolute;
+    position: fixed;
     top: 150px;
-    left: 800px;
-    width: 200px;
+    left: calc(50% + 250px);
     border-radius: 5px;
-
     display: flex;
     flex-direction: column;
 }
 
 .rank-table {
-    border: 1px solid blue;
+    border: 1px solid gray;
 }
 
 .rank-items {

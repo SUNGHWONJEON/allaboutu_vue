@@ -16,7 +16,7 @@
                 <th class="th">게시글삭제</th> 
                 <th class="th">완료</th>
             </tr>
-            <tr v-for="(report, index) in reports" :key="index">
+            <tr v-for="(report, index) in reports" :key="index" @click="detailReportBoard(report)">
                 <!--  @click="showDetail(report)" -->
                 <td>{{ report.boardNum }}</td>
                 <td>{{ report.reportNum }}</td>
@@ -25,7 +25,6 @@
                 <td>{{ report.deleteDate }}</td>
                 <td>
                     <button class="delete-btn" @click="confirmDelete(report)">삭제</button>
-
                 </td>
                 <td><input type="submit" value="완료"></td>
             </tr>
@@ -45,12 +44,31 @@ export default {
     name: 'reports',
     data() {
         return {
-            
             reports: [],
             selectedReport: null,
         }
     },
     methods: {
+        // detailReportBoard(report){
+        //     console.log("detailBoardNum", report.boardNum);
+        //     this.$axios.get(`/reports/${report.boardNum}`)
+            
+        //     .then((res) => {
+        //         console.log(this.reports = res.data.content);
+        //     })
+        //     .catch((err) => {
+        //             console.log(err);
+        //         });
+        // },
+        async detailReportBoard(report){
+            console.log("detailBoardNum", report.boardNum);
+            try {
+                const response = await this.$axios.get(`/reports/${report.boardNum}`);
+                this.selectedReport = response.data;
+            }catch (err){
+                console.error(err);
+            }
+        },
         confirmDelete(report) {
             console.log(report.boardNum);
             if (confirm("게시글을 신고 처리 하시겠습니까?")) {

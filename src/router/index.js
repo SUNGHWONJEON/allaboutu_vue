@@ -23,6 +23,7 @@ import BoardWrite from '@/views/board/BoardWrite.vue'
 import PageMyPage from '@/views/member/PageMyPage.vue';
 import AdminUser from '@/views/admin/AdminUser.vue'
 import AdminHome from '@/views/admin/AdminHome.vue'
+import NoticeUpdate from '@/views/notice/NoticeUpdate.vue';
 
 //각 페이지 컴포넌트에 대한 url path 지정
 //routes는 고정변수임
@@ -107,6 +108,11 @@ const routes = [
         path: '/notices/detail/:noticeNum',
         name: 'NoticeDetail',
         component: NoticeDetail
+    },
+    {
+        path: '/notice/update',
+        name: 'NoticeUpdate',
+        component: NoticeUpdate
     },
     {
         path: '/boards/write/:boardNum',
