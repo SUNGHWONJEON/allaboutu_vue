@@ -5,12 +5,11 @@
             
             <!-- 댓글 작성일시 -->
             <div class="comment-date">
-                1시간 전
+                {{ formattedCreateDate(comment.createDate) }}
             </div>
             <div class="comment-context-menu">
-                <div @click="editComment(comment)">수정</div>
-                <div @click="deleteComment(comment.commentNum)">삭제</div>
-                <div @click="reportComment(comment.commentNum)">신고</div>
+                <button @click="editComment(comment)">수정</button>
+                <button @click="deleteComment(comment.commentNum)">삭제</button>
             </div>
         </div>
         <div class="comment-content" v-if="isEditing !== comment.commentNum">
@@ -42,6 +41,8 @@
 
 <script>
 import ProfileHeader from './ProfileHeader.vue';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 export default {
     name: 'BoardComment',
@@ -60,6 +61,7 @@ export default {
             tempUserNum: 2, // 임시로 로그인한 유저 번호
         }
     },
+    emits: ['reply-posted', 'comment-deleted'],
     methods: {
         toggleReplyForm(commentNum) {
             // 버튼 클릭 시 답글 폼 토글
@@ -79,6 +81,9 @@ export default {
             this.$axios.post('/boards/' + newReply.boardNum + '/comments', newReply)
                 .then(res => {
                     alert('답글이 등록되었습니다.')
+
+                    // 부모 컴포넌트로 답글이 등록되었음을 알림
+                    this.$emit('reply-posted');
                 })
                 .catch(err => {
                     alert('답글 등록에 실패하였습니다.')
@@ -124,30 +129,22 @@ export default {
             // 댓글 삭제
             this.$axios.delete('/boards/' + this.comments[0].boardNum + '/comments/' + commentNum)
                 .then(res => {
-                    alert('댓글이 삭제되었습니다.')
+                    alert('댓글이 삭제되었습니다.');
+                    this.$emit('comment-deleted');
                 })
                 .catch(err => {
                     alert('댓글 삭제에 실패하였습니다.')
                     console.log(err);
                 });
         },
-        reportComment(commentNum) {
-            // 댓글 신고
-            this.$axios.post('/boards/' + this.comments[0].boardNum + '/comments/' + commentNum + '/reports')
-                .then(res => {
-                    alert('댓글이 신고되었습니다.')
-                })
-                .catch(err => {
-                    alert('댓글 신고에 실패하였습니다.')
-                    console.log(err);
-                });
-        
-        }
+        formattedCreateDate(createDate) {
+            return moment(createDate).fromNow();
+        },
     }
 }
 </script>
 
-<style>
+<style scoped>
 .comment-profile-section {
     width: 600px;
     display: flex;
@@ -180,9 +177,8 @@ export default {
 }
 
 .reply-textarea {
-    /* display: none; */
     border: 1px solid blue;
-    width: 595px;
+    width: 100%;
     height: 100px;
 }
 
@@ -207,5 +203,23 @@ export default {
     width: 100px;
     height: 40px;
     margin: 5px;
+}
+
+.comment-context-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.comment-context-menu button {
+    border: 1px solid gray;
+    width: 50px;
+    height: 30px;
+}
+
+.comment-edit-textarea {
+    border: 1px solid blue;
+    width: 100%;
+    min-height: 100px;
 }
 </style>

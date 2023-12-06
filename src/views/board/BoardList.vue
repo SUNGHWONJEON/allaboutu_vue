@@ -16,27 +16,42 @@ export default {
         return {
             boardList: [],
             totalPages: 0,
-            currentPages: 1,
+            currentPage: 0,
+            scrollLock: false,
         }
     },
     methods: {
-        loadPage(pageNumber) {
+        loadPage() {
+            if (this.currentPage > this.totalPages || this.scrollLock) {
+                return;
+            }
+
+            this.scrollLock = true;
             this.$axios.get('/boards', {
                 params: {
-                    page: pageNumber
+                    page: this.currentPage,
+                    size: 4,
                 }
             })
             .then(res => {
-                this.boardList = res.data.content
-                this.totalPages = res.data.totalPages
-                this.currentPages = pageNumber
+                this.boardList = [...this.boardList, ...res.data.content];
+                this.totalPages = res.data.totalPages;
+                this.currentPage++;
+                this.scrollLock = false;
             }).catch(err => {
                 console.error('Error fetching data:', err)
             });
         }
     },
     mounted() {
-        this.loadPage(1)
+        window.addEventListener('scroll', () => {
+            const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+            if (scrollTop + clientHeight >= scrollHeight - 100) {
+                this.loadPage();
+            }
+        });
+        
+        this.loadPage();
     },
 }
 </script>
@@ -47,7 +62,6 @@ export default {
     width: 640px;
     height: 100%;
     margin: auto;
-    overflow: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
