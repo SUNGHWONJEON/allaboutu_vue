@@ -4,7 +4,7 @@
         <BoardList />
     </div>
     
-    <div class="absolute-elements">
+    <div class="fixed-elements">
         <!-- 주간 인기글 Best5 -->
         <BoardRank />
         
@@ -39,24 +39,21 @@ export default {
 .community-container {
     border: 1px solid red;
     width: 640px;
-    height: 85vh;
 }
 
 .board-write-btn {
-    position: absolute;
+    position: fixed;
     top: 90vh;
-    left: 800px;
+    left: calc(50% + 250px);
     width: 50px;
     height: 50px;
-    border: 1px solid blue;
 }
 
 .chatbot-btn {
-    position: absolute;
+    position: fixed;
     top: 90vh;
-    left: 880px;
+    left: calc(50% + 330px);
     width: 50px;
     height: 50px;
-    border: 1px solid blue;
 }
 </style>
