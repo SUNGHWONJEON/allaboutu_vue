@@ -1,23 +1,19 @@
 <template>
-     <div class="board-contents">
-                       
-                 <div>
-      <select v-model="search_key">
+  <div class="board-contents">
+    <div>
+      <select id="noticeop" v-model="search_key">
         <option value="title">제목</option>
       </select>
       &nbsp;
-      <input type="text" v-model="search_value" @keyup.enter="fnPage()">
+      <input id="notices" type="text" v-model="search_value" @keyup.enter="fnSearch">
       &nbsp;
-      <button class="searchtitle" @click="fnPage()">검색</button>
+      <button class="searchtitle" @click="fnSearch">검색</button>
       &nbsp;
-      <button class="allList" @click="fnAll()">전체목록</button>
+      <button class="allList" @click="fnAll">전체목록</button>
     </div>
-    <div class="board-list">
-      <div class="common-buttons">
-       
-      </div>
+
     <table class="w3-table-all">
-        <thead>
+      <thead>
         <tr>
           <th>공지번호</th>
           <th>제목</th>
@@ -25,109 +21,119 @@
           <th>등록일시</th>
           <th>첨부파일</th>
         </tr>
-        </thead>
-       <tr v-for="(row, noticeNum) in list" :key="noticeNum">   
+      </thead>
+      <tr v-for="row in list" :key="row.noticeNum">
         <td>
-          {{row.important ? '필독 ' : ''}}
+          {{ row.important ? '필독 ' : '' }}
           {{ row.noticeNum }}
-          </td>
+        </td>
         <td>
-            <router-link :to="{ path: '/notices/details/' + noticeNum }" :style="{ color: row.noticeTitle ? 'blue' : '', textDecoration: 'none' }" class="hover-effect">{{ row.noticeTitle }}</router-link>
+          <router-link :to="{ path: '/notice/detail/' + row.noticeNum }" :style="{ color: row.noticeTitle ? 'blue' : '', textDecoration: 'none' }" class="hover-effect">{{ row.noticeTitle }}</router-link>
         </td>
         <td>{{ row.userNum === 1 ? '관리자' : row.userNum }}</td>
         <td>{{ row.writeDate }}</td>
         <td>{{ row.originalFileName ? '*' : '' }}</td>
-    </tr>
+      </tr>
     </table>
-      <router-link to="/notices/write">
-         <button class="register" @click="fnPage()">글쓰기</button>
-      </router-link>
 
-      
+    <!-- 페이징 버튼 추가 -->
+    <div>
+      <button class="page-btn" @click="prevPage" :disabled="currentPage === 1">이전</button>
+      <button class="page-btn" @click="movePage(pageNumber)" v-for="pageNumber in pageNumbers" :key="pageNumber"> {{ pageNumber }}</button>
+      <button class="page-btn" @click="nextPage" :disabled="currentPage === totalPages">다음</button>
     </div>
 
-     <!-- 페이징 버튼 추가 -->
-      <div>
-        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
-        <span>페이지 {{ currentPage }}</span>
-        <button @click="nextPage" :disabled="currentPage === totalPages">다음</button>
-      </div>
-
-      <router-link to="/notices/write">
-        <button class="register" @click="fnPage()">글쓰기</button>
-      </router-link>
-    </div>
-
-
+    <router-link to="/notice/write">
+      <button class="register">글쓰기</button>
+    </router-link>
+  </div>
 </template>
 
 <script>
-  export default {
-    data() { //변수생성
-      return {
-        list: [],
-        search_key: '',
-        search_value: '',
-      }
-     
-    },
-    mounted() {
-      // this.fnGetList();
-      this.$axios.get('/notices')
-      .then((res) => {
-        this.list = res.data
-        console.log(list)
-      }).catch((err)=> {
-        console.log(err);
-      })
-     
-    },
-   
-    fnView(idx) {
-      this.requestBody.idx = idx
-      this.$router.push({
-        path: './details',
-        query: this.requestBody
-      })
-    },
-    fnWrite() {
-      this.$router.push({
-        path: './write'
-      })
-    },
-    fnPage(n) {
-      
-      // 검색을 위한 로직 구현
-      // 예: 검색어와 관련된 서버 요청을 보내거나, 로컬 데이터에서 필터링을 수행
+export default {
+  data() {
+    return {
+      list: [],
+      search_key: '',
+      search_value: '',
+      currentPage: 1,
+      totalPages: 1,
+    };
+  },
+  mounted() {
+    this.fnPage();
+  },
+  computed: {
+    pageNumbers(){
+      return Array.from({length: this.totalPages}, (_, index) => index +1);
+    }
+  },
 
-      // 아래는 가상의 검색 로직 (서버로의 요청을 시뮬레이션)
-      this.$axios.get('/notices', { params: { search_key: this.search_key, search_value: this.search_value } })
+  methods: {
+    fnPage() {
+      this.$axios
+        .get('/notice', {
+          params: {
+            search_key: this.search_key,
+            search_value: this.search_value,
+            page: this.currentPage - 1,
+          },
+        })
         .then((res) => {
-          this.list = res.data;
+          this.list = res.data.content;
+          this.totalPages = res.data.totalPages;
         })
         .catch((err) => {
           console.error(err);
         });
-   
+    },
+    fnSearch() {
+      this.currentPage = 1; // 검색 시에는 첫 페이지로 설정
+      this.fnPage();
     },
     fnAll() {
-      this.search_key = null
-      this.search_value = null
-      this.fnGetList()
+      this.search_key = '';
+      this.search_value = '';
+      this.fnPage();
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fnPage();
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fnPage();
+      }
+    },
+    movePage(pageNumber){
+      this.currentPage = pageNumber;
+      this.fnPage();
     }
-    }
-  
+  },
+};
 </script>
 
+
 <style>
-      
+    #notices, #noticeop{
+      border:1px solid #ad578c;
+    }
+
+    .page-btn{
+
+      margin: 5px;
+      color:#ad578c;
+    }
     h3 {
       
         text-align: center;
         margin-top: 350px;
     }
     .w3-table-all {
-          width: 1000px;
+          width: 950px;
           border-collapse: collapse;
           margin: 70px;
           margin-top: 30px;

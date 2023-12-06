@@ -1,47 +1,120 @@
 <template>
-    <h3>NOTICE</h3>
-    <p>공지사항 글 수정</p>
-    <form name = "articleForm" method = "post" enctype="multipart/form-data">
-    <table border = "0" align = "center">
-        <tr>
-            <td align = "right"> 글제목 </td>
-        </tr> 
-        <tr>
-            <td align = "right" valign = "top"><br>글내용</td>
-            <td colspan= 2 ><input type = "text" size = "67" maxlength="500"
-            name="title"/></td>
+<div class="main-wrapper">
+  <div class="main-container">
+    <div >
+      <div >
+        <p  >공지사항 수정</p>
+        <hr>
+
+      </div>
+
+      <div class="inserttitles">
+        <input id="noticetitle" type="text" size="60" v-model="noticeTitle"  placeholder="제목을 입력해주세요." />
+      </div>
         
-        </tr>
-        <tr>
-            <td align = "right">이미지파일 첨부 : </td>
-            <td> <input type="file" name = "imageFileName" onchange = "readURL(this);" /></td>
-            
-        </tr>
-        <tr>
-            <td align = "right" > </td>
-            <td colspan = "2">
-                <input type = "submit" value="글 수정 페이지로 이동 " />
-                <input type= button value="목록보기" />
-            </td>
-        </tr>
-        
+      <div class="insertcontents">
+        <textarea id="noticecontents" cols="100" rows="30" v-model="noticeContents" c style="resize: none;"></textarea>
+      </div>
+      
+      <hr>
+      <h4 class="attach">첨부파일</h4>
+      <form @submit.prevent="uploadFile" >
+        <input type="file" name="fileInput" id="fileInput" @change="handleFileChange" />
+        <button type="submit">Upload</button>
+      </form>
+
+      <hr>
+      <div id="writebutton">
+        <input type="button" class="regi" @click="writeNotice" value="수정">
+        <input type="button" class="can" @click="goBack" value="취소">
+      </div>
+    </div>
+  </div>
+</div>
+
     
-</template>
+ </template> 
+
 
 <script>
+import axios from 'axios';
+
 export default {
-   name:'NoticeUpdate',
-   data() {
+  name: 'NoticeUpdate',
+  data() {
     return {
       noticeTitle: '',
       noticeContents: '',
+      writeDate: '',
+      readCount: '',
+      noticeNum: '',
     };
   },
-  
+  mounted() {
    
-}
+  },
+  
+  
+
+};
+
 </script>
 
-<style>
+<style scoped>
+    
+    p{
+    margin:100px 0 20px;
+    font-size:40px;
+   }
+
+   h5{
+    font-size:22px;
+   }
+
+   .inserttitle{
+     margin: 20px 0px;
+   }
      
+    #radioform{
+
+      margin-bottom: 10px;
+     
+    }
+
+    .notice-contents1{
+      margin-left: 30px;
+    }
+
+    .regi{
+      
+    background-color: #ad578c; 
+    color: #fff; 
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    margin-right : 70px;
+     
+  }
+
+   .can{
+    background-color: #ad578c; 
+    color: #fff; 
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+  }   
+
+  #noticetitle{
+    border: 1px solid #ad578c;
+    margin-bottom: 10px;
+  }
+
+  #noticecontents{
+    border: 1px solid #ad578c;
+  }
+  
+  #writebutton{
+    margin-top: 20px;
+  }
+
 </style>

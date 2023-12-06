@@ -4,7 +4,7 @@
   <div class="main-container">
     <div >
       <div >
-        <p >공지사항 작성</p>
+        <p  >공지사항 작성</p>
         <hr>
           <h5 >공지유형</h5>
         <form id="radioform" @submit.prevent="writeNotice">
@@ -22,23 +22,23 @@
         </form>  
       </div>
 
-      <div class="inserttitle">
-        <input type="text" size="60" v-model="noticeTitle" class="w3-input w3-border" placeholder="제목을 입력해주세요." />
+      <div class="inserttitles">
+        <input id="noticetitle" type="text" size="60" v-model="noticeTitle"  placeholder="제목을 입력해주세요." />
       </div>
         
-      <div >
-        <textarea  cols="100" rows="30" v-model="noticeContents" class="w3-input w3-border" style="resize: none;"></textarea>
+      <div class="insertcontents">
+        <textarea id="noticecontents" cols="100" rows="30" v-model="noticeContents" c style="resize: none;"></textarea>
       </div>
       
       <hr>
       <h4 class="attach">첨부파일</h4>
-      <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="fileInput" id="fileInput" accept=".jpg, .jpeg, .png" required>
-        <button type="submit"></button>
+      <form @submit.prevent="uploadFile" >
+        <input type="file" name="fileInput" id="fileInput" @change="handleFileChange" />
+        <button type="submit">Upload</button>
       </form>
 
       <hr>
-      <div>
+      <div id="writebutton">
         <input type="button" class="regi" @click="writeNotice" value="등록">
         <input type="button" class="can" @click="goBack" value="취소">
       </div>
@@ -73,7 +73,7 @@ export default {
       noticeType: "option1",
       deadlineDate: "",
       importance: "N",
-      originalFileName: "",
+      originalFilename: null,
 
     };
   },
@@ -96,27 +96,29 @@ export default {
         }    
       }
 
-      this.$axios.post('/notices', {
+      this.$axios.post('/notice', {
                 
                 userNum: 1,// 임시 writer id
                 noticeTitle: this.noticeTitle,
                 noticeContents: this.noticeContents,
                 importance: this.importance,
                 //originalFileName: this.originalFileName,
-                 cartegory: this.noticeType == 'option1' ? '공지사항' : '이벤트',
+                cartegory: this.noticeType == 'option1' ? '공지사항' : '이벤트',
                 
             })
             .then(res => {
                 alert('게시글 등록 성공');
 
                 // 게시글 등록 후 게시판 목록으로 이동
-                this.$router.push('/notices');
+                this.$router.push('/notice/');
             })
             .catch(err => {
                 alert('게시글 등록 실패');
                 console.log(err);
             })
      },
+
+     
 
       goBack() {
       this.$router.go(-1); // Vue Router를 사용하는 경우
@@ -138,16 +140,21 @@ export default {
       }
     },
 
-  },
-    
+     
+},
 }
-
 </script>
 
 <style scoped>
-    
-   p{
-    margin-top:150px;
+
+
+    p{
+    margin:100px 0 20px;
+    font-size:40px;
+   }
+
+   h5{
+    font-size:22px;
    }
 
    .inserttitle{
@@ -155,7 +162,6 @@ export default {
    }
      
     #radioform{
-      
 
       margin-bottom: 10px;
      
@@ -177,16 +183,25 @@ export default {
   }
 
    .can{
-      
     background-color: #ad578c; 
     color: #fff; 
     border: none;
     padding: 15px 20px;
     cursor: pointer;
-     
-  }
-    
+  }   
 
+  #noticetitle{
+    border: 1px solid #ad578c;
+    margin-bottom: 10px;
+  }
+
+  #noticecontents{
+    border: 1px solid #ad578c;
+  }
+  
+  #writebutton{
+    margin-top: 20px;
+  }
     
          
 </style>
