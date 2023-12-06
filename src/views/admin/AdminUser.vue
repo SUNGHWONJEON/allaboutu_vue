@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import { getModernWebpackImporter } from 'sass-loader/dist/utils';
 
 export default ({
     name: 'memberList',
