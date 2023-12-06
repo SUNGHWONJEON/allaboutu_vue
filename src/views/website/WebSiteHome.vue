@@ -7,13 +7,15 @@
                  </div>
                  <div class="col">
                      <div id="logo3" class="contents-boxes">마이페이지</div>
+                     <h5 class='mt-4'>아이디</h5>
+                     <div>{{ infor.userId }}</div>
                      <h5 class="mt-4">email</h5>
                      <div>{{ infor.userEmail }}</div>
                      <h5 class="mt-4">이름</h5>
                      <div>{{ infor.userName }}</div>
                      <h5 class="mt-4">전화번호</h5>
                      <div>{{ infor.userPhone }}</div>
-                     <input type="button" @click="openPhone" class="btn btn-primary btn-default btn-sm mt3" value="전화번호 변경하기">
+                     <input type="button" @click="openPhone" class="btn btn-primary btn-default btn-sm mt-3" value="전화번호 변경하기">
                      <h5 class="mt-4">비밀번호 변경</h5>
                      <div>현재 비밀번호를 입력해주세요.</div>
                      <input type="password" class="form-control joinInput mt-2" id="originPwd" placeholder="현재 비밀번호를 입력해주세요.">
@@ -39,6 +41,7 @@ export default {
     data() {
         return {
             infor: {
+                userId: 'user01',
                 userName: '홍길동',
                 userEmail: 'useremail@test.org',
                 userPhone: '010-1234-5678'
