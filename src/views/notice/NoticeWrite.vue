@@ -1,5 +1,4 @@
 <template>
-    <PageHeader/>
 <div class="main-wrapper">
   <div class="main-container">
     <div >
@@ -14,9 +13,9 @@
             <input type="date" v-if="showCalendar" v-model="deadlineDate">
           <div class="eventn" v-if="showEventCalendar">
             <label for="startDate">이벤트 시작일:</label>
-            <input type="date" id="startDate" v-model="startDate" />
+            <!-- <input type="date" id="startDate" v-model="startDate" /> -->
             <label for="endDate">이벤트 종료일:</label>
-            <input type="date" id="endDate" v-model="endDate" />
+            <!-- <input type="date" id="endDate" v-model="endDate" /> -->
             <div v-if="showCalendar1"></div>
           </div>
         </form>  
@@ -33,7 +32,7 @@
       <hr>
       <h4 class="attach">첨부파일</h4>
       <form @submit.prevent="uploadFile" >
-        <input type="file" name="fileInput" id="fileInput" @change="handleFileChange" />
+        <input type="file" name="fileInput" id="fileInput" @change="getFileName($event.target.files)" />
         <button type="submit">Upload</button>
       </form>
 
@@ -47,17 +46,17 @@
 </div>
   
      
-  <PageFooter />
+  
 </template>
         
 <script>
 
-import PageHeader from "../common/PageHeader.vue";
+
 
 export default {
   name: 'NoticeWrite',
   components: {
-    PageHeader,
+    
     
   },
   
@@ -67,45 +66,56 @@ export default {
       ruserNum: 1,
       noticeTitle: "",
       noticeContents: "",
-      cartegory: "",
+      cartegory: "notice",
       showCalendar: false,
       showEventCalendar: false,
       noticeType: "option1",
       deadlineDate: "",
       importance: "N",
       originalFilename: null,
+      file: "",
 
     };
   },
   methods: {
+    getFileName(files){
+      if(files) { 
+            this.file = files[0];
+      }
+    },
+
     toggleCalendar() {
       this.showCalendar = !this.showCalendar;
       this.importance = (this.showCalendar ? 'Y' : 'N')
     },
     writeNotice() {
-            if (!this.noticeType) {
-                setTimeout(() => {
-                   
-                }, 3000);
-          
-            if (confirm("공지 글을 등록하시겠습니까?")) {
-
-                console.log("공지 글 등록 ");
-            } else {
-            console.log("공지 등록 취소");
-        }    
+    
+      if (confirm("공지 글을 등록하시겠습니까?")) {
+          console.log("공지 글 등록 ");
+      } else {
+          console.log("공지 등록 취소");
       }
+      const sendData = new FormData();
+      const notice = {
+          userNum: this.ruserNum,
+          noticeTitle: this.noticeTitle,
+          noticeContents: this.noticeContents,
+          importance: this.importance,
+          importanceDate: this.importanceDate,
+          eventStart: this.eventStart,
+          eventEnd: this.eventEnd,
+          cartegory: this.cartegory,
+      };
+      console.log(JSON.stringify(notice))
+      sendData.append('notice', new Blob([JSON.stringify(notice)], { type: 'application/json' }));
+      sendData.append('file', this.file);
+      
 
-      this.$axios.post('/notice', {
-                
-                userNum: 1,// 임시 writer id
-                noticeTitle: this.noticeTitle,
-                noticeContents: this.noticeContents,
-                importance: this.importance,
-                //originalFileName: this.originalFileName,
-                cartegory: this.noticeType == 'option1' ? '공지사항' : '이벤트',
-                
-            })
+      this.$axios.post('/notice',sendData,{
+        header: {
+          'Context-Type': 'multipart/form-data',
+        }
+      })
             .then(res => {
                 alert('게시글 등록 성공');
 
@@ -117,8 +127,6 @@ export default {
                 console.log(err);
             })
      },
-
-     
 
       goBack() {
       this.$router.go(-1); // Vue Router를 사용하는 경우

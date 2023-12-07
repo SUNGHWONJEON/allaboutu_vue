@@ -19,7 +19,7 @@
         <div class="style-exp-box">
             <div class="style-title">{{ this.$styleType.num === this.styleNum ? 
                 this.$styleType.style : this.styles[this.styleNum - 1].title }}</div>
-            <button></button>
+            <button class="reco-btn" @click="onLinkCody">추천코디 보러가기</button>
             <div class="style-exp-con">
                 <StyleSub ref="style_sub"/>
             </div>
@@ -137,6 +137,10 @@ export default {
             
             this.styles[style.id-1].active = 'active';
             this.$refs.style_sub.changeStyle(this.styleNum);
+        },
+        onLinkCody(){
+            console.log('this.$styleType.num : ' + this.$styleType.num);
+            this.$router.push('/cody');
         }
     }
 }

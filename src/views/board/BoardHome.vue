@@ -37,7 +37,7 @@ export default {
 
 <style>
 .community-container {
-    border: 1px solid red;
+    border: 1px solid orange;
     width: 640px;
 }
 

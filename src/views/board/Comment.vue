@@ -1,7 +1,7 @@
 <template>
     <div class="comment-container" v-for="comment in comments" :key="comment.commentNum">
         <div class="comment-profile-section">
-            <ProfileHeader :userId="comment.userId" :userName="comment.userName" />
+            <ProfileHeader :writer="comment.writer" />
             
             <!-- 댓글 작성일시 -->
             <div class="comment-date">
@@ -16,10 +16,15 @@
             {{ comment.content }}
         </div>
         <div v-else class="comment-edit-area">
-            <textarea v-model="comment.content" class="comment-edit-textarea"></textarea>
+            <textarea
+                v-model="comment.content"
+                class="comment-edit-textarea"
+                @input="autoResize($event.target)"
+                :ref="'comment-edit-textarea-' + comment.commentNum"
+            ></textarea>
             <div class="comment-edit-btns">
-                <button class="comment-edit-btn" @click="saveComment(comment)">수정</button>
-                <button class="comment-edit-btn" @click="cancelEdit(comment)">취소</button>
+                <button @click="saveComment(comment)">수정</button>
+                <button @click="cancelEdit(comment)">취소</button>
             </div>
         </div>
         
@@ -27,12 +32,18 @@
             <div class="reply-btns">
                 <button class="write-toggle-btn" @click="toggleReplyForm(comment.commentNum)">
                     <span v-if="showReplyForm === comment.commentNum">답글 취소</span>
-                    <span v-else>답글 쓰기</span>
+                    <span v-else>답글 달기</span>
                 </button>
                 <button v-show="showReplyForm === comment.commentNum" class="submit-reply-btn" @click="postReply(comment.commentNum)">답글 등록</button>
             </div>
             <div class="reply-form" v-show="showReplyForm === comment.commentNum">
-                <textarea class="reply-textarea" v-model="replyText"></textarea>
+                <textarea
+                    class="reply-textarea"
+                    v-model="replyText"
+                    @input="autoResize($event.target)"
+                    :ref="'reply-textarea-' + comment.commentNum"
+                    placeholder="답글을 입력하세요."
+                ></textarea>
             </div>
             
         </div>
@@ -65,6 +76,7 @@ export default {
     methods: {
         toggleReplyForm(commentNum) {
             // 버튼 클릭 시 답글 폼 토글
+            this.$refs['reply-textarea-' + commentNum][0].style.height = 'initial';
             this.showReplyForm = this.showReplyForm === commentNum ? null : commentNum;
             this.replyText = ''; // 토글할 때마다 텍스트 초기화
         },
@@ -103,6 +115,10 @@ export default {
             // 수정 중인 댓글 정보 저장
             this.isEditing = comment.commentNum;
             this.originalCommentContent = comment.content;
+            this.$nextTick(() => {
+                const textarea = this.$refs['comment-edit-textarea-' + comment.commentNum];
+                this.autoResize(textarea[0]);
+            });
         },
         saveComment(comment) {
             // 수정한 댓글 내용을 DB에 등록하는 로직
@@ -140,86 +156,113 @@ export default {
         formattedCreateDate(createDate) {
             return moment(createDate).fromNow();
         },
+        autoResize(textarea) {
+            // const textarea = event.target;
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        },
     }
 }
 </script>
 
 <style scoped>
-.comment-profile-section {
-    width: 600px;
-    display: flex;
+textarea {
+    resize: none;
+    overflow-y: hidden;
+}
 
+.comment-container {
+    border: 1px solid gray;
+    border-radius: 15px;
+    width: 590px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.comment-profile-section {
+    width: 589px;
+    display: flex;
+    padding: 5px;
+    border-bottom: 1px solid gray;
 }
 
 .comment-date {
-    border: 1px solid blue;
     width: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .comment-content {
-    border: 1px solid blue;
-    width: 600px;
-    height: 40px;
+    width: 590px;
+    padding: 10px;
+    word-break: break-all;
+}
+.comment-edit-area {
+    border-bottom: 1px solid gray;
+    background-color: mistyrose;
+    width: 588px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+.comment-edit-textarea {
+    border: 1px solid gray;
+    background-color: white;
+    padding: 10px;
+    width: 100%;
 }
 
 .reply-section {
-    border: 1px solid blue;
     width: 600px;
     display: flex;
     flex-direction: column;
 }
 
-.write-toggle-btn {
-    border: 1px solid blue;
-    width: 100px;
-    height: 40px;
-    margin: 5px;
-}
-
-.reply-textarea {
-    border: 1px solid blue;
-    width: 100%;
-    height: 100px;
-}
-
 .reply-form {
-    border: 1px solid blue;
+    width: 590px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.reply-textarea {
+    border: 1px solid gray;
+    width: 98%;
+    margin-bottom: 10px;
 }
 
 .reply-btns {
     display: flex;
     flex-direction: row;
 }
-
-.submit-reply-btn {
-    border: 1px solid blue;
-    width: 100px;
-    height: 40px;
+.reply-btns button {
+    border: 1px solid gray;
     margin: 5px;
+    padding: 5px;
 }
 
-.comment-edit-btn {
-    border: 1px solid blue;
-    width: 100px;
-    height: 40px;
-    margin: 5px;
+.comment-edit-btns button {
+    border: 1px solid gray;
+    background-color: white;
+    margin: 10px 10px 10px 0px;
+    padding: 5px;
 }
 
 .comment-context-menu {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-right: 10px;
 }
 
 .comment-context-menu button {
     border: 1px solid gray;
-    width: 50px;
-    height: 30px;
+    margin: 5px;
+    padding: 5px;
 }
 
-.comment-edit-textarea {
-    border: 1px solid blue;
-    width: 100%;
-    min-height: 100px;
-}
 </style>

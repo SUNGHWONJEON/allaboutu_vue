@@ -75,37 +75,37 @@ export default {
                 path: './main'
             })
         },
-        loginok_member() {
-            if (this.user_id !== undefined) {
-                this.$axios.get(
-                    this.$serverUrl + '/members/' + this.user_id
-                ).then((res) => {
-                    console.log("loginok_member 확인 : " + res.data);
+        // loginok_member() {
+        //     if (this.user_id !== undefined) {
+        //         this.$axios.get(
+        //             this.$serverUrl + '/members/' + this.user_id
+        //         ).then((res) => {
+        //             console.log("loginok_member 확인 : " + res.data);
 
-                    this.requestBody = res.data;
-                    console.log('userId : ' + this.requestBody.userId);
+        //             this.requestBody = res.data;
+        //             console.log('userId : ' + this.requestBody.userId);
                     
-                    if (this.user_id == this.requestBody.userId) {
-                        sessionStorage.setItem('userId', this.requestBody.userId);
-                        sessionStorage.setItem('userName', this.requestBody.userName);
+        //             if (this.user_id == this.requestBody.userId) {
+        //                 sessionStorage.setItem('userId', this.requestBody.userId);
+        //                 sessionStorage.setItem('userName', this.requestBody.userName);
                         
-                        // 로그인이 성공했으므로, PageMain 이 출력되게 함
-                        this.changePage();
+        //                 // 로그인이 성공했으므로, PageMain 이 출력되게 함
+        //                 this.changePage();
                         
-                        // 로그인 성공 시 아이디 저장 체크 여부 확인 후 로컬 스토리지에 저장
-                        if (this.rememberMe) {
-                            localStorage.setItem('rememberedUserId', this.user_id);
-                        } else {
-                            localStorage.removeItem('rememberedUserId');
-                        }
-                    }
-                }).catch((err) => {
-                    console.log(err);
-                    alert('회원 정보가 없습니다. 확인하고 다시 로그인하세요.');
-                    this.$router.go(0); // 현재 페이지 유지함
-                });
-            }
-        },
+        //                 // 로그인 성공 시 아이디 저장 체크 여부 확인 후 로컬 스토리지에 저장
+        //                 if (this.rememberMe) {
+        //                     localStorage.setItem('rememberedUserId', this.user_id);
+        //                 } else {
+        //                     localStorage.removeItem('rememberedUserId');
+        //                 }
+        //             }
+        //         }).catch((err) => {
+        //             console.log(err);
+        //             alert('회원 정보가 없습니다. 확인하고 다시 로그인하세요.');
+        //             this.$router.go(0); // 현재 페이지 유지함
+        //         });
+        //     }
+        // },
         fnLogin(){
             //input 태그의 v-model 속성에 지정한 이름을 그대로 사용함
             //input 태그에 기록된 값을 의미함
@@ -264,6 +264,10 @@ export default {
     .id input,
     .pwd input {
         text-align: left;
+        border: 2px solid #000; 
+        border-radius: 4px; 
+        padding: 8px; 
+        box-sizing: border-box;
     }
     .id input::placeholder,
     .pwd input::placeholder {
