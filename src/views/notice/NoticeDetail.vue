@@ -9,10 +9,12 @@
       </div>
     <div id="notice-contents">
       <p>{{ noticeContents }}</p>
+      <img  v-if="renameFileName !== null" :src="'/notice/image/' + renameFileName">
     </div>
     
     <hr class="divider">
     <h4 class="attach">첨부파일</h4>
+      <span>{{renameFileName}}</span>
     <hr class="divider">
     
     <router-link to="/notice/update">
@@ -20,7 +22,6 @@
       </router-link>
 
     <div id="button-group">
-     
       <input type="button" class="del" @click="deleteNotice(noticeNum)" value="공지 글 삭제">
       <input type="button" class="can" @click="goBack" value="뒤로가기">
     </div>
@@ -39,6 +40,8 @@ export default {
       noticeContents: '',
       writeDate: '',
       readCount: '',
+      originalFileName: '',
+      renameFileName: '',
       noticeNum: '',
     };
   },
@@ -53,7 +56,9 @@ export default {
           this.noticeTitle = res.data.noticeTitle;
           this.noticeContents = res.data.noticeContents;
           this.writeDate = res.data.writeDate;
-          this.readCount = res.data.readCount;         
+          this.readCount = res.data.readCount;    
+          this.originalFileName = res.data.originalFileName;    
+          this.renameFileName = res.data.renameFileName;     
         })
         .catch(err => {
           alert('게시글 조회 실패');
@@ -73,12 +78,9 @@ export default {
           console.error(err);
         });
     }
+    },   
   },
 
-   
-  
-
-},
   
 
 };
@@ -103,6 +105,7 @@ export default {
     margin-bottom: 100px;
     text-align: center;
     font-size:25px;
+    overflow: hidden;
   }
 
   .redate{
@@ -137,4 +140,9 @@ export default {
     color:#ffff;
   }
 
+  #noticeimg{
+    width: 30%; /* 부모 요소에 대한 상대적인 가로 크기 설정 */
+    height: auto; /* 가로 크기에 따라 세로 크기를 자동으로 조절 */
+  }
+  
 </style>
