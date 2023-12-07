@@ -1,7 +1,7 @@
 <template>
     <div class="board-container">
-        <div class="board-profile-section">
-            <ProfileHeader :userId="board.userId" :userName="board.userName" />
+        <div class="board-profile-section border-bottom-2-s-gray">
+            <ProfileHeader :writer="board.writer" />
             <div class="board-context-menu">
                 <button @click="editBoard(board.boardNum)">수정</button>
                 <button @click="deleteBoard(board.boardNum)">삭제</button>
@@ -21,18 +21,18 @@
                 <button @click="showReportPopup = false">취소</button>
             </div>
         </div>
-        <div class="board-title-section">
-            <div class="board-category">
-                {{ board.category }}
+        <div class="board-title-section border-bottom-2-s-gray">
+            <div class="board-category div-flex-middle">
+                <span>{{ board.category }}</span>
             </div>
-            <div class="board-title">
+            <div class="board-title div-flex-middle">
                 {{ board.boardTitle }}
             </div>
-            <div class="board-date">
+            <div class="board-date div-flex-middle">
                 {{ formattedCreateDate }}
             </div>
         </div>
-        <div class="board-content">
+        <div class="board-content border-bottom-2-s-gray">
             <span>{{ board.boardContent }}</span>
             <div class="board-content-images">
                 <img v-for="image in board.attachments"
@@ -41,13 +41,13 @@
                     :alt="image.originalFileName" />
             </div>
         </div>
-        <div class="board-hashtag-list" v-if="hashtags.length > 0">
+        <div class="board-hashtag-list border-bottom-2-s-gray" v-if="hashtags.length > 0">
             <span v-for="hashtag in hashtags" :key="hashtag">
                 #{{ hashtag.hashtag }} 
             </span>
         </div>
         <!-- (댓글수, 좋아요수, 조회수) -->
-        <div class="info-section">
+        <div class="info-section border-bottom-2-s-gray">
             <div class="like-count">
                 <img v-if="isLiked" class="like-icon" src="@/assets/images/community/like_full.jpeg" @click="like">
                 <img v-else class="like-icon" src="@/assets/images/community/like_empty.jpeg" @click="like">
@@ -65,13 +65,15 @@
         <!-- 댓글 등록 영역 -->
         <div class="comment-write">
             <input type="text" class="comment-input" v-model="newCommentText" placeholder="댓글을 입력하세요." @keyup.enter="postComment" />
-            <input type="button" class="comment-submit-btn" value="등록" @click="postComment" />
+            <button class="comment-submit-btn" @click="postComment">등록</button>
         </div>
         
         <!-- 댓글 목록 -->
-        <Comment :comments="this.comments"
-            @reply-posted="loadComments"
-            @comment-deleted="loadComments" />
+        <div class="comment-list-section">
+            <Comment :comments="this.comments"
+                @reply-posted="loadComments"
+                @comment-deleted="loadComments" />
+        </div>
     </div>
 </template>
 
@@ -138,6 +140,7 @@ export default {
             this.$axios.post('/boards/' + newComment.boardNum + '/comments', newComment)
                 .then(res => {
                     alert('댓글이 등록되었습니다.')
+                    this.newCommentText = '';
                     
                     // 댓글 목록 업데이트
                     this.loadComments();
@@ -238,37 +241,56 @@ export default {
 }
 
 .board-container {
-    border: 1px solid blud;
+    border: 2px solid gray;
+    border-radius: 20px;
     width: 600px;
     margin: 10px;
 }
 
 .board-title-section {
-    border: 1px solid blue;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    height: 30px;
+    height: 50px;
+}
+
+.div-flex-middle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .board-category {
-    border: 1px solid violet;
     width: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.board-category span {
+    border: 1px solid gray;
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .board-title {
-    border: 1px solid violet;
     width: 75%;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .board-date {
-    border: 1px solid violet;
     width: 15%;
+    text-align: center;
 }
 
 .board-content {
-    border: 1px solid blue;
     min-height: 100px;
     padding: 10px;
 }
@@ -283,7 +305,6 @@ export default {
 }
 
 .info-section {
-    border: 1px solid blue;
     height: 40px;
     display: flex;
     flex-direction: row;
@@ -324,48 +345,65 @@ export default {
 }
 
 .board-hashtag-list {
-    border: 1px solid blue;
-    height: 30px;
+    height: 50px;
     display: flex;
     flex-direction: row;
+    align-items: center;
+}
+.board-hashtag-list span {
+    color: blue;
+    cursor: pointer;
+    margin: 10px;
 }
 
+
 .comment-write {
-    border: 1px solid blue;
     width: 600px;
     height: 60px;
 }
 .comment-input {
-    border: 1px solid blue;
+    border: 2px solid gray;
     border-radius: 10px;
-    width: 490px;
-    height: 30px;
+    width: 520px;
+    height: 40px;
     margin: 10px;
-    padding: 5px;
+    padding: 10px;
 }
 .comment-submit-btn {
-    border: 1px solid blue;
+    border: 2px solid gray;
     border-radius: 10px;
     width: 50px;
     height: 40px;
     margin: 10px;
     margin-left: 0;
-    padding: 5px;
+    text-align: center;
 }
 
 .board-profile-section {
     display: flex;
+    padding: 5px;
+}
+
+.border-bottom-2-s-gray {
+    border-bottom: 2px solid gray;
 }
 
 .board-context-menu {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-right: 10px;
 }
 .board-context-menu button {
     border: 1px solid gray;
     width: 50px;
     height: 30px;
     text-align: center;
+}
+.comment-list-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 </style>
