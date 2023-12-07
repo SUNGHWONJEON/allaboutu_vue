@@ -14,9 +14,8 @@
                 <th class="th">상세설명</th>
                 <th class="th">게시글삭제일</th>
                 <th class="th">게시글삭제</th> 
-                <th class="th">완료</th>
             </tr>
-            <tr v-for="(report, index) in reports" :key="index" @click="detailReportBoard(report)">
+            <tr v-for="(report, index) in displayedPosts" :key="index" @click="detailReportBoard(report)">
                 <!--  @click="showDetail(report)" -->
                 <td>{{ report.boardNum }}</td>
                 <td>{{ report.reportNum }}</td>
@@ -26,16 +25,15 @@
                 <td>
                     <button class="delete-btn" @click="confirmDelete(report)">삭제</button>
                 </td>
-                <td><input type="submit" value="완료"></td>
             </tr>
         </table>
     </div>
     <div class="page-btn">
-        <button>[맨처음]</button>&nbsp;
-        <button>[이전그룹]</button>&nbsp;
-        <button>1 2 3 4 5</button>&nbsp;
-        <button>[다음그룹]</button>&nbsp;
-        <button>[맨뒤]</button>&nbsp;
+        <button @click="prevPage" :disabled="currentPage === 1">[이전페이지]</button>
+        <template v-for="page in totalPages" :key="page">
+            <button @click="goToPage(page)" :class="{ 'active-page': currentPage === page }" class="page-number">{{ page }}</button>
+        </template>
+        <button @click="nextPage" :disabled="currentPage === totalPages">[다음페이지]</button>
     </div>
 </template>
 
@@ -46,7 +44,23 @@ export default {
         return {
             reports: [],
             selectedReport: null,
+            currentPage: 1, // 현재 페이지 번호
+            postsPerPage: 10, // 한 페이지에 보여줄 게시글의 수
         }
+    },
+    computed: {
+        displayedPosts(){
+            // 정렬 해주는 코드
+            const sortedBoards = this.reports.slice().sort((a, b) => b.reportNum - a.reportNum);
+
+            const startIndex = (this.currentPage - 1) * this.postsPerPage;
+            const endIndex = startIndex + this.postsPerPage;
+            return sortedBoards.slice(startIndex, endIndex);
+        },
+        totalPages() {
+            // 총 페이지 수 계산하는 computed 속성!
+            return Math.ceil(this.reports.length / this.postsPerPage);
+        },
     },
     methods: {
         // detailReportBoard(report){
@@ -60,19 +74,32 @@ export default {
         //             console.log(err);
         //         });
         // },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+            goToPage(page) {
+            this.currentPage = page;
+        },
         async detailReportBoard(report){
-            console.log("detailBoardNum", report.boardNum);
+            console.log("detailBoardNum", report.reportNum);
             try {
-                const response = await this.$axios.get(`/reports/${report.boardNum}`);
+                const response = await this.$axios.get(`/reports/${report.reportNum}`);
                 this.selectedReport = response.data;
             }catch (err){
                 console.error(err);
             }
         },
         confirmDelete(report) {
-            console.log(report.boardNum);
+            console.log(report.reportNum);
             if (confirm("게시글을 신고 처리 하시겠습니까?")) {
-                this.$axios.patch(`/reports/${report.boardNum}`)
+                this.$axios.patch(`/reports/${report.reportNum}`)
                 .then(() => {
                     console.log("게시글 신고 처리 성공");
                     //this.reports = this.reports.filter(r => r.boardNum !== report.boardNum);
@@ -89,7 +116,7 @@ export default {
     mounted() {
         this.$axios.get('/reports')
         .then((res) => {
-            this.reports = res.data.content;
+            this.reports = res.data;
         }).catch((err) => {
             console.log(err);
         });
@@ -167,6 +194,16 @@ th, td {
   right: 10px;
   font-size: 20px;
   cursor: pointer;
+}
+.page-btn {
+    margin-top: 20px;
+}
+.page-number {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+.active-page {
+  font-weight: bold;
 }
 
 </style>
