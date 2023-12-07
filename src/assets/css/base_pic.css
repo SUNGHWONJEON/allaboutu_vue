@@ -13,6 +13,7 @@
     align-items: center;
     justify-content: center;
     margin: 20px 0px;
+    flex-direction: column;
 }
 
 .pic-upload-box {
@@ -101,10 +102,6 @@
 
 .pic-inputbox {
     /*
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    */
     width: 230px;
     margin-right: 50px;
     display: flex;
@@ -113,6 +110,14 @@
     border: 1px solid #e2e2e2;
     padding: 15px 15px 5px 15px;
     margin-left: 15px;
+    */
+    width: 100%;
+    margin-right: 50px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e2e2e2;
+    padding: 15px 15px 5px 15px;
+    margin-top: 10px;
 }
 
 .pic-input-div {
@@ -125,6 +130,6 @@
 
 .pic-input-div input {
     margin-left: 10px;
-    width: 40px;
+    width: 100px;
     border: 1px solid #e2e2e2;
 }

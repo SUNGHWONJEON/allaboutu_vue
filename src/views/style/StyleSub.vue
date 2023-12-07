@@ -194,7 +194,7 @@ export default {
         }
     }
     ,mounted() {
-        console.log('myStyleNum : '+ this.myStyleNum);
+        
     }
     ,methods: {
         changeStyle(num){
