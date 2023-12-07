@@ -13,17 +13,19 @@ import StyleMain from '@/views/style/StyleMain.vue'
 import CodyMain from '@/views/cody/CodyMain.vue'
 import FaceMain from '@/views/face/FaceMain.vue'
 import PersonalMain from '@/views/personal/PersonalMain.vue'
-import AdminMain from '@/views/admin/AdminMain.vue'
 import BoardMain from '@/views/board/BoardMain.vue'
+import BoardWrite from '@/views/board/BoardWrite.vue'
+import BoardHome from '@/views/board/BoardHome.vue';
 import NoticeMain from '@/views/notice/NoticeMain.vue'
-import WebSiteMain from '@/views/website/WebSiteMain.vue'
 import NoticeWrite from '@/views/notice/NoticeWrite.vue';
 import NoticeDetail from '@/views/notice/NoticeDetail.vue';
-import BoardWrite from '@/views/board/BoardWrite.vue'
+import NoticeUpdate from '@/views/notice/NoticeUpdate.vue';
 import PageMyPage from '@/views/member/PageMyPage.vue';
+import AdminMain from '@/views/admin/AdminMain.vue'
 import AdminUser from '@/views/admin/AdminUser.vue'
 import AdminHome from '@/views/admin/AdminHome.vue'
-import NoticeUpdate from '@/views/notice/NoticeUpdate.vue';
+
+import WebSiteMain from '@/views/website/WebSiteMain.vue'
 
 //각 페이지 컴포넌트에 대한 url path 지정
 //routes는 고정변수임
@@ -82,12 +84,35 @@ const routes = [
     {
         path: '/board',
         name: 'BoardMain',
-        component: BoardMain
-    },
-    {
-        path: '/boards/write',
-        name: 'BoardWrite',
-        component: BoardWrite
+        component: BoardMain,
+        children: [
+            {
+                path: '',
+                name: 'BoardHome',
+                component: BoardHome
+            },
+            {
+                path: '/boards/write',
+                name: 'BoardWrite',
+                component: BoardWrite
+            },
+            {
+                path: '/boards/write/:boardNum',
+                name: 'BoardWriteForEdit',
+                component: BoardWrite,
+                beforeEnter: (to, from, next) => {
+                    // const userAccessPermission = checkUserPermission();
+                    const userAccessPermission = true;
+        
+                    if (userAccessPermission) {
+                        next();
+                    } else {
+                        alert('접근 권한이 없습니다.');
+                        next('/');
+                    }
+                },
+            },
+        ]
     },
     {
         path: '/notice',
@@ -100,12 +125,12 @@ const routes = [
         component: WebSiteMain
     },
     {
-        path: '/notices/write',
+        path: '/notice/write',
         name: 'NoticeWrite',
         component: NoticeWrite
     },
     {
-        path: '/notices/detail/:noticeNum',
+        path: '/notice/detail/:noticeNum',
         name: 'NoticeDetail',
         component: NoticeDetail
     },
@@ -113,22 +138,6 @@ const routes = [
         path: '/notice/update',
         name: 'NoticeUpdate',
         component: NoticeUpdate
-    },
-    {
-        path: '/boards/write/:boardNum',
-        name: 'BoardWriteForEdit',
-        component: BoardWrite,
-        beforeEnter: (to, from, next) => {
-            // const userAccessPermission = checkUserPermission();
-            const userAccessPermission = true;
-
-            if (userAccessPermission) {
-                next();
-            } else {
-                alert('접근 권한이 없습니다.');
-                next('/');
-            }
-        },
     },
     {
         path: '/member/mypage',
