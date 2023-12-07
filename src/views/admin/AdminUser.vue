@@ -14,30 +14,28 @@
                 <th class="th">핸드폰 번호</th>
                 <th class="th">가입일</th>
                 <th class="th">상태</th>
-                <th class="th">제한횟수</th>
             </tr>
-            <tr v-for="(member, index) in members" :key="index">
+            <tr v-for="(member, index) in displayedPosts" :key="index">
                 <td>{{ member.userNum }}</td>
                 <td>{{ member.userId }}</td>
                 <td>{{ member.userEmail }}</td>
                 <td>{{ member.userPhone }}</td>
                 <td>{{ member.enrolleDate }}</td>
-                <td>
+                 <td>
                     <input type="radio" v-model="member.account" :value="'Y'" :id="'statusYes' + index" @change="updateMemberAccount(member, 'Y')" />
                     <label>제한O</label>
                     <input type="radio" v-model="member.account" :value="'N'" :id="'statusNo' + index" @change="updateMemberAccount(member, 'N')"/>
                     <label>제한X</label>
                 </td>
-                <td>{{ member.reportCount }}</td>
             </tr>
         </table>
     </div>
     <div class="page-btn">
-        <button>[맨처음]</button>&nbsp;
-        <button>[이전그룹]</button>&nbsp;
-        <button>1 2 3 4 5</button>&nbsp;
-        <button>[다음그룹]</button>&nbsp;
-        <button>[맨뒤]</button>&nbsp;
+        <button @click="prevPage" :disabled="currentPage === 1">[이전페이지]</button>
+        <template v-for="page in totalPages" :key="page">
+            <button @click="goToPage(page)" :class="{ 'active-page': currentPage === page }" class="page-number">{{ page }}</button>
+        </template>
+        <button @click="nextPage" :disabled="currentPage === totalPages">[다음페이지]</button>
     </div>
 </template>
 
@@ -47,18 +45,47 @@ export default ({
     name: 'memberList',
     data() {
         return {
-            members: [],
-        }
+            members: [], // 회원 목록 데이터
+            currentPage: 1, // 현재 페이지 번호
+            postsPerPage: 10, // 한 페이지에 보여줄 게시글의 수
+        };
+    },
+    computed: {
+        displayedPosts(){
+            const sortedMembers = this.members.slice().sort((a, b) => b.userNum - a.userNum);
+
+            const startIndex = (this.currentPage - 1) * this.postsPerPage;
+            const endIndex = startIndex + this.postsPerPage;
+            return sortedMembers.slice(startIndex, endIndex);
+        },
+        totalPages() {
+            // 총 페이지 수 계산하는 computed 속성!
+            return Math.ceil(this.members.length / this.postsPerPage);
+        },
     },
     methods: {
-        updateMemberAccount(member){
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+            goToPage(page) {
+            this.currentPage = page;
+        },
+        updateMemberAccount(member, status){
             console.log(member.userNum);
             this.$axios.patch(`/member/${member.userNum}`, {
-                account: member.account,
+                account: status,
             })
             .then((res) => {
                 console.log("제한되거나 풀림", res.data);
-                this.members = res.date;
+                this.members = res.data;
                 const updateMember = this.members.map((m) => {
                     if (m.userNum === member.userNum){
 
@@ -81,8 +108,7 @@ export default ({
     mounted() {
         this.$axios.get('/admin')
             .then((res) => {
-                this.members = res.data.content;
-                this.totalPages = res.data.totalPages;
+                this.members = res.data;
             }).catch((err) => {
                 console.log(err);
             });
@@ -120,6 +146,13 @@ th, td {
 }
 .page-btn {
     margin-top: 20px;
+}
+.page-number {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+.active-page {
+  font-weight: bold;
 }
 
 </style>
