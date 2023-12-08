@@ -1,6 +1,6 @@
 <template>
     <div class="rank-container">
-        <div class="rank-title">주간 인기 Best5</div>
+        <div class="rank-title">인기 Best5</div>
         
         <table class="rank-table">
             <thead>
@@ -13,8 +13,12 @@
             <tbody>
                 <tr v-for="board in boards" :key="board.rank">
                     <td width="50">{{ board.rank }}</td>
-                    <td width="300">{{ board.title }}</td>
-                    <td width="100">{{ formattedCreateDate(board.createDate) }}</td>
+                    <td width="200">
+                        <router-link :to="'/board/' + board.boardNum">
+                            {{ board.boardTitle }}
+                        </router-link>
+                    </td>
+                    <td width="70">{{ formattedCreateDate(board.createDate) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -31,39 +35,25 @@ export default {
     },
     data() {
         return {
-            boards: [
-                {
-                    rank: 1,
-                    title: '제목1',
-                    writer: '작성자1'
-                },
-                {
-                    rank: 2,
-                    title: '제목2',
-                    writer: '작성자2'
-                },
-                {
-                    rank: 3,
-                    title: '제목3',
-                    writer: '작성자3'
-                },
-                {
-                    rank: 4,
-                    title: '제목4',
-                    writer: '작성자4'
-                },
-                {
-                    rank: 5,
-                    title: '제목5',
-                    writer: '작성자5'
-                }
-            ]
+            boards: [],
         }
+    },
+    created() {
+        this.getBoardRank();
     },
     methods: {
         formattedCreateDate(createDate) {
             return moment(createDate).fromNow();
-        }
+        },
+        getBoardRank() {
+            this.$axios.get('/boards/rank')
+                .then((response) => {
+                    this.boards = response.data.content;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
     },
 }
 </script>

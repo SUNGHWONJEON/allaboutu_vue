@@ -187,7 +187,7 @@ export default {
         },
         editBoard(boardNum) {
             // 수정할 게시글 정보를 BoardWrite.vue에 전달
-            this.$router.push('/boards/write/' + boardNum);
+            this.$router.push('/board/write/' + boardNum);
         },
         deleteBoard(boardNum) {
             // 게시글 삭제
