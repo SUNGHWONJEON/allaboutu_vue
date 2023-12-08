@@ -174,14 +174,14 @@ textarea {
 .comment-container {
     border: 1px solid gray;
     border-radius: 15px;
-    width: 590px;
+    width: 580px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-bottom: 10px;
 }
 .comment-profile-section {
-    width: 589px;
+    width: 579px;
     display: flex;
     padding: 5px;
     border-bottom: 1px solid gray;
