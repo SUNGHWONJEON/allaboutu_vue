@@ -56,7 +56,15 @@ export default ({
 
         },
         fnTypeClick(){
-
+            this.$axios.post('http://localhost:2222/personal/insert', insertData, {
+                    headers:{'Content-Type': 'application/json'}
+                })
+                .then(res => {
+                    console.log('디비 저장 성공 : ' + res.data)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
     }
 })
