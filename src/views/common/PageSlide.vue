@@ -75,37 +75,36 @@ export default {
 </script>
   
 <style scope>
-  .carousel__prev,
+  /*슬라이드*/
+.carousel__prev,
   .carousel__next {
     background: url(@/assets/images/prevBtn.png);
     height: 48px;
     width: 48px;
     box-shadow: none;
-  }
+}
 
-  .carousel__next {
+.carousel__next {
     background: url(@/assets/images/nextBtn.png);
-  }
+}
   
-  .carousel__icon path{
+.carousel__icon path{
     display: none;
-  }
+}
 
-  .carousel__pagination {
+.carousel__pagination {
     margin-top: -30px;
     position: relative;
     z-index: 999;
-  }
-  .carousel__pagination-button::after {
+}
+.carousel__pagination-button::after {
     border-radius: 5px;
     background-color: #fff;
     width: 50px;
     height: 6px;
-  }
+}
 
-  .carousel__pagination-button--active::after{
+.carousel__pagination-button--active::after{
     background-color: #ad578c;
-  }
-    
-
+}
 </style>

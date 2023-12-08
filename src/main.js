@@ -20,6 +20,9 @@ app.config.globalProperties.$serverURL = '//loacalhost:2222'
 app.config.globalProperties.$styleType = {
     num: -1
 }
+app.config.globalProperties.$personalType = {
+    num: -1
+}
 
 //앱에 라우터 사용 지정
 app

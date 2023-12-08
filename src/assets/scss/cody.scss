@@ -31,6 +31,10 @@ $listBackColor:  #f6f6f6;
             background-color: $listBackColor
         }
 
+        .cody-list-img{
+            width: 100%;
+        }
+
         .cody-list-simg {
             position: absolute;
             width: 15px;
@@ -43,4 +47,72 @@ $listBackColor:  #f6f6f6;
 
     }
 
+    
+}
+
+.cody-slide {
+    margin-top: 10px;
+}
+
+.model-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+
+    .model-str-box {
+        text-align: left;
+        margin-left: 10px;
+        font-size: 20px;
+    }
+}
+
+.goods-box {
+
+    margin-bottom: 20px;
+
+    .goods-title {
+        font-size: 16px;
+        font-weight: bold;
+        border-bottom: 1px solid #e2e2e2;
+        margin-bottom: 10px;
+    }
+
+    .goods-list-box {
+        margin: 0 auto;
+        grid-template-columns: repeat(4,1fr);
+        display: grid;
+        place-items: center;
+        width: 100%;
+        grid-row-gap: 3px;
+        grid-column-gap: 3px;
+
+        .goods-list {
+            text-align: left;
+
+            .goods-list div {
+                
+            }
+            .brand-name {
+                color: #757575;
+            }
+
+            .goods-name {
+                font-size: 15px;
+                font-weight: bold;
+                line-height: 20px;
+                margin-bottom: 5px;
+            }
+
+            .goods-price {
+                margin-bottom: 10px;
+            }
+
+            .goods-size {
+                margin-bottom: 20px;
+            }
+        }
+    }
+    
 }

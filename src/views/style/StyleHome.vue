@@ -53,8 +53,6 @@
             </div>
         </div>
 
-        
-
     </div>
 
     
@@ -91,7 +89,6 @@ export default {
 
         const changeSize = (e) => {
             this.waistSize = e.target.value
-
         }
 
         return {
