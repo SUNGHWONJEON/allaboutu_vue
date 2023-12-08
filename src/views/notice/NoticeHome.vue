@@ -5,7 +5,12 @@
         <option value="title">제목</option>
       </select>
       &nbsp;
-      <input id="notices" type="text" v-model="search_value" @keyup.enter="fnSearch">
+      <input
+        id="notices"
+        type="text"
+        v-model="search_value"
+        @keyup.enter="fnSearch"
+      />
       &nbsp;
       <button class="searchtitle" @click="fnSearch">검색</button>
       &nbsp;
@@ -20,31 +25,96 @@
           <th>작성자</th>
           <th>등록일시</th>
           <th>첨부파일</th>
+          <th>조회수</th>
         </tr>
       </thead>
+      <tbody>
+        <tr
+          v-for="n in importanceList"
+          :key="n.noticeNum"
+          :class="{ 'important-row': n.importance === 'Y' }"
+        >
+          <td>
+            <!-- 공지번호 -->
+            {{ n.noticeNum }}
+            <span  v-show="n.importance === 'Y'"><h5 class="essential">[필독!]</h5></span>
+          </td>
+          <td>
+            <router-link
+              :to="{ path: '/notice/detail/' + n.noticeNum }"
+              :style="{
+                color: n.noticeTitle ? 'blue' : '',
+                textDecoration: 'none',
+              }"
+              class="hover-effect"
+              >{{ n.noticeTitle }}</router-link
+            >
+          </td>
+          <td>{{ n.userNum === 1 ? "관리자" : n.userNum }}</td>
+          <td>{{ n.writeDate }}</td>
+          <td>
+            <img
+              v-if="n.renameFileName !== null"
+              id="notice_img"
+              src="@/assets/images/notice/attachment_87543.png"
+              alt="Attachment Image"
+            />
+          </td>
+          <td>{{ n.readCount }}</td>
+        </tr>
+      </tbody>
+
       <tr v-for="row in list" :key="row.noticeNum">
         <td>
-            <!-- 필독 텍스트 -->
-            <span v-if="row.importance">필독 </span>
-            <!-- 공지번호 -->
-            {{ row.noticeNum }}
-       </td> 
-        <td>
-          <router-link :to="{ path: '/notice/detail/' + row.noticeNum }" :style="{ color: row.noticeTitle ? 'blue' : '', textDecoration: 'none' }" class="hover-effect">{{ row.noticeTitle }}</router-link>
+          <!-- 공지번호 -->
+          {{ row.noticeNum }}
         </td>
-        <td>{{ row.userNum === 1 ? '관리자' : row.userNum }}</td>
+        <td>
+          <router-link
+            :to="{ path: '/notice/detail/' + row.noticeNum }"
+            :style="{
+              color: row.noticeTitle ? 'blue' : '',
+              textDecoration: 'none',
+            }"
+            class="hover-effect"
+            >{{ row.noticeTitle }}</router-link
+          >
+        </td>
+        <td>{{ row.userNum === 1 ? "관리자" : row.userNum }}</td>
         <td>{{ row.writeDate }}</td>
         <td>
-          <img v-if="row.renameFileName !== null" id="notice_img" src="@/assets/images/notice/attachment_87543.png" alt="Attachment Image">
+          <img
+            v-if="row.renameFileName !== null"
+            id="notice_img"
+            src="@/assets/images/notice/attachment_87543.png"
+            alt="Attachment Image"
+          />
         </td>
+        <td>{{ row.readCount }}</td>
       </tr>
     </table>
 
     <!-- 페이징 버튼 추가 -->
     <div>
-      <button class="page-btn" @click="prevPage" :disabled="currentPage === 1">이전</button>
-      <button class="page-btn" @click="movePage(pageNumber)" v-for="pageNumber in pageNumbers" :class="{ 'current-page': isCurrentPage(pageNumber) }"  :key="pageNumber"> {{ pageNumber }}</button>
-      <button class="page-btn" @click="nextPage" :disabled="currentPage === totalPages">다음</button>
+      <button class="page-btn" @click="prevPage" :disabled="currentPage === 1">
+        이전
+      </button>
+      <button
+        class="page-btn"
+        @click="movePage(pageNumber)"
+        v-for="pageNumber in pageNumbers"
+        :class="{ 'current-page': isCurrentPage(pageNumber) }"
+        :key="pageNumber"
+      >
+        {{ pageNumber }}
+      </button>
+      <button
+        class="page-btn"
+        @click="nextPage"
+        :disabled="currentPage === totalPages"
+      >
+        다음
+      </button>
     </div>
 
     <router-link to="/notice/write">
@@ -58,31 +128,33 @@ export default {
   data() {
     return {
       list: [],
-      search_key: '',
-      search_value: '',
+      importanceList: [],
+      search_key: "",
+      search_value: "",
       currentPage: 1,
       totalPages: 1,
     };
   },
   mounted() {
     this.fnPage();
-    console.log('Data:', this.list);
+    this.getImportance();
+    console.log("Data:", this.list);
+    console.log(this.importanceList);
   },
   computed: {
-    pageNumbers(){
-      return Array.from({length: this.totalPages}, (_, index) => index +1);
+    pageNumbers() {
+      return Array.from({ length: this.totalPages }, (_, index) => index + 1);
     },
 
-      isCurrentPage() {
+    isCurrentPage() {
       return (pageNumber) => pageNumber === this.currentPage;
     },
-    
   },
 
   methods: {
     fnPage() {
       this.$axios
-        .get('/notice', {
+        .get("/notices", {
           params: {
             search_key: this.search_key,
             search_value: this.search_value,
@@ -97,13 +169,26 @@ export default {
           console.error(err);
         });
     },
+
+    getImportance() {
+      this.$axios
+        .get("/notices/imp")
+        .then((res) => {
+          this.importanceList = res.data;
+          console.log(this.importanceList);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+
     fnSearch() {
       this.currentPage = 1; // 검색 시에는 첫 페이지로 설정
       this.fnPage();
     },
     fnAll() {
-      this.search_key = '';
-      this.search_value = '';
+      this.search_key = "";
+      this.search_value = "";
       this.fnPage();
     },
     nextPage() {
@@ -118,79 +203,86 @@ export default {
         this.fnPage();
       }
     },
-    movePage(pageNumber){
+    movePage(pageNumber) {
       this.currentPage = pageNumber;
       this.fnPage();
-    }
+    },
   },
 };
 </script>
 
 
 <style>
-    #notices, #noticeop{
-      border:1px solid #ad578c;
-    }
-
-    .page-btn{
-      font-size: 15px;
-      margin-left: 7px;
-      color:#ad578c;
-    }
-    h3 {
-      
-        text-align: center;
-        margin-top: 350px;
-    }
-    .w3-table-all {
-          width: 950px;
-          border-collapse: collapse;
-          margin-top: 45px;
-          
-      }
-    .register{
-      margin-left: 500px;
-      background-color: #ad578c; /* 적절한 색상으로 변경 가능 */
-      color: #fff; /* 텍스트 색상을 밝게 설정 */
-      border: none;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-
-    th,td {
-          border: 1px solid #ddd;
-          padding: 4px;
-          text-align: center;
-      }
-
-    th {
-          background-color: #f2f2f2;
-       }
-
-      tr:hover {
-          background-color: #f5f5f5;
-      }
-  .search {
-      margin: 100px;
-    }
-
-    .searchtitle, .allList{
-      color:#ad578c;
-      
-    }
-
-    .current-page {
-
-      background-color: #ad578c;
-      color: #fff;
-
-      width: 30px; 
-      height: 30px; 
+#notices,
+#noticeop {
+  border: 1px solid #ad578c;
 }
-  #notice_img{
-    width: 30px; 
-    height: 30px; 
-  }
 
-   
+.page-btn {
+  font-size: 15px;
+  margin-left: 7px;
+  color: #ad578c;
+}
+h3 {
+  text-align: center;
+  margin-top: 350px;
+}
+.w3-table-all {
+  width: 950px;
+  border-collapse: collapse;
+  margin-top: 45px;
+}
+.register {
+  margin-left: 500px;
+  background-color: #ad578c; /* 적절한 색상으로 변경 가능 */
+  color: #fff; /* 텍스트 색상을 밝게 설정 */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 4px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+.search {
+  margin: 100px;
+}
+
+.searchtitle,
+.allList {
+  color: #ad578c;
+}
+
+.current-page {
+  background-color: #ad578c;
+  color: #fff;
+
+  width: 30px;
+  height: 30px;
+}
+#notice_img {
+  width: 30px;
+  height: 30px;
+}
+
+.important-row {
+  background-color: #ad578c; /* 필독인 경우의 배경색을 여기서 지정하세요. */
+  font-weight: bold; /* 필독인 경우의 글자를 두껍게 만듭니다. */
+}
+
+.essential{
+  color:aqua;
+  font-size: 14px;
+}
 </style>
