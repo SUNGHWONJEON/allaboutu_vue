@@ -124,7 +124,7 @@
 	position: relative;
 }
 
-.header_menu .header_text ul li button {
+.header_menu .header_text ul li a {
 	color: #000;
 	text-transform: uppercase;
 	font-weight: 300;
@@ -156,10 +156,10 @@
     transform: scale(0);
 }
 */
-.header_menu .header_text ul li button.active {
+.header_menu .header_text ul li a.active {
 	color: #ec5264;
 }
-.header_menu .header_text ul li button:hover {
+.header_menu .header_text ul li a:hover {
 	color: #ec5264;
 }
 
