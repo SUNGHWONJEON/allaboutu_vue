@@ -271,7 +271,7 @@ export default {
 
 <style scoped>
 .board-write-form {
-    border: 2px solid #e2e2e2;
+    border: 1px solid #e2e2e2;
     border-radius: 15px;
     width: 600px;
     display: flex;
