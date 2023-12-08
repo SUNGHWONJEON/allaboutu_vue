@@ -11,11 +11,13 @@ import PageEnroll from '@/views/member/PageEnroll.vue'
 import PageMain from '@/views/common/PageMain.vue'
 import StyleMain from '@/views/style/StyleMain.vue'
 import CodyMain from '@/views/cody/CodyMain.vue'
+import CodyDetail from '@/views/cody/CodyDetail.vue'
 import FaceMain from '@/views/face/FaceMain.vue'
 import PersonalMain from '@/views/personal/PersonalMain.vue'
 import BoardMain from '@/views/board/BoardMain.vue'
 import BoardWrite from '@/views/board/BoardWrite.vue'
 import BoardHome from '@/views/board/BoardHome.vue';
+import BoardDetail from '@/views/board/BoardDetail.vue';
 import NoticeMain from '@/views/notice/NoticeMain.vue'
 import NoticeWrite from '@/views/notice/NoticeWrite.vue';
 import NoticeDetail from '@/views/notice/NoticeDetail.vue';
@@ -49,12 +51,19 @@ const routes = [
     {
         path: '/style',
         name: 'StyleMain',
-        component: StyleMain
-    },
-    {
-        path: '/cody',
-        name: 'CodyMain',
-        component: CodyMain
+        component: StyleMain,
+        children: [
+            {
+                path: '/style/cody',
+                name: 'CodyMain',
+                component: CodyMain
+            },
+            {
+                path: '/style/codydetail',
+                name: 'CodyDetail',
+                component: CodyDetail
+            }
+        ]
     },
     {
         path: '/face',
@@ -92,12 +101,17 @@ const routes = [
                 component: BoardHome
             },
             {
-                path: '/boards/write',
+                path: '/board/:boardNum',
+                name: 'BoardDetail',
+                component: BoardDetail
+            },
+            {
+                path: '/board/write',
                 name: 'BoardWrite',
                 component: BoardWrite
             },
             {
-                path: '/boards/write/:boardNum',
+                path: '/board/write/:boardNum',
                 name: 'BoardWriteForEdit',
                 component: BoardWrite,
                 beforeEnter: (to, from, next) => {
@@ -120,11 +134,6 @@ const routes = [
         component: NoticeMain
     },
     {
-        path: '/website',
-        name: 'WebSiteMain',
-        component: WebSiteMain
-    },
-    {
         path: '/notice/write',
         name: 'NoticeWrite',
         component: NoticeWrite
@@ -140,6 +149,11 @@ const routes = [
         component: NoticeUpdate
     },
     {
+        path: '/website',
+        name: 'WebSiteMain',
+        component: WebSiteMain
+    },
+    {
         path: '/member/mypage',
         name: 'PageMyPage',
         component: PageMyPage
@@ -148,7 +162,10 @@ const routes = [
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
-    routes
+    routes,
+    scrollBehavior(){
+      return { top: 0 }
+    }
 })
 
 //이 js파일 밖에서 import한 대상이 사용할 수 있게 처리함

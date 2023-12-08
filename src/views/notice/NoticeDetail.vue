@@ -9,7 +9,7 @@
       </div>
     <div id="notice-contents">
       <p>{{ noticeContents }}</p>
-      <img  v-if="renameFileName !== null" :src="'/notice/image/' + renameFileName">
+      <img  v-if="renameFileName !== null" :src="'/notices/image/' + renameFileName">
     </div>
     
     <hr class="divider">
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     getNoticeDetails(noticeNum) {
-        this.$axios.get('/notice/detail/' + noticeNum)
+        this.$axios.get('/notices/detail/' + noticeNum)
         .then(res => {
           this.noticeTitle = res.data.noticeTitle;
           this.noticeContents = res.data.noticeContents;
@@ -68,10 +68,10 @@ export default {
 
     deleteNotice(noticeNum) {
     if (confirm('정말로 이 공지를 삭제하시겠습니까?')) {
-      this.$axios.delete('/notice/' + noticeNum)
+      this.$axios.delete('/notices/' + noticeNum)
         .then(() => {
           alert('공지가 성공적으로 삭제되었습니다.');
-          this.$router.push('/notice/');
+          this.$router.push('/notices/');
         })
         .catch(err => {
           alert('공지 삭제 실패');
@@ -79,6 +79,10 @@ export default {
         });
     }
     },   
+
+    goBack(){
+      this.$router.go(-1);
+    }
   },
 
   

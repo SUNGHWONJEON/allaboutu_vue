@@ -5,14 +5,21 @@
         <nav class="header_menu">
             <!--로고-->
             <div class="header_logo left">
-                <button v-on:click="pageLink(0)"><img src="@/assets/images/logo.png" alt=""></button>
+                <RouterLink :to="selList[0].path"><img src="@/assets/images/logo.png" alt=""></RouterLink>
             </div>
 
             <!--메뉴-->
             <div class="header_text center">
                 <ul>
                     <li v-for="(item, i) in selList" :key="i">
-                        <button ref="btns" v-on:click="pageLink(i)" v-if="i !== 0">{{ item.text }}</button>
+                        <RouterLink  
+                            ref="btns" 
+                            :to="item.path" 
+                            active-class="active"
+                            v-if="i !== 0"
+                        >
+                        {{ item.text }}
+                        </RouterLink >
                     </li>
                 </ul>
             </div>

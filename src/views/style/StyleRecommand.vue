@@ -140,7 +140,10 @@ export default {
         },
         onLinkCody(){
             console.log('this.$styleType.num : ' + this.$styleType.num);
-            this.$router.push('/cody');
+            this.$styleType.formNum = this.styleNum;
+            this.$router.push({
+                path: '/style/cody'
+            });
         }
     }
 }

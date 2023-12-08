@@ -21,16 +21,16 @@
             <div class="board-write-content">
                 <textarea v-model="boardContent" @input="checkMaxLength" placeholder="내용을 입력하세요." required></textarea>
                 <div>{{ contentCount }} / {{ contentMaxLength }}</div>
-                <input type="file" id="upload-image" @change="getFileName($event.target.files)" accept="image/*" ref="imageInput" multiple hidden>
-                <label for="upload-image">
-                    <img src="@/assets/images/community/camera.png" class="attach-btn">
-                </label>
             </div>
-            <div class="image-gallery" v-if="selectedImages.length > 0">
+            <div class="image-gallery">
                 <div v-for="(image, index) in selectedImages" :key="index" class="selected-image">
                     <img :src="image" alt="Selected Image">
-                    <button @click="removeSelectedImage(index)">Remove</button>
+                    <img src="@/assets/images/community/delete_file.png" class="file-delete-btn" @click="removeSelectedImage(index)">
                 </div>
+                <input type="file" id="upload-image" @change="getFileName($event.target.files)" accept="image/*" multiple hidden>
+                <label for="upload-image">
+                    <img src="@/assets/images/community/add_file.png" class="attach-btn">
+                </label>
             </div>
             <div class="board-write-hashtags">
                 <div class="input-hashtag">
@@ -45,21 +45,17 @@
                 </div>
             </div>
             <div class="register-btn-area">
-                <button @click="writeBoard()">등록하기</button>
+                <button v-if="boardNum == null" @click="writeBoard()">글 등록</button>
+                <button v-else @click="updateBoard()">글 수정</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import PageHeader from '../common/PageHeader.vue';
-import PageFooter from '../common/PageFooter.vue';
-
 export default {
     name: 'BoardWrite',
     components: { 
-        PageHeader,
-        PageFooter
     },
     data() {
         return {
@@ -88,7 +84,6 @@ export default {
         if (this.$route.params.boardNum) {
             this.boardNum = this.$route.params.boardNum;
             this.getBoard(this.boardNum);
-            console.log(this.$route.params.boardNum);
         }
     },
     computed: {
@@ -156,6 +151,44 @@ export default {
                 console.log(err);
             })
         },
+        updateBoard() {
+            // 카테고리가 선택되지 않았을 경우
+            if (!this.selectedCategory) {
+                this.categoryWarning = '카테고리를 선택하세요.';
+                setTimeout(() => {
+                    this.categoryWarning = '';
+                }, 3000);
+                return;
+            }
+
+            const sendData = new FormData();
+            const board = {
+                boardNum: this.boardNum,
+                boardTitle: this.boardTitle,
+                boardContent: this.boardContent,
+            };
+            sendData.append('board', new Blob([JSON.stringify(board)], { type: 'application/json' }));
+            sendData.append('hashtags', new Blob([JSON.stringify(this.registeredHashtags)], { type: 'application/json' }));
+            for (let i = 0; i < this.attachments.length; i++) {
+                sendData.append('attachments', this.attachments[i]);
+            }
+
+            this.$axios.patch('/boards/' + this.boardNum, sendData, {
+                header: {
+                    'Context-Type': 'multipart/form-data',
+                }
+            })
+            .then(res => {
+                alert('게시글 수정 성공');
+
+                // 게시글 수정 후 게시판 목록으로 이동
+                this.$router.push('/board');
+            })
+            .catch(err => {
+                alert('게시글 수정 실패');
+                console.log(err);
+            })
+        },
         checkMaxLength() {
             if(this.boardContent.length > this.contentMaxLength) {
                 this.boardContent = this.boardContent.slice(0, this.contentMaxLength);
@@ -171,21 +204,47 @@ export default {
                         this.attachments.push(file);
                     }
                 }
-                console.log(this.attachments);
             }
         },
         removeSelectedImage(index) {
             // 이미지 클릭 시 이미지 삭제
             this.selectedImages.splice(index, 1);
+            this.attachments.splice(index, 1);
         },
         getBoard(boardNum) {
             this.$axios.get('/boards/' + boardNum)
                 .then(res => {
-                    console.log(res.data);
-                    this.boardTitle = res.data.boardTitle;
-                    this.boardContent = res.data.boardContent;
-                    this.selectedCategory = res.data.categoryNum;
-                    this.registeredHashtags = res.data.hashtags.length > 0 ? res.data.hashtags : [];
+                    const board = res.data;
+                    this.boardTitle = board.boardTitle;
+                    this.boardContent = board.boardContent;
+                    this.selectedCategory = board.categoryNum;
+                    
+                    // 해시태그 정보 담기
+                    if(board.hashtags && board.hashtags.length > 0) {
+                        board.hashtags.forEach(hashtag => {
+                            this.registeredHashtags.push(hashtag.hashtag);
+                        });
+                    } else {
+                        this.registeredHashtags = [];
+                    }
+
+                    this.attachments = board.attachments.length > 0 ? board.attachments : [];
+                    
+                    this.selectedImages = [];
+                    for (let i = 0; i < this.attachments.length; i++) {
+                        const attachment = this.attachments[i];
+                        this.$axios.get('/boards/image/' + attachment.renameFileName, {
+                            responseType: 'arraybuffer',
+                        })
+                        .then(res => {
+                            const blob = new Blob([res.data]);
+                            const imageUrl = URL.createObjectURL(blob);
+                            this.selectedImages.push(imageUrl);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                    }
                 })
                 .catch(err => {
                     console.log(err);
@@ -212,10 +271,9 @@ export default {
 
 <style scoped>
 .board-write-form {
-    border: 2px solid gray;
+    border: 1px solid #e2e2e2;
     border-radius: 15px;
     width: 600px;
-    height: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -226,7 +284,7 @@ export default {
     height: 50px;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 .category-section div {
@@ -242,7 +300,7 @@ export default {
     cursor: pointer;
     height: 24px;
     width: 90px;
-    border: 1px solid #333;
+    border: 1px solid #e2e2e2;
     line-height: 24px;
     text-align: center;
     font-weight:bold;
@@ -258,7 +316,6 @@ export default {
 }
 
 .board-input-section {
-    border: 1px solid gray;
     width: 600px;
     display: flex;
     flex-direction: column;
@@ -266,12 +323,12 @@ export default {
 }
 
 .board-write-title input {
-    border: 1px solid gray;
     border-radius: 10px;
     width: 550px;
     height: 40px;
     margin-top: 10px;
     padding: 10px;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.1);
 }
 .board-write-title div {
     position: relative;
@@ -286,11 +343,11 @@ export default {
     align-items: flex-start;
 }
 .board-write-content textarea {
-    border: 2px solid gray;
     border-radius: 10px;
     width: 550px;
     height: 150px;
     padding: 10px;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.1);
 }
 .board-write-content div {
     position: relative;
@@ -300,24 +357,27 @@ export default {
 }
 
 .input-hashtag {
-    border: 1px solid blue;
+    border: 1px solid #e2e2e2;
+    border-radius: 3px;
     width: 550px;
     height: 50px;
     margin-top: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 3px 15px;
 }
 .input-hashtag input {
-    border: 1px solid gray;
     width: 500px;
     height: 40px;
     padding: 0;
 }
 .input-hashtag button {
-    border: 1px solid gray;
+    border: 1px solid #e2e2e2; /* #ffdede */
+    border-radius: 3px;
+    background: #eeeeee; /* #ffe9e9 */
     width: 50px;
-    height: 40px;
+    height: 30px;
 }
 .warning-hashtag {
     position: absolute;
@@ -341,7 +401,7 @@ export default {
 }
 
 .registered-hashtags {
-    border: 1px solid blue;
+    border: 1px solid #e2e2e2;
     width: 550px;
     height: 50px;
     display: flex;
@@ -349,7 +409,7 @@ export default {
     margin-top: 10px;
 }
 .registered-hashtags div {
-    border: 1px solid blue;
+    border: 1px solid #e2e2e2;
     border-radius: 5px;
     width: auto;
     height: 30px;
@@ -364,34 +424,43 @@ export default {
     margin: 10px;
 }
 .register-btn-area button {
-    border: 1px solid blue;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    background: #eeeeee;
     margin-right: 25px;
     padding: 10px;
 }
 
 .attach-btn {
-    position: relative;
-    top: -65px;
-    left: 20px;
-    width: 40px;
-    color: gray;
+    width: 50px;
+    margin: 10px;
     cursor: pointer;
 }
 
 .image-gallery {
-    border: 1px solid blue;
+    border: 1px solid #e2e2e2;
     text-align: center;
-    margin-top: 20px;
     width: 550px;
-    height: 100px;
+    height: 120px;
     display: flex;
     flex-direction: row;
-
+    align-items: center;
 }
 
 .selected-image img {
     cursor: pointer;
     max-width: 100%;
     max-height: 100px;
+    margin: 10px;
+    border-radius: 10px;
+}
+.image-gallery .file-delete-btn {
+    position: relative;
+    top: calc(-90px);
+    left: calc(-30px);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin: 0px;
 }
 </style>

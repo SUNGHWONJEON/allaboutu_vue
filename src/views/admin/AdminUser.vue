@@ -106,7 +106,7 @@ export default ({
         }
     },
     mounted() {
-        this.$axios.get('/admin')
+        this.$axios.get('/admin/get')
             .then((res) => {
                 this.members = res.data;
             }).catch((err) => {

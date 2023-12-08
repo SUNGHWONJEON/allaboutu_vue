@@ -9,12 +9,12 @@
         <BoardRank />
         
         <!-- 글쓰기 버튼 -->
-        <router-link to="/boards/write">
+        <router-link to="/board/write">
             <img class="board-write-btn" src="@/assets/images/community/board_write_btn.png">
         </router-link>
         
         <!-- 챗봇 버튼 -->
-        <router-link to="/boards/write">
+        <router-link to="/board/write">
             <img class="chatbot-btn" src="@/assets/images/community/chatbot_icon.png">
         </router-link>
     </div>
