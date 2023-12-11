@@ -3,18 +3,34 @@
     <!--main-container-->
     <div class="main-container margin-top-70">
         <div class="txt-box" data-aos="fade-up">
-            <div class="title-text">Style</div>
+            <div class="title-text">Personal color</div>
             <div class="sub-text">내속에 숨겨져 있던<br>진정 아름다운 나를 찾아서</div>
         </div>
-
+        <div class="main-con main-style">
+            <div class="thumbnail-list">
+                <button class="thumbnail-box" data-aos="zoom-in"
+                    v-for="colorItem in colorList" :key="colorItem"
+                >
+                        <div class="thumbnail color">
+                            <img :src="colorItem.img">
+                        </div>
+                        <div class="description">
+                            <strong class="displayTitle name">
+                                <span>{{ colorItem.title }}</span>
+                            </strong>
+                        </div>
+                    
+                </button>
+            </div>
+        </div>
+        <!--
         <div class="main-con main-style">
             <div class="thumbnail-list">
                 <div class="thumbnail-box" data-aos="zoom-in">
-                    <a href="#" class=""> 
-                        <div class="thumbnail">
-                            <img src="https://lulugine.com/web/product/big/202310/76e7f277900262f27276d66bc84906c2.jpg">
-                        </div>
-                        <div class="description">
+                    <div class="thumbnail">
+                        <img src="https://lulugine.com/web/product/big/202310/76e7f277900262f27276d66bc84906c2.jpg">
+                    </div>
+                    <div class="description">
                             <strong class="displayTitle name">
                                 <span>룰루진 엘리트 트리진세노믹스 매끈보들 클렌징젤 160ml</span>
                             </strong>
@@ -33,7 +49,6 @@
                                 </li>
                             </ul>
                         </div>
-                    </a>
                 </div>
                 <div class="thumbnail-box" data-aos="zoom-in">
                     <div class="thumbnail"></div>
@@ -47,9 +62,38 @@
             </div>
             
         </div>
+        -->
     </div>
     <!--main-container end-->
     
+    <!--main-container-->
+    <div class="main-container margin-top-50">
+        <div class="txt-box" data-aos="fade-up">
+            <div class="title-text">Style</div>
+            <div class="sub-text">내속에 숨겨져 있던<br>진정 아름다운 나를 찾아서</div>
+        </div>
+
+        <div class="main-con main-style">
+            <div class="thumbnail-list">
+                <button class="thumbnail-box" data-aos="zoom-in"
+                    v-for="styleItem in styleList" :key="styleItem"
+                >
+                        <div class="thumbnail">
+                            <img :src="styleItem.img">
+                        </div>
+                        <div class="description">
+                            <strong class="displayTitle name">
+                                <span>{{ styleItem.title }}</span>
+                            </strong>
+                        </div>
+                    
+                </button>
+            </div>
+            
+        </div>
+    </div>
+    <!--main-container end-->
+
     <!--main-container-->
     <div class="main-container margin-top-50">
         <div class="txt-box" data-aos="fade-up">
@@ -59,18 +103,17 @@
 
         <div class="main-con main-style">
             <div class="thumbnail-list">
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
+                <div class="thumbnail-box" data-aos="zoom-in"
+                    v-for="faceItem in faceList" :key="faceItem"
+                >
+                    <div class="thumbnail">
+                        <img :src="faceItem.img">
+                    </div>
+                    <div class="description">
+                        
+                    </div>
                 </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
+                
             </div>
             
         </div>
@@ -80,76 +123,131 @@
     <!--main-container-->
     <div class="main-container margin-top-50">
         <div class="txt-box" data-aos="fade-up">
-            <div class="title-text">Personal color</div>
-            <div class="sub-text">내속에 숨겨져 있던<br>진정 아름다운 나를 찾아서</div>
-        </div>
-
-        <div class="main-con main-style">
-            <div class="thumbnail-list">
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-    <!--main-container end-->
-
-    <!--main-container-->
-    <div class="main-container margin-top-50">
-        <div class="txt-box" data-aos="fade-up">
-            <div class="title-text">Review</div>
+            <div class="title-text">Comunity</div>
             <div class="sub-text">고객님의 솔직한 리뷰</div>
         </div>
-
+        
         <div class="main-con main-style">
-            <div class="thumbnail-list">
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
+            <div class="comunity-box thumbnail-list" data-aos="fade-up">
+                <BoardRank ref="board_rank"/>
             </div>
             
         </div>
     </div>
     <!--main-container end-->
 
-    <!--main-container-->
-    <div class="main-container first-box">
-        <div id="particles-js"></div>
-        <div class="main-con">
-            <div class="txt-box">
-                <div class="title-text">나의 스타일 이야기</div>
-                <div class="sub-text">내속에 숨겨져 있던<br>진정 아름다운 나를 찾아서</div>
-            </div>
-            
-            
-        </div>
-    </div>
-    <!--main-container end-->
 </template>
 
-
 <script>
+import BoardRank from '../board/BoardRank.vue';
+
 export default ({
-    name: 'PageHome'
+    name: 'PageHome',
+    components: {
+        BoardRank
+    },
+    data() {
+        return {
+            colorList: [
+                {
+                    title: '봄',
+                    text: '',
+                    img: require('@/assets/images/personal/color_spring.png'),
+                    path: '/personal'
+                },
+                {
+                    title: '여름',
+                    text: '',
+                    img: require('@/assets/images/personal/color_summer.png'),
+                    path: '/personal'
+                },
+                {
+                    title: '가을',
+                    text: '',
+                    img: require('@/assets/images/personal/color_autumn.png'),
+                    path: '/personal'
+                },
+                {
+                    title: '겨울',
+                    text: '',
+                    img: require('@/assets/images/personal/color_winter.png'),
+                    path: '/personal'
+                }
+                
+            ],
+            styleList: [
+                {
+                    title: '역삼각형',
+                    text: '',
+                    img: require('@/assets/images/style/style_1.png'),
+                    path: '/style'
+                },
+                {
+                    title: '모래시계형',
+                    text: '',
+                    img: require('@/assets/images/style/style_2.png'),
+                    path: '/style'
+                },
+                {
+                    title: '사각체형',
+                    text: '',
+                    img: require('@/assets/images/style/style_3.png'),
+                    path: '/style'
+                },
+                {
+                    title: '둥근체형',
+                    text: '',
+                    img: require('@/assets/images/style/style_4.png'),
+                    path: '/style'
+                },
+                {
+                    title: '역삼각형',
+                    text: '',
+                    img: require('@/assets/images/style/style_5.png'),
+                    path: '/style'
+                }
+            ]
+        }
+    },
+    mounted() {
+        this.$refs.board_rank.getBoardRank();
+    },
     
 })
 </script>
+
+<style lang="scss" scoped>
+
+.comunity-box {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .rank-container {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        
+        .rank-title {
+            font-size: 17px;
+        }
+
+        .rank-table{
+            border: 1px solid #e2e2e2;
+            margin-top: 10px;
+
+            th, td {
+                border: 1px solid #e2e2e2;
+            }
+        }
+
+    }
+}
+
+
+
+
+
+</style>

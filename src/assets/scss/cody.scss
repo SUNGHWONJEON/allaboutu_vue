@@ -32,7 +32,8 @@ $listBackColor:  #f6f6f6;
         }
 
         .cody-list-img{
-            width: 100%;
+            width: auto;
+            max-height: 300px;
         }
 
         .cody-list-simg {
@@ -44,7 +45,13 @@ $listBackColor:  #f6f6f6;
     }
 
     .page-box {
+        .page-btn {
+            color: #000;
+        }
 
+        .page-btn.disabled {
+            opacity: .2;
+        }
     }
 
     

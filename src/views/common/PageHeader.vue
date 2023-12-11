@@ -15,7 +15,7 @@
                         <RouterLink  
                             ref="btns" 
                             :to="item.path" 
-                            active-class="active"
+                            :class="{ active: isActive(item.path) }"
                             v-if="i !== 0"
                         >
                         {{ item.text }}
@@ -56,7 +56,22 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router';
+
 export default ({
+    setup() {
+    const route = useRoute();
+
+    function isActive(path) {
+        //console.log('path : ' + path.split('/')[1]);
+        //console.log('route.path : ' + route.path.split('/')[1]);
+        return path.split('/')[1] == route.path.split('/')[1];
+    }
+
+    return {
+      isActive
+    };
+  },
     data(){
         return {
             selList: [
@@ -64,43 +79,36 @@ export default ({
                     id: 0
                     ,text: 'HOME'
                     ,path: '/'
-                    ,isActive: false
                 },
                 {
                     id: 1
                     ,text: 'NOTICE'
                     ,path: '/notice'
-                    ,isActive: false
                 },
                 {
                     id: 2
                     ,text: 'PERSONAL COLOR'
                     ,path: '/personal'
-                    ,isActive: false
                 },
                 {
                     id: 3
                     ,text: 'STYLE MATCH'
                     ,path: '/style'
-                    ,isActive: false
                 },
                 {
                     id: 4
                     ,text: 'FACE MATCH'
                     ,path: '/face'
-                    ,isActive: false
                 },
                 {
                     id: 5
                     ,text: 'COMMUNITY'
                     ,path: '/board'
-                    ,isActive: false
                 },
                 {
                     id: 6
                     ,text: 'ADMIN'
                     ,path: '/admin'
-                    ,isActive: false
                 }
             ]
         }
@@ -112,7 +120,7 @@ export default ({
         window.addEventListener('scroll', this.handleScroll);
     },
     watch: {
-        $route(to) {
+        $route(to, from) {
             const headerElement = this.$refs.header;
                 
             if (to.name === 'PageMain') {
@@ -120,6 +128,8 @@ export default ({
             } else {
                 headerElement.classList.remove('main');
             }
+
+
         }
     },
     methods: {
@@ -154,23 +164,6 @@ export default ({
             username: "", // 로그인한 사용자의 이름을 표시할 변수
             };
         },
-        //링크 
-        pageLink (id) {
-
-            this.$refs.btns.forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            // 현재 클릭한 버튼을 활성화 처리
-            if(id > 0){
-                const btn = this.$refs.btns[id-1];
-                //console.log('btn : ' + btn);
-                btn.classList.add('active');
-            }
-            
-            this.$router.push({ path: this.selList[id].path })
-            //this.$router.go(this.$router.currentRoute);
-        }
     }
 })
 </script>

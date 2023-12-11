@@ -22,12 +22,11 @@
                             :autoplay="false"
                             :wrap-around="true"
                         >
-                            <slide v-for="codyImg in codyImgList"
-                                :key="codyImg"
+                            <slide v-for="codyItem in codyImgList"
+                                :key="codyItem"
                                 class="slide-item"
                             >
-                                <!--<img :src="'/cody/image/' + codyImg.codyImg">-->
-                                <img :src="require('@/assets/images/cody/' + codyImg.codyImg)">
+                                <img :src="'/cody/image/' + codyItem.codyImg">
                             </slide>
 
                             <template #addons>
@@ -92,9 +91,16 @@ export default ({
         }
     },
     mounted() {
-        this.cody = this.$styleType.cody
-        console.log('cody:', JSON.stringify(this.cody));
+        //this.cody = this.$styleType.cody;
+        const query_cody = this.$route.query.cody;
+        console.log('query_cody:', query_cody);
+        const decodedQuery = JSON.parse(decodeURIComponent(query_cody));
+        this.cody = decodedQuery;
+        console.log('cody:', JSON.stringify(decodedQuery));
+        this.goodsList = this.cody.goodsList;
+        this.codyImgList = this.cody.codyImgList;
 
+        return
         this.cody = {
             "codyNum":1,
             "formNum":1,

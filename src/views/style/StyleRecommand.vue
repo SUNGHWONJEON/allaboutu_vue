@@ -12,6 +12,7 @@
                     <img :src="style.src[style.active === 'active' ? 1 : style.index]" 
                         :alt="style.exp">
                     <div class="style-exp">{{ style.title }}</div>
+                    
                 </button>
             </div>
         </div>
@@ -142,7 +143,8 @@ export default {
             console.log('this.$styleType.num : ' + this.$styleType.num);
             this.$styleType.formNum = this.styleNum;
             this.$router.push({
-                path: '/style/cody'
+                name: 'CodyMain',
+                query: {formNum : this.styleNum}
             });
         }
     }

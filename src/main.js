@@ -8,6 +8,8 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 const vuetify = createVuetify({
     components,
@@ -28,5 +30,6 @@ app.config.globalProperties.$personalType = {
 app
 .use(router)
 .use(vuetify)
+.use(AOS)
 .mount('#app')
 
