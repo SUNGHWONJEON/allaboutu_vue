@@ -1,14 +1,15 @@
 <template>
   <div class="notice-contents">
-    <div>
-      <select id="noticeop" v-model="search_key">
-        <option value="title">제목</option>
+    <div class="searchbox">
+      <select id="noticeop" v-model="search_type">
+        <option value="title" selected>제목</option>
+        <option value="contents">내용</option>
       </select>
       &nbsp;
       <input
         id="notices"
         type="text"
-        v-model="search_value"
+        v-model="search_keyword"
         @keyup.enter="fnSearch"
       />
       &nbsp;
@@ -36,14 +37,16 @@
         >
           <td>
             <!-- 공지번호 -->
-            {{ n.noticeNum }}
-            <span  v-show="n.importance === 'Y'"><h5 class="essential">[필독!]</h5></span>
+
+            <span v-show="n.importance === 'Y'"
+              ><h5 class="essential">[필독!]</h5></span
+            >
           </td>
           <td>
             <router-link
               :to="{ path: '/notice/detail/' + n.noticeNum }"
               :style="{
-                color: n.noticeTitle ? 'blue' : '',
+                color: n.noticeTitle ? 'black' : '',
                 textDecoration: 'none',
               }"
               class="hover-effect"
@@ -73,7 +76,7 @@
           <router-link
             :to="{ path: '/notice/detail/' + row.noticeNum }"
             :style="{
-              color: row.noticeTitle ? 'blue' : '',
+              color: row.noticeTitle ? 'black' : '',
               textDecoration: 'none',
             }"
             class="hover-effect"
@@ -118,7 +121,7 @@
     </div>
 
     <router-link to="/notice/write">
-      <button class="register">글쓰기</button>
+      <button class="register">작성하기</button>
     </router-link>
   </div>
 </template>
@@ -129,8 +132,8 @@ export default {
     return {
       list: [],
       importanceList: [],
-      search_key: "",
-      search_value: "",
+      search_type: "",
+      search_keyword: "",
       currentPage: 1,
       totalPages: 1,
     };
@@ -156,8 +159,8 @@ export default {
       this.$axios
         .get("/notices", {
           params: {
-            search_key: this.search_key,
-            search_value: this.search_value,
+            search_type: this.search_type,
+            search_keyword: this.search_keyword,
             page: this.currentPage - 1,
           },
         })
@@ -182,13 +185,34 @@ export default {
         });
     },
 
-    fnSearch() {
-      this.currentPage = 1; // 검색 시에는 첫 페이지로 설정
-      this.fnPage();
-    },
+   fnSearch() {
+    if (!this.search_keyword || !this.search_type) {
+      alert  ("검색어를 입력해주세요.");
+      return;
+    }
+
+  this.$axios
+    .get("/notices/search", {
+      params: {
+        searchType: this.search_type,
+        keyword: this.search_keyword,
+        page: this.currentPage - 1,
+        size: 10,
+      },
+    })
+    .then((res) => {
+      this.list = res.data.content; // 검색 결과를 변수에 저장
+      this.totalPages = res.data.totalPages;
+      this.errorMessage = ""; // 에러 메시지 초기화
+    })
+    .catch((error) => {
+      console.error("검색 실패:", error);
+      cosole.log(this.errorMessage);
+    });
+},
     fnAll() {
-      this.search_key = "";
-      this.search_value = "";
+      this.search_type = "";
+      this.search_keyword = "";
       this.fnPage();
     },
     nextPage() {
@@ -216,6 +240,7 @@ export default {
 #notices,
 #noticeop {
   border: 1px solid #ad578c;
+  appearance: auto;
 }
 
 .page-btn {
@@ -233,7 +258,8 @@ h3 {
   margin-top: 45px;
 }
 .register {
-  margin-left: 500px;
+  margin-top: 20px;
+  margin-left: 880px;
   background-color: #ad578c; /* 적절한 색상으로 변경 가능 */
   color: #fff; /* 텍스트 색상을 밝게 설정 */
   border: none;
@@ -255,6 +281,15 @@ th {
 tr:hover {
   background-color: #f5f5f5;
 }
+
+.searchbox {
+  width: 500px; /* 가로 길이 조절 */
+  height: 50px; /* 세로 길이 조절 */
+  padding: 15px 10px 10px;
+  background-color: #f6f7fb; /* 배경 색상 지정 */
+  margin-left: 452px; /* 여백 설정 */
+}
+
 .search {
   margin: 100px;
 }
@@ -273,16 +308,16 @@ tr:hover {
 }
 #notice_img {
   width: 30px;
-  height: 30px;
+  height: 20px;
 }
 
 .important-row {
-  background-color: #ad578c; /* 필독인 경우의 배경색을 여기서 지정하세요. */
+  background-color:#ffc0cb; /* 필독인 경우의 배경색을 여기서 지정하세요. */
   font-weight: bold; /* 필독인 경우의 글자를 두껍게 만듭니다. */
 }
 
-.essential{
-  color:aqua;
+.essential {
+  color: #a52a2a;
   font-size: 14px;
 }
 </style>
