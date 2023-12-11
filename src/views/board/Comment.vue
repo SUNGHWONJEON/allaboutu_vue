@@ -29,13 +29,6 @@
         </div>
         
         <div class="reply-section">
-            <div class="reply-btns">
-                <button class="write-toggle-btn" @click="toggleReplyForm(comment.commentNum)">
-                    <span v-if="showReplyForm === comment.commentNum">답글 취소</span>
-                    <span v-else>답글 달기</span>
-                </button>
-                <button v-show="showReplyForm === comment.commentNum" class="submit-reply-btn" @click="postReply(comment.commentNum)">답글 등록</button>
-            </div>
             <div class="reply-form" v-show="showReplyForm === comment.commentNum">
                 <textarea
                     class="reply-textarea"
@@ -45,6 +38,15 @@
                     placeholder="답글을 입력하세요."
                 ></textarea>
             </div>
+            
+            <div class="reply-btns">
+                <button class="write-toggle-btn" @click="toggleReplyForm(comment.commentNum)">
+                    <span v-if="showReplyForm === comment.commentNum">답글 취소</span>
+                    <span v-else>답글 달기</span>
+                </button>
+                <button v-show="showReplyForm === comment.commentNum" class="submit-reply-btn" @click="postReply(comment.commentNum)">답글 등록</button>
+            </div>
+            
             
         </div>
     </div>
@@ -165,104 +167,6 @@ export default {
 }
 </script>
 
-<style scoped>
-textarea {
-    resize: none;
-    overflow-y: hidden;
-}
-
-.comment-container {
-    border: 1px solid gray;
-    border-radius: 15px;
-    width: 580px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-.comment-profile-section {
-    width: 579px;
-    display: flex;
-    padding: 5px;
-    border-bottom: 1px solid gray;
-}
-
-.comment-date {
-    width: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.comment-content {
-    width: 590px;
-    padding: 10px;
-    word-break: break-all;
-}
-.comment-edit-area {
-    border-bottom: 1px solid gray;
-    background-color: mistyrose;
-    width: 588px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-}
-.comment-edit-textarea {
-    border: 1px solid gray;
-    background-color: white;
-    padding: 10px;
-    width: 100%;
-}
-
-.reply-section {
-    width: 600px;
-    display: flex;
-    flex-direction: column;
-}
-
-.reply-form {
-    width: 590px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.reply-textarea {
-    border: 1px solid gray;
-    width: 98%;
-    margin-bottom: 10px;
-}
-
-.reply-btns {
-    display: flex;
-    flex-direction: row;
-}
-.reply-btns button {
-    border: 1px solid gray;
-    margin: 5px;
-    padding: 5px;
-}
-
-.comment-edit-btns button {
-    border: 1px solid gray;
-    background-color: white;
-    margin: 10px 10px 10px 0px;
-    padding: 5px;
-}
-
-.comment-context-menu {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 10px;
-}
-
-.comment-context-menu button {
-    border: 1px solid gray;
-    margin: 5px;
-    padding: 5px;
-}
-
+<style lang="scss" scoped>
+@import '@/assets/scss/board.scss';
 </style>

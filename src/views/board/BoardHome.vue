@@ -1,4 +1,13 @@
 <template>
+    <div class="pic-title-box">
+        <div class="pic-titile">
+            COMMUNITY
+        </div>
+        <div class="pic-titile-sub">
+            리뷰를 확인하세요.
+        </div>
+    </div>
+
     <Searchbar />
     
     <div class="community-container">
@@ -52,25 +61,6 @@ export default {
 };
 </script>
 
-<style>
-.community-container {
-    border: 1px solid #e2e2e2;
-    width: 640px;
-}
-
-.board-write-btn {
-    position: fixed;
-    top: 90vh;
-    left: calc(50% + 250px);
-    width: 50px;
-    height: 50px;
-}
-
-.chatbot-btn {
-    position: fixed;
-    top: 90vh;
-    left: calc(50% + 330px);
-    width: 50px;
-    height: 50px;
-}
+<style lang="scss" scoped>
+@import '@/assets/scss/board.scss';
 </style>

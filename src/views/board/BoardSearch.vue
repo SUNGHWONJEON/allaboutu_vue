@@ -1,4 +1,5 @@
 <template>
+    <Searchbar />
     <div class="board-list-section">
         <div class="search-keyword-area" v-if="boardList">
             "{{ keyword }}" 검색 결과
@@ -16,11 +17,13 @@
 
 <script>
 import Board from "@/views/board/Board.vue";
+import Searchbar from "./Searchbar.vue";
 
 export default {
     name: "BoardSearch",
     components: {
         Board,
+        Searchbar
     },
     data() {
         return {
@@ -32,8 +35,8 @@ export default {
         }
     },
     mounted() {
-        this.keyword = this.$route.params.keyword;
-        
+        this.keyword = decodeURIComponent(this.$route.query.keyword);
+        console.log('this.$route.query.keyword : ', this.keyword);
         window.addEventListener('scroll', () => {
             const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
             if (scrollTop + clientHeight >= scrollHeight - 100) {
@@ -51,7 +54,7 @@ export default {
             
             this.scrollLock = true;
             this.$axios
-                .get("/boards/search/" + this.keyword, {
+                .get('/boards/search', {
                     params: {
                         keyword: this.keyword,
                         page: this.currentPage,
@@ -59,6 +62,7 @@ export default {
                     },
                 })
                 .then(res => {
+                    console.log('res : ', JSON.stringify(res));
                     this.boardList = [...this.boardList, ...res.data.content];
                     this.totalPages = res.data.totalPages;
                     this.currentPage++;
@@ -81,18 +85,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.board-list-section {
-    border: 1px solid #ffcaca;
-    width: 640px;
-    height: 100%;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.search-keyword-area {
-    text-align: left;
-}
+<style lang="scss" scoped>
+@import '@/assets/scss/board.scss';
 </style>

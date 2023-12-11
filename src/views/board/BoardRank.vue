@@ -1,6 +1,6 @@
 <template>
     <div class="rank-container">
-        <div class="rank-title">인기 Best5</div>
+        <!--<div class="rank-title">인기 Best5</div>-->
         
         <table class="rank-table">
             <thead>
@@ -58,23 +58,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.rank-container {
-    position: fixed;
-    top: 150px;
-    left: calc(50% + 250px);
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-}
-
-.rank-table {
-    border: 1px solid gray;
-}
-
-.rank-items {
-    border: 1px solid green;
-    width: 150px;
-    height: 50px;
-}
+<style lang="scss" scoped>
+@import '@/assets/scss/board.scss';
 </style>

@@ -28,8 +28,9 @@
                 <Loading  v-if="isLoading"/>
             </div>
             
+            <!--
             <div class="pic-inputbox">
-                <!--
+                
                 <div class="pic-input-div">
                     <span>성별을 입력해주세요.</span>
                     <input type="text">
@@ -46,12 +47,13 @@
                     <span>몸무게를 입력해주세요.</span>
                     <input type="number">
                 </div>
-                -->
+                
                 <div class="pic-input-div">
                     <span>허리 사이즈를 입력해주세요.</span>
                     <input type="number" @change="changeSize">
                 </div>
-            </div>
+                
+            </div>-->
 
             <div class="pic-btn-box">
                 <!--<button class="pic-btn" v-on:click="fnUpClick">사진찍기</button>-->

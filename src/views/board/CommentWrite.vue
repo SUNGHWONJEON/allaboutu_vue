@@ -10,6 +10,6 @@ export default {
 }
 </script>
 
-<style>
-    
+<style lang="scss" scoped>
+    @import '@/assets/scss/board.scss';
 </style>

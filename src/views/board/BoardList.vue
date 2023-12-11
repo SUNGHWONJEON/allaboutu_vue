@@ -56,13 +56,6 @@ export default {
 }
 </script>
 
-<style>
-.board-list-section {
-    width: 640px;
-    height: 100%;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+<style lang="scss" scoped>
+@import '@/assets/scss/board.scss';
 </style>
