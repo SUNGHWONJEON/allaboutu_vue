@@ -156,7 +156,7 @@ const routes = [
         component: NoticeDetail
     },
     {
-        path: '/notice/update',
+        path: '/notice/update/:noticeNum',
         name: 'NoticeUpdate',
         component: NoticeUpdate
     },
