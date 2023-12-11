@@ -66,12 +66,133 @@
 
 <script>
 export default {
-  data() {
-    return {
-      userGender: '',
-      userBirth: ''
-    };
-  },
+    data: () => ({
+        userId: "",
+        idRules: [
+            (v) => !!v || "아이디를 작성해주세요",
+            (v) =>
+                (v && v.length <= 15) || "아이디는 15글자를 넘을 수 없습니다.",
+        ],
+        userName: "",
+        idRules: [
+            (v) => !!v || "아이디를 작성해주세요",
+            (v) =>
+                (v && v.length <= 15) || "아이디는 15글자를 넘을 수 없습니다.",
+        ],
+        userEmail: "",
+        emailRules: [
+            (v) => !!v || "이메일을 작성해주세요",
+            (v) => /.+@.+\..+/.test(v) || "이메일 형식으로 작성해주세요",
+        ],
+        userPwd: "",
+        passwordRules: [
+            (v) => !!v || "비밀번호를 작성해주세요",
+            (v) => (v && v.length >= 5) || "비밀번호는 5글자 이상 작성해주세요",
+            (v) => /(?=.*\d)/.test(v) || "숫자를 포함해야합니다",
+            (v) => /([!@$%])/.test(v) || "특수문자를 포함해야합니다 [!@#$%]",
+        ],
+        passwordConfirm: "",
+        passwordConfirmRules: [
+            (v) => !!v || "비밀번호를 작성해주세요",
+            (v) => (v && v.length >= 5) || "비밀번호는 5글자 이상 작성해주세요",
+            (v) => /(?=.*\d)/.test(v) || "숫자를 포함해야합니다",
+            (v) => /([!@$%])/.test(v) || "특수문자를 포함해야합니다 [!@#$%]",
+        ],
+        nickname: "",
+        nameRules: [
+            (v) => !!v || "닉네임을 작성해주세요",
+            (v) =>
+                (v && v.length <= 10) || "닉네임을 10글자를 넘을 수 없습니다.",
+        ],
+    }),
+    computed: {
+        passwordConfirmationRule() {
+            return () =>
+                this.password !== this.passwordConfirm ||
+                "패스워드가 일치하지 않습니다";
+        },
+    },
+    methods: {
+        signUpSubmit() {
+            console.log("signUpSubmit 실행됨");
+
+            let saveData = {};
+            saveData.userId = this.userId;
+            saveData.userName = this.userName;
+            saveData.userPwd = this.userPwd;
+            saveData.userEmail = this.userEmail;
+            saveData.userGender = this.userGender;
+            saveData.userBirth = this.userBirth + "T00:00:00";
+            saveData.userPhone = this.userPhone;
+            console.log(saveData);
+
+            try {
+                this.$axios
+                    .post("/signup", JSON.stringify(saveData), {
+                        headers: {
+                            "Content-Type": `application/json`,
+                        },
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        if (response.data.errorCode === 400) {
+                            alert(response.data.errorMessage);
+                        } else {
+                            alert(
+                                "회원가입이 완료되었습니다. 로그인 화면으로 돌아갑니다"
+                            );
+                            this.$router.push({ path: "/login" });
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error.response);
+                    });
+            } catch (error) {
+                console.error(error);
+            }
+
+            // const validate = this.$refs.form.validate();
+            // if (validate) {
+            //     let saveData = {};
+            //     saveData.userId = this.userId;
+            //     saveData.userName = this.userName;
+            //     saveData.userPwd = this.userPwd;
+            //     saveData.userEmail = this.userEmail;
+            //     saveData.userGender = this.userGender;
+            //     saveData.userBirth = this.userBirth;
+            //     saveData.userPhone = this.userPhone;
+            //     console.log(saveData);
+
+            //     try {
+            //         this.$axios
+            //             .post("/signup", JSON.stringify(saveData), {
+            //                 headers: {
+            //                     "Content-Type": `application/json`,
+            //                 },
+            //             })
+            //             .then((response) => {
+            //                 console.log(response);
+            //                 if (response.data.errorCode === 400) {
+            //                     alert(response.data.errorMessage);
+            //                 } else {
+            //                     alert(
+            //                         "회원가입이 완료되었습니다. 로그인 화면으로 돌아갑니다"
+            //                     );
+            //                     this.$router.push({ path: "./login" });
+            //                 }
+            //             })
+            //             .catch((error) => {
+            //                 console.log(error.response);
+            //             });
+            //     } catch (error) {
+            //         console.error(error);
+            //     }
+            // }
+        },
+        linkToLogin() {
+            this.$router.push({ path: "/login" });
+        },
+    },
 };
 </script>
 
