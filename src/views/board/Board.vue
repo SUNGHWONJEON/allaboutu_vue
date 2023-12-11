@@ -188,8 +188,10 @@ export default {
             this.$router.push('/board/write/' + boardNum);
         },
         deleteBoard(boardNum) {
-            // 게시글 삭제
-            this.$axios.delete('/boards/' + boardNum)
+
+            if(confirm('게시글을 삭제하시겠습니까?')){
+                // 게시글 삭제
+                this.$axios.delete('/boards/' + boardNum)
                 .then(res => {
                     alert('게시글이 삭제되었습니다.');
                     // this.$router.push('/board');
@@ -199,6 +201,7 @@ export default {
                     alert('게시글 삭제에 실패하였습니다.');
                     console.log(err);
                 });
+            }
         },
         reportBoard(boardNum) {
             this.showReportPopup = true;
@@ -240,176 +243,6 @@ export default {
 }
 </script>
 
-<style scoped>
-* {
-    line-height: 1.2;
-    text-align: left;
-}
-
-.board-container {
-    border: 1px solid #ffc9c9;
-    border-radius: 5px;
-    width: 600px;
-    margin: 10px;
-}
-
-.board-title-section {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    height: 50px;
-}
-
-.div-flex-middle {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.board-category {
-    width: 10%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-.board-category span {
-    border: 1px solid #ffc9c9;
-    width: 40px;
-    height: 30px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.board-title {
-    width: 75%;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.board-date {
-    width: 15%;
-    text-align: center;
-}
-
-.board-content {
-    min-height: 100px;
-    padding: 10px;
-}
-.board-content span {
-    margin: 10px;
-}
-.board-content-images img {
-    max-width: 300px;
-    max-height: 250px;
-    margin: 10px;
-    border-radius: 10px;
-}
-
-.info-section {
-    height: 40px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.like-count {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.like-icon {
-    width: 40px;
-    height: 30px;
-    margin-left: 10px;
-    margin-left: 10px;
-}
-
-.comment-count {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.comment-icon {
-    width: 30px;
-    height: 30px;
-    margin-left: 20px;
-    margin-right: 10px;
-}
-
-.read-count {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-left: 20px;
-}
-
-.board-hashtag-list {
-    height: 50px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-.board-hashtag-list span {
-    color: blue;
-    cursor: pointer;
-    margin: 10px;
-}
-
-
-.comment-write {
-    width: 600px;
-    height: 60px;
-}
-.comment-input {
-    border: 1px solid #ffc9c9;
-    border-radius: 10px;
-    width: 520px;
-    height: 40px;
-    margin: 10px;
-    padding: 10px;
-}
-.comment-submit-btn {
-    border: 1px solid #ffc9c9;
-    border-radius: 10px;
-    width: 50px;
-    height: 40px;
-    margin: 10px;
-    margin-left: 0;
-    text-align: center;
-}
-
-.board-profile-section {
-    display: flex;
-    padding: 5px;
-}
-
-.border-bottom-2-s-gray {
-    border-bottom: 1px solid #ffc9c9;
-}
-
-.board-context-menu {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 10px;
-}
-.board-context-menu button {
-    border: 1px solid #ffc9c9;
-    width: 50px;
-    height: 30px;
-    text-align: center;
-}
-.comment-list-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+<style lang="scss" scoped>
+@import '@/assets/scss/board.scss';
 </style>

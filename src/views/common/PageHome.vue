@@ -16,7 +16,7 @@
                         </div>
                         <div class="description">
                             <strong class="displayTitle name">
-                                <span>{{ colorItem.title }}</span>
+                                <span style="font-size: 20px;">{{ colorItem.title }}</span>
                             </strong>
                         </div>
                     
@@ -106,11 +106,13 @@
                 <div class="thumbnail-box" data-aos="zoom-in"
                     v-for="faceItem in faceList" :key="faceItem"
                 >
-                    <div class="thumbnail">
+                    <div class="thumbnail color">
                         <img :src="faceItem.img">
                     </div>
                     <div class="description">
-                        
+                        <strong class="displayTitle name">
+                            <span style="font-size: 20px;">{{ faceItem.title }}</span>
+                        </strong>
                     </div>
                 </div>
                 
@@ -124,7 +126,7 @@
     <div class="main-container margin-top-50">
         <div class="txt-box" data-aos="fade-up">
             <div class="title-text">Comunity</div>
-            <div class="sub-text">고객님의 솔직한 리뷰</div>
+            <div class="sub-text">고객님의 솔직한 리뷰 - 인기 Best5</div>
         </div>
         
         <div class="main-con main-style">
@@ -150,25 +152,25 @@ export default ({
         return {
             colorList: [
                 {
-                    title: '봄',
+                    title: 'Spring',
                     text: '',
                     img: require('@/assets/images/personal/color_spring.png'),
                     path: '/personal'
                 },
                 {
-                    title: '여름',
+                    title: 'Summer',
                     text: '',
                     img: require('@/assets/images/personal/color_summer.png'),
                     path: '/personal'
                 },
                 {
-                    title: '가을',
+                    title: 'Autumn',
                     text: '',
                     img: require('@/assets/images/personal/color_autumn.png'),
                     path: '/personal'
                 },
                 {
-                    title: '겨울',
+                    title: 'Winter',
                     text: '',
                     img: require('@/assets/images/personal/color_winter.png'),
                     path: '/personal'
@@ -206,7 +208,34 @@ export default ({
                     img: require('@/assets/images/style/style_5.png'),
                     path: '/style'
                 }
-            ]
+            ],
+            faceList: [
+                {
+                    title: 'Blonde',
+                    text: '',
+                    img: require('@/assets/images/face/face_1.jpg'),
+                    path: '/face'
+                },
+                {
+                    title: 'Red',
+                    text: '',
+                    img: require('@/assets/images/face/face_2.jpg'),
+                    path: '/face'
+                },
+                {
+                    title: 'Green',
+                    text: '',
+                    img: require('@/assets/images/face/face_3.jpg'),
+                    path: '/face'
+                },
+                {
+                    title: 'Violet',
+                    text: '',
+                    img: require('@/assets/images/face/face_4.jpg'),
+                    path: '/face'
+                }
+                
+            ],
         }
     },
     mounted() {
@@ -217,37 +246,5 @@ export default ({
 </script>
 
 <style lang="scss" scoped>
-
-.comunity-box {
-    margin-top: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .rank-container {
-        position: relative;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        
-        .rank-title {
-            font-size: 17px;
-        }
-
-        .rank-table{
-            border: 1px solid #e2e2e2;
-            margin-top: 10px;
-
-            th, td {
-                border: 1px solid #e2e2e2;
-            }
-        }
-
-    }
-}
-
-
-
-
 
 </style>
