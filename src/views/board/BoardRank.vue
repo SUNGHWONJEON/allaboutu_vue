@@ -58,7 +58,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .rank-container {
     position: fixed;
     top: 150px;

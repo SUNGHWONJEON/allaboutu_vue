@@ -7,19 +7,17 @@
                 <button @click="deleteBoard(board.boardNum)">삭제</button>
                 <button @click="reportBoard(board.boardNum)">신고</button>
             </div>
-            <div class="report-popup" v-if="showReportPopup">
-                <h2>게시글 신고</h2>
-                <select v-model="reportCause">
-                    <option value="" disabled selected>신고 사유</option>
-                    <option value="욕설">욕설</option>
-                    <option value="광고">광고</option>
-                    <option value="음란성">음란성</option>
-                    <option value="기타">기타</option>
-                </select>
-                <textarea v-model="reportReason" placeholder="신고 내용을 작성해주세요."></textarea>
-                <button @click="submitReport">제출</button>
-                <button @click="showReportPopup = false">취소</button>
-            </div>
+            <ReportPopup
+                v-if="showReportPopup"
+                @close="showReportPopup = false"
+                :reportBoardNum="board.boardNum"
+                :reportUserNum="tempUserNum"
+            >
+                <h3>
+                    게시글 신고
+                    <button @click="showReportPopup = false">닫기</button>
+                </h3>                
+            </ReportPopup>
         </div>
         <div class="board-title-section border-bottom-2-s-gray">
             <div class="board-category div-flex-middle">
@@ -42,9 +40,9 @@
             </div>
         </div>
         <div class="board-hashtag-list border-bottom-2-s-gray" v-if="hashtags.length > 0">
-            <span v-for="hashtag in hashtags" :key="hashtag">
-                #{{ hashtag.hashtag }} 
-            </span>
+                <span v-for="hashtag in hashtags" :key="hashtag" @click="searchHashtag(hashtag.hashtag)">
+                    #{{ hashtag.hashtag }} 
+                </span>
         </div>
         <!-- (댓글수, 좋아요수, 조회수) -->
         <div class="info-section border-bottom-2-s-gray">
@@ -83,13 +81,15 @@ import CommentList from './CommentList.vue';
 import Comment from './Comment.vue';
 import moment from 'moment';
 import 'moment/locale/ko';
+import ReportPopup from './ReportPopup.vue';
 
 export default {
     name: 'Board',
     components: {
         ProfileHeader,
         CommentList,
-        Comment
+        Comment,
+        ReportPopup,
     },
     props: {
         board: {
@@ -105,8 +105,6 @@ export default {
             tempUserNum: 2, // 임시로 로그인한 유저 번호
             showReportPopup: false,
             reportBoardNum: '', // 신고 당한 게시글 번호
-            reportCause: '', // 신고 사유
-            reportReason: '', // 신고 내용
             reportUserNum: '', // 신고한 유저 번호
             newCommentText: '', // 댓글 내용
         }
@@ -230,6 +228,14 @@ export default {
                     console.log(err);
                 });
         },
+        searchHashtag(hashtag) {
+            this.$router.push({
+                name: "BoardSearch",
+                params: {
+                    keyword: hashtag,
+                },
+            });
+        },
     },
 }
 </script>
@@ -241,8 +247,8 @@ export default {
 }
 
 .board-container {
-    border: 2px solid gray;
-    border-radius: 20px;
+    border: 1px solid #ffc9c9;
+    border-radius: 5px;
     width: 600px;
     margin: 10px;
 }
@@ -268,7 +274,7 @@ export default {
     align-items: center;
 }
 .board-category span {
-    border: 1px solid gray;
+    border: 1px solid #ffc9c9;
     width: 40px;
     height: 30px;
     text-align: center;
@@ -362,7 +368,7 @@ export default {
     height: 60px;
 }
 .comment-input {
-    border: 2px solid gray;
+    border: 1px solid #ffc9c9;
     border-radius: 10px;
     width: 520px;
     height: 40px;
@@ -370,7 +376,7 @@ export default {
     padding: 10px;
 }
 .comment-submit-btn {
-    border: 2px solid gray;
+    border: 1px solid #ffc9c9;
     border-radius: 10px;
     width: 50px;
     height: 40px;
@@ -385,7 +391,7 @@ export default {
 }
 
 .border-bottom-2-s-gray {
-    border-bottom: 2px solid gray;
+    border-bottom: 1px solid #ffc9c9;
 }
 
 .board-context-menu {
@@ -395,7 +401,7 @@ export default {
     margin-right: 10px;
 }
 .board-context-menu button {
-    border: 1px solid gray;
+    border: 1px solid #ffc9c9;
     width: 50px;
     height: 30px;
     text-align: center;

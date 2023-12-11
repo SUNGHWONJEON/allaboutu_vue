@@ -4,6 +4,8 @@
 
 //라이브러리가 제공하는 함수를 임포트할때는 {함수명} 표기함
 import { createRouter, createWebHistory } from "vue-router";
+import AOS from "aos";
+import 'aos/dist/aos.css';
 
 //라우터가 연결할 페이지(컴포넌트) 임포트
 import PageLogin from '@/views/member/PageLogin.vue'
@@ -12,12 +14,14 @@ import PageMain from '@/views/common/PageMain.vue'
 import StyleMain from '@/views/style/StyleMain.vue'
 import CodyMain from '@/views/cody/CodyMain.vue'
 import CodyDetail from '@/views/cody/CodyDetail.vue'
+import CodyInsert from '@/views/cody/CodyInsert.vue'
 import FaceMain from '@/views/face/FaceMain.vue'
 import PersonalMain from '@/views/personal/PersonalMain.vue'
 import BoardMain from '@/views/board/BoardMain.vue'
 import BoardWrite from '@/views/board/BoardWrite.vue'
 import BoardHome from '@/views/board/BoardHome.vue';
 import BoardDetail from '@/views/board/BoardDetail.vue';
+import BoardSearch from '@/views/board/BoardSearch.vue';
 import NoticeMain from '@/views/notice/NoticeMain.vue'
 import NoticeWrite from '@/views/notice/NoticeWrite.vue';
 import NoticeDetail from '@/views/notice/NoticeDetail.vue';
@@ -51,19 +55,22 @@ const routes = [
     {
         path: '/style',
         name: 'StyleMain',
-        component: StyleMain,
-        children: [
-            {
-                path: '/style/cody',
-                name: 'CodyMain',
-                component: CodyMain
-            },
-            {
-                path: '/style/codydetail',
-                name: 'CodyDetail',
-                component: CodyDetail
-            }
-        ]
+        component: StyleMain
+    },
+    {
+        path: '/style/cody',
+        name: 'CodyMain',
+        component: CodyMain
+    },
+    {
+        path: '/style/codydetail',
+        name: 'CodyDetail',
+        component: CodyDetail
+    },
+    {
+        path: '/style/codyinsert',
+        name: 'CodyInsert',
+        component: CodyInsert
     },
     {
         path: '/face',
@@ -126,6 +133,11 @@ const routes = [
                     }
                 },
             },
+            {
+                path: '/board/search/:keyword',
+                name: 'BoardSearch',
+                component: BoardSearch
+            },
         ]
     },
     {
@@ -167,6 +179,11 @@ const router = createRouter({
       return { top: 0 }
     }
 })
+
+router.beforeEach((to, from, next) => {
+    AOS.init(); // Initialize AOS
+    next();
+});
 
 //이 js파일 밖에서 import한 대상이 사용할 수 있게 처리함
 export default router

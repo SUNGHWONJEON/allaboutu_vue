@@ -31,11 +31,19 @@
 <script>
 import { ref } from 'vue';
 
-export default ({
+export default {
+    emits: ['show-component'],
+    data() {
+        return {
+            tempUserNum : 1
+            ,orgFile: null
+            ,type: -1
+        }
+    },
     setup() {
-        const imageFile = ref(null);
-        const imageUrl = ref(null);
-        const imageUploaded = ref(false);
+        const imageFile = ref();
+        const imageUrl = ref();
+        const imageUploaded = ref();
 
         const handleFileUpload = (event) => {
             const file = event.target.files[0];
@@ -51,25 +59,90 @@ export default ({
             handleFileUpload
         };
     },
+    
     methods: {
+        callPythonApi(dir_path, org_path, image_path) {
+            
+            const apiUrl = 'http://localhost:4444/api';
+            const requestBody = { 
+                dir_path: dir_path,
+                org_path: org_path,
+                image_path: image_path,
+            };
+
+            this.$axios.post(apiUrl, requestBody, {
+                headers:{'Content-Type': 'application/json'}
+            })
+            .then(res => {
+                console.log('callPythonApi res.data : ' + res.data);
+                console.log('callPythonApi res.data str : ' +  JSON.stringify(res.data));
+                console.log('url_1 + res.data.change_path : ' +  ('/personal/image/' + res.data.change_path));
+                
+                this.imageUrl = '/personal/image/' + res.data.change_path;
+                this.type = res.data.type;
+                const change_path = res.data.change_path;
+
+                this.$personalType.num = this.type;
+                console.log('type ' + this.type);
+                this.$emit('show-component');
+
+                //insert하기
+                const insertData = {
+                    user_num: -1,
+                    personal_img: org_path,  // 회원이 업로드한 사진
+                    personal_reimg: change_path, // 회원이 업로드한 사진 이름 바꾼거
+                    personal_num: this.type // 번호
+                }
+                console.log('insertData : ' + JSON.stringify(insertData));
+                return;
+                this.$axios.post('http://localhost:2222/personal/insert', insertData, {
+                    headers:{'Content-Type': 'application/json'}
+                })
+                .then(res => {
+                    console.log('데이터베이스 저장 성공 res : ' + res.data)
+                })
+                .catch(error => {
+                    //에러 처리
+                    console.error(error);
+                });
+                
+            })
+            .catch(error => {
+                //에러 처리
+                console.error(error);
+            });
+            
+        },
         fnUpClick(){
 
         },
         fnTypeClick(){
-            this.$axios.post('http://localhost:2222/personal/insert', insertData, {
-                    headers:{'Content-Type': 'application/json'}
+
+            if(this.imageFile == null) {
+                alert('사진을 업로드해주세요.');
+                return;
+            }
+
+            const formData = new FormData();
+            console.log('this.imageFile : ' + this.imageFile);
+            formData.append('file', this.imageFile);
+            formData.append('userNum', this.tempUserNum);
+
+            this.$axios.post('/personal/upload', insertData, {
+                    headers:{'Content-Type': 'multipart/form-data'}
                 })
                 .then(res => {
-                    console.log('디비 저장 성공 : ' + res.data)
+                    console.log('디비 저장 성공 : ' + res.data);
+                    this.callPythonApi(res.data[0], res.data[1], res.data[2]);
                 })
                 .catch(err => {
                     console.log(err);
                 })
         }
     }
-})
+}
 </script>
 
-<style>
+<style lang="scss" scoped>
 @import '@/assets/css/base_pic.css';
 </style>

@@ -20,9 +20,9 @@
         
         <!-- 페이징 버튼 추가 -->
         <div class="page-box">
-            <button class="page-btn" @click="prevPage" :disabled="currentPage === 1">이전</button>
+            <button class="page-btn" @click="prevPage" :disabled="currentPage === 1" :class="{ disabled: currentPage === 1 }">이전</button>
             <button class="page-btn" @click="movePage(i)" v-for="i in totalPages" :key="i"> {{ i }}</button>
-            <button class="page-btn" @click="nextPage" :disabled="currentPage === totalPages">다음</button>
+            <button class="page-btn" @click="nextPage" :disabled="currentPage === totalPages" :class="{ disabled: currentPage === totalPages }">다음</button>
         </div>
     </div>
 </template>
@@ -49,10 +49,13 @@ export default ({
         }
     },
     mounted() {
+
+        console.log('this.$route.query.formNum : ' + this.$route.query.formNum)
+
         //코디 불러오기
         this.$axios.get('/cody', {
             params: {
-                formNum: this.$styleType.formNum,
+                formNum: this.$route.query.formNum,
                 currentPage: this.currentPage,
                 pageSize: this.pageSize
             }
@@ -105,8 +108,13 @@ export default ({
         fnListClick(cody) {
             console.log('list-click : '+cody);
             this.$styleType.cody = cody;
+            const encodedQuery = encodeURIComponent(JSON.stringify(cody));
+
             this.$router.push({
-                path: '/style/codydetail'
+                name: 'CodyDetail'
+                ,query: {
+                    cody: encodedQuery
+                }
             })
             
         }

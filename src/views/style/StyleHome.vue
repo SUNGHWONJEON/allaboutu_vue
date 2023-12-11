@@ -16,10 +16,16 @@
                 <input class="pic-img-box" type="file" id="pic_up"
                     @change="handleFileUpload" accept="image/*"
                 >
-                <img class="my-img-box" ref="img_box"
+                <img class="my-img-box" ref="img_box" @load="handleImageLoad"
                     :src="imageUrl" v-if="imageUrl" 
                     :style="{ display: imageUrl ? 'block' : 'none' }"
                 >
+                <img class="my-img-box" 
+                    :src="newImageUrl"
+                    :style="{ display: newImageUrl ? 'block' : 'none' }"
+                >
+
+                <Loading  v-if="isLoading"/>
             </div>
             
             <div class="pic-inputbox">
@@ -60,15 +66,21 @@
 
 <script>
 import { ref } from 'vue';
+import Loading from '@/views/common/Loading.vue';
 
 export default {
+    components: {
+        Loading
+    },
     emits: ['show-component'],
     data() {
         return {
-            tempUserNum : 1
+            isLoading: false
+            ,tempUserNum : 1
             ,orgFile: null
             ,waistSize: -1
             ,type: -1
+            ,newImageUrl : null
         }
     },
     setup() {
@@ -116,33 +128,33 @@ export default {
             .then(res => {
                 console.log('callPythonApi res.data : ' + res.data);
                 console.log('callPythonApi res.data str : ' +  JSON.stringify(res.data));
-                console.log('url_1 + res.data.change_path : ' +  ('/style/image/' + res.data.change_path));
+                //console.log('url_1 + res.data.change_path : ' +  ('/style/image/' + res.data.change_path));
                 //const url = '../../allaboutu_springboot/src/main/resources/style_upload/';
                 //this.imageUrl = 'http://localhost:2222/style/image/20231206173103_form.jpg'//
                 
-                this.imageUrl = '/style/image/' + res.data.change_path;
                 this.type = res.data.type;
                 const change_path = res.data.change_path;
-
+                
                 this.$styleType.num = this.type;
                 console.log('type ' + this.type);
                 this.$emit('show-component');
-
+                
                 //insert하기
                 const insertData = {
-                    user_num: -1,
-                    user_img: org_path,
-                    user_reimg: image_path,
-                    user_style: change_path,
-                    form_num: this.type
+                    userNum: 1,
+                    userImg: org_path,
+                    userReimg: image_path,
+                    userStyle: change_path,
+                    formNum: this.type
                 }
                 console.log('insertData : ' + JSON.stringify(insertData));
-                return;
-                this.$axios.post('http://localhost:2222/style/insert', insertData, {
+                
+                this.$axios.post('/style/insert', insertData, {
                     headers:{'Content-Type': 'application/json'}
                 })
                 .then(res => {
                     console.log('데이터베이스 저장 성공 res : ' + res.data)
+                    this.imageUrl = '/style/image/' + change_path;
                 })
                 .catch(error => {
                     //에러 처리
@@ -178,6 +190,8 @@ export default {
                 console.log('res.data : ' + res.data);
                 console.log('res stringify : ' + JSON.stringify(res))
                 console.log('waistSize : ' + this.waistSize)
+                //로딩 시작
+                this.isLoading = true;
                 this.callPythonApi(res.data[0], res.data[1], res.data[2], this.waistSize);
                 
             })
@@ -187,6 +201,9 @@ export default {
             })
 
 
+        },
+        handleImageLoad(data){
+            this.isLoading = false;
         }
     }
 }

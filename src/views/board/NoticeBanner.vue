@@ -42,15 +42,15 @@ export default {
         },
     },
     created() {
-        this.$axios.get('/notice', {
+        this.$axios.get('/notices', {
             params: {
-                search_key: 'noticeType',
-                search_value: '필독',
                 page: 0,
+                size: 5,
             },
         })
         .then((res) => {
             this.noticeList = res.data.content;
+            console.log(noticeList);
         })
         .catch((err) => {
             console.error(err);
@@ -64,12 +64,13 @@ export default {
 
 <style>
 .notice-banner {
-    border: 1px solid orange;
+    border-bottom: 1px solid #e2e2e2;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     width: 640px;
     height: 50px;
+    margin-bottom: 10px;
 }
 
 .notice-banner div {
