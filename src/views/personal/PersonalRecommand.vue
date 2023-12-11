@@ -44,7 +44,7 @@ export default {
                 {
                     id: 1
                     ,src: [
-                        require('@/assets/images/personal/봄.png')
+                        require('@/assets/images/personal/spring.png')
                     ]
                     ,title: '역삼각형'
                     ,index: 0
@@ -56,7 +56,7 @@ export default {
                 {
                     id: 2
                     ,src: [
-                        require('@/assets/images/personal/봄.png')
+                        require('@/assets/images/personal/summer.png')
                     ]
                     ,title: '모래시계형'
                     ,index: 0
@@ -67,7 +67,7 @@ export default {
                 {
                     id: 3
                     ,src: [
-                        require('@/assets/images/personal/봄.png')     
+                        require('@/assets/images/personal/autumn.png')     
                     ]
                     ,title: '사각체형'
                     ,index: 0
@@ -77,7 +77,7 @@ export default {
                 {
                     id: 4
                     ,src: [
-                         require('@/assets/images/personal/봄.png')  
+                         require('@/assets/images/personal/winter.png')  
                     ]
                     ,title: '둥근체형'
                     ,index: 0
