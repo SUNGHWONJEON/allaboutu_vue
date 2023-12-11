@@ -23,18 +23,15 @@
           <tr>
             <td class="tg-0lax border-leftnone"><h4>첨부파일</h4></td>
             <td class="tg-0lax border-rightnone" colspan="3">
-              <span v-if="renameFileName">{{ renameFileName }}</span>
+              <span v-if="renameFileName">{{ originalFileName }}
+               <button @click="downloadFile"> 다운로드</button>
+              </span>
               <span v-else>첨부파일 없음</span>
             </td>
           </tr>
-          <tr colspan="2">
+          <tr>
             <td class="tg-0lax border-leftnone border-rightnone border-downnone" colspan="2">
               <p class="noticep">{{ noticeContents }}</p>
-              <img
-                id="notices"
-                v-if="renameFileName !== null"
-                :src="'/notices/image/' + renameFileName"
-              />
             </td>
           </tr>
         </tbody>
@@ -108,7 +105,30 @@ export default {
           console.log(err);
         });
     },
+    
+    downloadFile(){
+      // 서버에 파일 다운로드 요청 보내기
+      axios({
+        url: `/notices/download/${this.renameFileName}`,
+        method: "GET",
+        responseType: "blob", // 응답 형식을 Blob으로 설정
+      })
+        .then((response) => {
+          // 파일 다운로드를 위한 코드
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", this.renameFileName);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        })
+        .catch((error) => {
+          console.error("파일 다운로드 실패:", error);
+        });
+    },
 
+    
     deleteNotice(noticeNum) {
       if (confirm("정말로 이 공지를 삭제하시겠습니까?")) {
         this.$axios
@@ -249,7 +269,5 @@ export default {
   vertical-align: top;
 }
 
-.noticep {
-  width: 150px;
-}
+
 </style>
