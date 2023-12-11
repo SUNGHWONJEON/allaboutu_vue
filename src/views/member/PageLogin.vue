@@ -7,22 +7,24 @@
                     <div class="bg-white shadow-md rounded-lg p-6">
                         <h1 class="title">All About U</h1>
                         <form @submit.prevent="fnLogin">
-                            <div class="id-storage">
-                                <div class="flex justify-between items-center">
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="form-checkbox" v-model="rememberMe">
-                                        <span class="ml-2">아이디 저장</span>
-                                    </label>
+                            <div class="login-part">
+                                <div class="id-storage">
+                                    <div class="flex justify-between items-center">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="form-checkbox" v-model="rememberMe">
+                                            <span class="ml-2">아이디 저장</span>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="id">
-                                <input type="text" v-model="user_id" placeholder="아이디" class="email-id">
-                            </div>
-                            <div class="pwd">
-                                <input type="password" v-model="user_pw" placeholder="비밀번호" class="pw">
-                            </div>
-                            <div class="mb-4">
-                                <button type="submit" class="login">로그인</button>
+                                <div class="id">
+                                    <input type="text" v-model="userId" placeholder="아이디" class="email-id">
+                                </div>
+                                <div class="pwd">
+                                    <input type="password" v-model="userPwd" placeholder="비밀번호" class="pw">
+                                </div>
+                                <div class="mb-4">
+                                    <button type="submit" class="login">로그인</button>
+                                </div>
                             </div>
                             <div class="id_pwd_enroll">
                                 <a href="#" class="link-separator">아이디 찾기  |  </a>
@@ -56,107 +58,39 @@
 
 <script>
 export default {
-    name: 'PageLogin',
-    data() {  //해당 컴포넌트에서 사용할 변수 초기화 처리
-        return {
-            requestBody: {},
-            user_id: '',
-            user_pw: '',
-            remeberMe: false,
-        }
-    },
-    created() {
-        this.user_id = localStorage.getItem('rememberUserId') || '';
-    },
-    methods: {
-        changePage() {
-            //저장된 라우터를 이용해서 페이지 url 지정
-            this.$router.push({
-                path: './main'
-            })
-        },
-        // loginok_member() {
-        //     if (this.user_id !== undefined) {
-        //         this.$axios.get(
-        //             this.$serverUrl + '/members/' + this.user_id
-        //         ).then((res) => {
-        //             console.log("loginok_member 확인 : " + res.data);
+  data() {
+    return {
+      userId: '',
+      userPwd: '',
+      rememberMe: false,
+    };
+  },
+  methods: {
+    async fnLogin() {
+      try {
+        // API 서버로 POST 요청으로 로그인 요청 보내기
+        const response = await this.$axios.post('/auth/login', {
+          userId: this.userId,
+          userPwd: this.userPwd,
+        });
 
-        //             this.requestBody = res.data;
-        //             console.log('userId : ' + this.requestBody.userId);
-                    
-        //             if (this.user_id == this.requestBody.userId) {
-        //                 sessionStorage.setItem('userId', this.requestBody.userId);
-        //                 sessionStorage.setItem('userName', this.requestBody.userName);
-                        
-        //                 // 로그인이 성공했으므로, PageMain 이 출력되게 함
-        //                 this.changePage();
-                        
-        //                 // 로그인 성공 시 아이디 저장 체크 여부 확인 후 로컬 스토리지에 저장
-        //                 if (this.rememberMe) {
-        //                     localStorage.setItem('rememberedUserId', this.user_id);
-        //                 } else {
-        //                     localStorage.removeItem('rememberedUserId');
-        //                 }
-        //             }
-        //         }).catch((err) => {
-        //             console.log(err);
-        //             alert('회원 정보가 없습니다. 확인하고 다시 로그인하세요.');
-        //             this.$router.go(0); // 현재 페이지 유지함
-        //         });
-        //     }
-        // },
-        fnLogin(){
-            //input 태그의 v-model 속성에 지정한 이름을 그대로 사용함
-            //input 태그에 기록된 값을 의미함
-            //document.getElementById('user_id').value 과 같음
-            //v-model='user_id'  => this.user_id 사용
-            if(this.user_id === ''){
-                alert('아이디를 입력하세요.')                
-                this.$router.go(0) //현재 페이지 유지함
-            }
+        // 토큰 저장
+        const token = response.data.token;
+        localStorage.setItem('token', token);
 
-            if(this.user_pw === ''){
-                alert('암호를 입력하세요.')
-                this.$router.go(0) //현재 페이지 유지함
-            }
-
-            //서버측으로 아이디와 암호를 전달하고,
-            //인증이 성공하면 토큰을 받도록 함
-            if(this.user_id !== undefined){
-                this.$axios.post(this.$serverUrl + '/login/', 
-                    {
-                        userId: this.user_id,
-                        userPwd: this.user_pw
-                    }, {
-                        headers: {
-                            'Content-Type': 'application/json; charset=utf-8',
-                            Authorization: 'token', //인증방식은 'token' 방식
-                        }
-                    }).then((res) => {
-                        //요청 처리가 성공했다면
-                        if(res.status == 200){
-                            console.log("token success : " + res)
-                            //javascript API : LocalStorage, SessionStorage 객체
-                            //client 브라우저에 저장
-                            //LocalStorage : 브라우저 종료하고 다시 열어도 저장 유지함
-                            //SessionStorage : 브라우저가 종료되면 저장 정보가 사라짐
-                            sessionStorage.setItem('token', res.data.token)
-                            //토큰만 받았으므로, 로그인한 회원정보를 요청함
-                            this.loginok_member();
-                        }
-                    })
-                    .catch((err) => {
-                        //요청 처리가 실패했다면
-                        console.log(err)
-                        alert('회원 정보가 없습니다. 확인하고 다시 로그인하세요.')
-                        this.$router.go(0) //현재 페이지 유지함
-                    }
-                );
-            }
-        },
+        // 로그인 성공 시 페이지 이동
+        this.changePage();
+      } catch (error) {
+        // 로그인 실패 처리
+        console.error('로그인 실패:', error);
+      }
     },
-}
+    changePage() {
+      // 페이지 이동
+      this.$router.push({ path: '/' });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -175,15 +109,17 @@ export default {
     }
     .id-storage {
         margin: 0px 100px 0px 325px;
+        display: flex;
+        justify-content: flex-start;
     }
     .email-id {
         margin: 5px 0px 5px 0px;
-        width: 243px; 
+        width: 250px; 
         height: 34px;
     }
     .pw {
         margin: 5px 0px 10px 0px;
-        width: 243px; 
+        width: 250px; 
         height: 34px;
     }
    .social-button {
