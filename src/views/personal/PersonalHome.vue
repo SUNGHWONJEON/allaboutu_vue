@@ -15,6 +15,7 @@
                 <label for="pic_up" ref="pic_label" :class="{ 'pic-label': imageUploaded}">업로드</label>
                 <input class="pic-img-box" id="pic_up" type="file" @change="handleFileUpload" accept="image/*">
                 <img class="my-img-box" :src="imageUrl" v-if="imageUrl" :style="{ display: imageUrl ? 'block' : 'none' }">
+                <Loading  v-if="isLoading"/>
             </div>
             
             <div class="pic-btn-box">
@@ -30,20 +31,25 @@
 
 <script>
 import { ref } from 'vue';
+import Loading from '@/views/common/Loading.vue';
 
 export default {
+    components: {
+        Loading
+    },
     emits: ['show-component'],
     data() {
         return {
-            tempUserNum : 1
+            isLoading: false
+            ,tempUserNum : 1
             ,orgFile: null
             ,type: -1
         }
     },
     setup() {
-        const imageFile = ref();
-        const imageUrl = ref();
-        const imageUploaded = ref();
+        const imageFile = ref(null);
+        const imageUrl = ref(null);
+        const imageUploaded = ref(false);
 
         const handleFileUpload = (event) => {
             const file = event.target.files[0];
@@ -63,7 +69,7 @@ export default {
     methods: {
         callPythonApi(dir_path, org_path, image_path) {
             
-            const apiUrl = 'http://localhost:4444/api';
+            const apiUrl = 'http://localhost:8080/api';
             const requestBody = { 
                 dir_path: dir_path,
                 org_path: org_path,
@@ -91,10 +97,10 @@ export default {
                     user_num: -1,
                     personal_img: org_path,  // 회원이 업로드한 사진
                     personal_reimg: change_path, // 회원이 업로드한 사진 이름 바꾼거
-                    personal_num: this.type // 번호
+                    personal_num: t023his.type // 번호
                 }
                 console.log('insertData : ' + JSON.stringify(insertData));
-                return;
+                
                 this.$axios.post('http://localhost:2222/personal/insert', insertData, {
                     headers:{'Content-Type': 'application/json'}
                 })
@@ -113,9 +119,6 @@ export default {
             });
             
         },
-        fnUpClick(){
-
-        },
         fnTypeClick(){
 
             if(this.imageFile == null) {
@@ -128,11 +131,12 @@ export default {
             formData.append('file', this.imageFile);
             formData.append('userNum', this.tempUserNum);
 
-            this.$axios.post('/personal/upload', insertData, {
+            this.$axios.post('/personal/upload', formData, {
                     headers:{'Content-Type': 'multipart/form-data'}
                 })
                 .then(res => {
                     console.log('디비 저장 성공 : ' + res.data);
+                    this.isLoading = true;
                     this.callPythonApi(res.data[0], res.data[1], res.data[2]);
                 })
                 .catch(err => {
