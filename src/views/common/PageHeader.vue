@@ -24,24 +24,31 @@
                 </ul>
             </div>
             
-            <!--장바구니, 찜-->
+            <!-- 로그인 -->
             <div class="header_right right">
                 <div class="header_right_widget">
                     <!-- 로그인되어 있을 때 --> 
-                    <template v-if="isLoggedIn">
-                        <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px">
-                        <div>{{ username }} 님</div>
-                        <router-link to="/logout">
-                            <div class="myinfo-box-div">
-                                <div @click="logout">로그아웃</div>
-                            </div>
-                        </router-link>
+                    <template v-if="isLoggedIn == true">
+                        
+                        <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px; border-radius: 100%" @click="goToMyPage">
+                        <div style="margin-left: 2px; font-size: 12px">
+                            <div style="line-height: 14px">{{ username }}님</div>
+                        
+                            <router-link to="/logout" @click="logout">
+                                <div class="myinfo-box-div">
+                                    <div>로그아웃</div>
+                                </div>
+                            </router-link>
+                        </div>
+                    
                     </template>
                     <!-- 로그인되어 있지 않을 때 -->
                     <template v-else>
                         <router-link to="/login">
                             <div class="myinfo-box-div">
-                                <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px">
+                                <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px border-radius: 100%">
+                            </div>
+                            <div style="margin-left: 2px; font-size: 12px; line-height: 14px">
                                 <div @click="login">로그인</div>
                             </div>
                         </router-link>
@@ -57,6 +64,8 @@
 
 <script>
 import { useRoute } from 'vue-router';
+import base64 from 'base-64';
+import axios from 'axios';
 
 export default ({
     setup() {
@@ -74,6 +83,8 @@ export default ({
   },
     data(){
         return {
+            username: "",
+            isLoggedIn: false,
             selList: [
                 {
                     id: 0
@@ -118,6 +129,7 @@ export default ({
     },
     mounted() { //이벤트 : 이 컴포넌트(App.vue)마운트 되면
         window.addEventListener('scroll', this.handleScroll);
+        this.login();
     },
     watch: {
         $route(to, from) {
@@ -145,17 +157,46 @@ export default ({
                 headerElement.classList.add('background');
             }
         },
+        goToMyPage() {
+            // 이미지 클릭 시 '/member/mypage'로 이동
+            this.$router.push('/member/mypage');
+        },
+
         // 로그인
         // 성공시 isLoggedIn을 true로 설정하고 username을 설정
         login() {
-            this.isLoggedIn = true;
-            this.username = "{{ username }}";
+            if (localStorage.getItem('accessToken') != null) {
+                let token = localStorage.getItem('accessToken');
+                let payload = token.substring(token.indexOf('.')+1, token.lastIndexOf('.'));
+                let decodingInfo = base64.decode(payload);
+
+                console.log('token: ' + token);
+                console.log('decodingInfo: ' + decodingInfo);
+
+                this.isLoggedIn = true;
+                this.userId = JSON.parse(decodingInfo).sub;
+                this.$axios.get('/member/' + this.userId).then((res) => {
+                    console.log(res.data);
+                    this.username = res.data.userName;
+                });
+                let expired = JSON.parse(decodingInfo).exp;
+                console.log('isLoggedIn: ' + this.isLoggedIn)
+                console.log(this.userId);
+                console.log(expired);
+
+                return;
+            }
         },
+
         //로그아웃
         //성공시 isLoggedIn을 false로 설정하고 username 초기화
         logout() {
             this.isLoggedIn = false;
             this.username = "";
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+
+            this.$router.push('/');
         },
         //로그인한 사용자 이름 표시
         data() {
