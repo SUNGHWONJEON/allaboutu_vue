@@ -1,43 +1,60 @@
 <template>
+    <Searchbar />
+    
     <div class="community-container">
         <NoticeBanner />
         <BoardList />
     </div>
-    
+
     <div class="fixed-elements">
         <!-- 주간 인기글 Best5 -->
-        <BoardRank />
-        
+        <!-- <BoardRank /> -->
+
+        <!-- 검색바 -->
+        <!-- <Searchbar /> -->
+
+        <!-- 모달 팝업 -->
+
         <!-- 글쓰기 버튼 -->
         <router-link to="/board/write">
-            <img class="board-write-btn" src="@/assets/images/community/board_write_btn.png">
+            <img
+                class="board-write-btn"
+                src="@/assets/images/community/board_write_btn.png"
+            />
         </router-link>
-        
+
         <!-- 챗봇 버튼 -->
         <router-link to="/board/write">
-            <img class="chatbot-btn" src="@/assets/images/community/chatbot_icon.png">
+            <img
+                class="chatbot-btn"
+                src="@/assets/images/community/chatbot_icon.png"
+            />
         </router-link>
     </div>
 </template>
 
 <script>
-import NoticeBanner from './NoticeBanner.vue';
-import BoardList from './BoardList.vue';
-import BoardRank from './BoardRank.vue';
+import NoticeBanner from "./NoticeBanner.vue";
+import BoardList from "./BoardList.vue";
+import BoardRank from "./BoardRank.vue";
+import Searchbar from "./Searchbar.vue";
+import ReportPopup from "./ReportPopup.vue";
 
 export default {
-    name: 'BoardHome',
+    name: "BoardHome",
     components: {
         NoticeBanner,
         BoardList,
         BoardRank,
-    }
-}
+        Searchbar,
+        ReportPopup,
+    },
+};
 </script>
 
 <style>
 .community-container {
-    border: 1px solid orange;
+    border: 1px solid #e2e2e2;
     width: 640px;
 }
 

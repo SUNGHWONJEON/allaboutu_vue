@@ -58,7 +58,6 @@ export default {
 
 <style>
 .board-list-section {
-    border: 1px solid orange;
     width: 640px;
     height: 100%;
     margin: auto;
