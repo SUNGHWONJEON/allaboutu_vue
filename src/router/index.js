@@ -21,6 +21,7 @@ import BoardMain from '@/views/board/BoardMain.vue'
 import BoardWrite from '@/views/board/BoardWrite.vue'
 import BoardHome from '@/views/board/BoardHome.vue';
 import BoardDetail from '@/views/board/BoardDetail.vue';
+import BoardSearch from '@/views/board/BoardSearch.vue';
 import NoticeMain from '@/views/notice/NoticeMain.vue'
 import NoticeWrite from '@/views/notice/NoticeWrite.vue';
 import NoticeDetail from '@/views/notice/NoticeDetail.vue';
