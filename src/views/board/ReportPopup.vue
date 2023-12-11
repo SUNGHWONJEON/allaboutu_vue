@@ -97,9 +97,12 @@ select {
     background: rgba(0, 0, 0, 0.5);
 }
 .modal-window {
+    position: relative;
     background: #fff;
     border-radius: 4px;
     overflow: hidden;
+    width: 500px;
+    height: 400px;
 }
 .modal-content {
     padding: 10px 20px;
@@ -108,7 +111,7 @@ select {
     align-items: center;
 }
 .modal-content select {
-    border: 1px solid gray;
+    border: 1px solid #e2e2e2;
     border-radius: 5px;
     width: 100%;
     height: 30px;
@@ -116,18 +119,22 @@ select {
     margin-bottom: 10px;
 }
 .modal-content textarea {
-    border: 1px solid gray;
+    border: 1px solid #e2e2e2;
     border-radius: 5px;
     width: 100%;
-    height: 100px;
+    height: 220px;
     text-align: left;
     margin-bottom: 10px;
     resize: none;
+    padding: 15px;
 }
 .modal-footer {
-    background: #ccc;
+    position: absolute;
+    width: 100%;
+    background: #e2e2e2;
     padding: 10px;
     text-align: right;
+    bottom: 0px;
 }
 .modal-enter-active,
 .modal-leave-active {

@@ -25,26 +25,21 @@
             c
             style="resize: none"
           ></textarea>
-          <img
-            v-if="renameFileName !== null"
-            :src="'/notices/image/' + renameFileName"
-          />
         </div>
 
-       <div id="attachment">
-          <h4 class="attach">첨부파일</h4>
-          <form @submit.prevent="uploadFile">
-            <input
-              type="file"
-              name="fileInput"
-              id="fileInput"
-              @change="getFileName($event.target.files[0])"
-            />
-            <button type="submit">Upload</button>
-          </form>
+        <div id="attachment">
+          <div id="noticenot">
+            <form id="filenot" @submit.prevent="uploadFile">
+              <span v-if="renameFileName">첨부 파일: {{ originalFileName }}</span>
+              <span v-else>첨부파일 없음</span>
+              <h4 class="attach">첨부파일 변경</h4>
+              <div id="noticenot">
+                <v-file-input v-model="file" ref="fileInput" @change="onFileChange" />
+              </div>
+            </form>
+          </div>
         </div>
 
-    
         <div id="writebutton">
           <input
             type="button"
@@ -93,8 +88,9 @@ export default {
         new Blob([JSON.stringify(notice)], { type: "application/json" })
       );
 
-      sendData.append("file", this.file);
-
+      sendData.append("file", this.file[0]);
+      console.log("file:");
+      console.log(this.file[0]);
       this.$axios
         .patch("/notices/" + this.noticeNum, sendData, {
           header: {
@@ -146,6 +142,10 @@ export default {
       if (file) {
         this.file = file;
       }
+    },
+
+     goBack() {
+      this.$router.go(-1);
     },
   },
 };
@@ -201,9 +201,16 @@ h5 {
 
 #writebutton {
   margin-top: 20px;
+  margin-left: 500px;
 }
 
-#attachment{
-  margin-left:
+#attachment {
+  display: flex;
+  margin-top: 30px;
+  margin-left: 840px;
+}
+
+#noticenot {
+  margin-left: 30px;
 }
 </style>

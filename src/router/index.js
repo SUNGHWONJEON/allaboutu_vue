@@ -134,7 +134,7 @@ const routes = [
                 },
             },
             {
-                path: '/board/search/:keyword',
+                path: '/board/search',
                 name: 'BoardSearch',
                 component: BoardSearch
             },
@@ -156,7 +156,7 @@ const routes = [
         component: NoticeDetail
     },
     {
-        path: '/notice/update',
+        path: '/notice/update/:noticeNum',
         name: 'NoticeUpdate',
         component: NoticeUpdate
     },

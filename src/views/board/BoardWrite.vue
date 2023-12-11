@@ -277,7 +277,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    margin: 0 auto;
 }
 .category-section {
     width: 600px;

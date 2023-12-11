@@ -106,7 +106,7 @@ export default ({
             this.fnPage();
         },
         fnListClick(cody) {
-            console.log('list-click : '+cody);
+            console.log('list-click : ',cody);
             this.$styleType.cody = cody;
             const encodedQuery = encodeURIComponent(JSON.stringify(cody));
 

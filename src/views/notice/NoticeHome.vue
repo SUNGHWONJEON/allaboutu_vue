@@ -53,7 +53,7 @@
               >{{ n.noticeTitle }}</router-link
             >
           </td>
-          <td>{{ n.userNum === 1 ? "관리자" : n.userNum }}</td>
+          <td>{{ n.userName }}</td>
           <td>{{ n.writeDate }}</td>
           <td>
             <img
@@ -83,7 +83,7 @@
             >{{ row.noticeTitle }}</router-link
           >
         </td>
-        <td>{{ row.userNum === 1 ? "관리자" : row.userNum }}</td>
+        <td>{{ row.userName }}</td>
         <td>{{ row.writeDate }}</td>
         <td>
           <img
