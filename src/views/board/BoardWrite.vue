@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import base64 from 'base-64';
+
 export default {
     name: 'BoardWrite',
     components: { 
@@ -77,13 +79,25 @@ export default {
             contentMaxLength: 500, // 내용 최대 글자수
             selectedImages: [],
             attachments: [],
-            tempUserNum: 2, // 임시로 로그인한 유저 번호
+            loginUserId: '',
+            loginUserNum: '',
         }
     },
     created() {
         if (this.$route.params.boardNum) {
             this.boardNum = this.$route.params.boardNum;
             this.getBoard(this.boardNum);
+        }
+
+        // 액세스 토큰에서 정보 추출
+        let token = sessionStorage.getItem("accessToken");
+        if (token != null) {
+            let payload = token.split(".")[1];
+            let dec = base64.decode(payload);
+            dec = JSON.parse(dec);
+            
+            this.loginUserId = dec.sub;
+            this.loginUserNum = dec.userNum;
         }
     },
     computed: {
@@ -124,7 +138,7 @@ export default {
 
             const sendData = new FormData();
             const board = {
-                userNum: this.tempUserNum,
+                userNum: this.loginUserNum,
                 categoryNum: this.selectedCategory,
                 boardTitle: this.boardTitle,
                 boardContent: this.boardContent,

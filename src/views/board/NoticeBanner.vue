@@ -50,7 +50,6 @@ export default {
         })
         .then((res) => {
             this.noticeList = res.data.content;
-            console.log(noticeList);
         })
         .catch((err) => {
             console.error(err);

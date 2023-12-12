@@ -3,8 +3,6 @@
         <div class="main-container">
             <div class="contents-boxes">
                 <router-view />
-                <!-- 게시판 컴포넌트 -->
-                <!--    <BoardHome /> -->
             </div>
         </div>
     </div>
