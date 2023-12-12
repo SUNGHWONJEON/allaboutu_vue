@@ -239,7 +239,7 @@ select {
 }
 
 button {
-    background-color: #ee7bc5;
+    background-color: #eb43b0;
     color: white;
     padding: 12px;
     border: none;
@@ -250,7 +250,7 @@ button {
 }
 
 button:hover {
-    background-color: #eb43b0;
+    background-color: #ee7bc5;
 }
 
 #gender,
