@@ -177,6 +177,10 @@ $borderColor2 : #ffcaca;
             min-height: 100px;
             padding: 10px;
 
+            span {
+                white-space: break-spaces;
+            }
+
             .board-content-images {
 
                 img {

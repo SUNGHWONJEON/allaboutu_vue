@@ -12,13 +12,18 @@
                 >
                     삭제
                 </button>
-                <button @click="reportBoard(board.boardNum)" v-if="this.loginUserId">신고</button>
+                <button
+                    @click="reportBoard(board.boardNum)"
+                    v-if="this.loginUserId"
+                >
+                    신고
+                </button>
             </div>
             <ReportPopup
                 v-if="showReportPopup"
                 @close="showReportPopup = false"
                 :reportBoardNum="board.boardNum"
-                :reportUserNum="loginUserNum"
+                :reportUserId="loginUserId"
             >
                 <h3>
                     게시글 신고
@@ -119,7 +124,6 @@ import Comment from "./Comment.vue";
 import moment from "moment";
 import "moment/locale/ko";
 import ReportPopup from "./ReportPopup.vue";
-import base64 from "base-64";
 
 export default {
     name: "Board",
@@ -142,29 +146,22 @@ export default {
             isLiked: false, // 로그인한 유저의 좋아요 여부
             showReportPopup: false, // 신고 팝업 노출 여부
             reportBoardNum: "", // 신고 당한 게시글 번호
-            reportUserNum: "", // 신고한 유저 ID
+            reportUserId: "", // 신고한 유저 ID
             newCommentText: "", // 댓글 내용
             hasPermission: false, // 게시글 수정, 삭제 권한
-            loginUserId: "", // 로그인한 유저 아이디
-            loginUserNum: "", // 로그인한 유저 번호
+            loginUserId: "", // 로그인한 유저 ID
         };
     },
     created() {
-        // 액세스 토큰에서 정보 추출
-        let token = sessionStorage.getItem("accessToken");
-        if (token != null) {
-            let payload = token.split(".")[1];
-            let dec = base64.decode(payload);
-            dec = JSON.parse(dec);
-            
-            this.loginUserId = dec.sub;
-            this.loginUserNum = dec.userNum;
+        this.loginUserId = sessionStorage.getItem("userId");
+
+        if (this.loginUserId != "") {
             this.hasPermission = this.checkPermission();
 
             // 좋아요 여부 확인
             this.$axios
                 .get(
-                    `/boards/${this.board.boardNum}/likes/${this.loginUserNum}`
+                    `/boards/${this.board.boardNum}/likes/${this.loginUserId}`
                 )
                 .then((res) => {
                     this.isLiked = res.data;
@@ -186,11 +183,11 @@ export default {
                 this.$router.push("/login");
                 return;
             }
-            
+
             // newCommentText를 DB에 등록하는 로직
             const newComment = {
                 boardNum: this.board.boardNum,
-                userNum: this.loginUserNum,
+                reportUserId: this.loginUserId,
                 parentNum: null,
                 content: this.newCommentText,
             };
@@ -225,7 +222,7 @@ export default {
                 });
         },
         like() {
-            const url = `/boards/${this.board.boardNum}/likes/${this.loginUserNum}`;
+            const url = `/boards/${this.board.boardNum}/likes/${this.loginUserId}`;
 
             if (this.loginUserId == "") {
                 alert("로그인 후 이용해주세요.");
@@ -280,12 +277,13 @@ export default {
         reportBoard(boardNum) {
             this.showReportPopup = true;
             this.reportBoardNum = boardNum;
-            this.reportUserNum = this.loginUserNum;
+            this.reportUserId = this.loginUserId;
         },
         submitReport() {
+            
             const reportData = {
                 boardNum: this.reportBoardNum,
-                reportUserNum: this.reportUserNum,
+                reportUserId: this.reportUserId,
                 reportCause: this.reportCause,
                 reportReason: this.reportReason,
             };
@@ -299,7 +297,7 @@ export default {
                     this.reportBoardNum = "";
                     this.reportCause = "";
                     this.reportReason = "";
-                    this.reportUserNum = "";
+                    this.reportUserId = "";
                 })
                 .catch((err) => {
                     alert("게시글 신고에 실패하였습니다.");
