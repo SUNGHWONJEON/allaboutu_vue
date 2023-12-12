@@ -35,157 +35,139 @@ export default {
                 //1번 추천
                 [
                     {
-                        title: '1. 하체 쪽 화려한 옷을 입어 하체로 시선분산!'
+                        title: '1. 코랄(Coral)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_1_1_1.png')
-                                ,require('@/assets/images/style/r_1_1_2.png')
-                            ],
-                            [
-                                require('@/assets/images/style/r_1_2_1.png')
-                                ,require('@/assets/images/style/r_1_2_2.png')
+                                require('@/assets/images/personal/coral.png')
                             ]
                         ],
-                        exp: '이렇게 패턴이 들어간 하의를 입거나 화려한 옷을 입어서 상의에 시선이 덜 가도록 해줍니다!!\n\
-                            보통 상체가 통통하면 다리가 날씬한 분들이 많으셔서 이쁜 미니스커트를 입으셔도 내 날씬한 다리에 시선분산이 되겠죠?\n\
-                            또는 화려한 롱 스커트를 매치해서 코디하는것도 매우 좋은 방법이죠~!'
+                        exp: '봄 웜톤의 화사하고 따뜻한 피부톤에 잘 어울리는 컬러 중 하나입니다!\
+                        \n코랄은 주황과 분홍이 조화롭게 섞인 색으로, \
+                        \n어떤 봄 웜톤이든 상쾌하고 활기찬 느낌을 부각시켜줘요!!'
                     },
                     {
-                        title: '2. V넥으로 만들어진 상의 입기'
+                        title: '2. 라이트 옐로우(Light Yellow)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_1_3_1.png')
-                                ,require('@/assets/images/style/r_1_3_2.png')
+                                require('@/assets/images/personal/lightyellow.png')
                             ]
                         ],
-                        exp: 'V넥 옷을 입으시면 상체로 집중된 시선을 분산시켜드리며 \n\
-                            상체가 통통할 경우 이어지는 목 어깨라인이 불룩한 경우도 있을수 있는데요. \n\
-                            라운드 넥을입어 도드라지게 보이는 것보다 시원하게 트인걸 입어 체형 \n\
-                            보완을 해주는게 좋아요 목의 길이감도 길어보일수 있답니다^^\n\
-                            셔츠&난방도 단추를 풀어 목 부분은 답답하게 해주지 않는게 좋아요.'
+                        exp: '밝은 옐로우는 따뜻한 톤의 피부와 아주 잘 어울려요!\
+                        \n봄 웜톤의 인상을 더욱 화사하게 만들어주며, \
+                        \n자연의 햇빛을 연상케 하는 컬러로 분위기를 밝게 만들어줍니다!'
                     },
                     {
-                        title: '3. 다크한 상의로 상의 볼륨감 줄이기'
+                        title: '3. 민트 그린(Mint Green)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_1_4_1.png')
-                                ,require('@/assets/images/style/r_1_4_2.png')
+                                require('@/assets/images/personal/mintgreen.png')
                             ]
                         ],
-                        exp: '블랙 코디는 어떤 체형별 코디를 해도 제일 쉽게 코디할수 있으며\n\
-                            또한 블랙이라 어디든 코디가 다 가능하다는 점이 장점이에요.\n\
-                            어두운 계열의 옷을 입어서 상체의 똥똥한 볼륨을 좀더 낮춰주는 효과가 있어요.'
+                        exp: '민트 그린은 상큼하고 시원한 느낌을 주어, \
+                        \n봄 웜톤의 화사한 이미지를 강조시켜줘요!\
+                        \n 특히, 연한 피부톤과의 조합이 아주 매력적입니다!'
                     }
                 ],
                 //2번추천
                 [
                     {
-                        title: '1. 하이웨스트'
+                        title: '1. 퍼플(Purple)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_2_2_1.png')
-                                ,require('@/assets/images/style/r_2_2_2.png')
+                                require('@/assets/images/personal/purple.png')
                             ]
                         ],
-                        exp: '허리가 잘록한 x자형은 하이웨스트가 정말 최고의 라인 강조가 아닐까 생각이 들어요!!\
-                            \n루즈 핏의 상의를 같이 매치하면 육감적인 몸매가 돋보여요.'
+                        exp: '여름 쿨톤은 푸른 기운을 가진 피부톤이 특징적이라, \
+                        \n푸르스름한 펄플 컬러가 아주 잘 어울립니다!\
+                        \n 연한 라벤더부터 진한 바이올렛까지 다양한 퍼플 톤은 여름 쿨톤의 차가운 느낌을 강조해줘요!'
                     },
                     {
-                        title: '2. 몸에 달라붙는 원피스'
+                        title: '2. 아이스 블루(Ice Blue)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_2_3_1.png')
-                                ,require('@/assets/images/style/r_2_3_2.png')
+                                require('@/assets/images/personal/iceblue.png')
                             ]
                         ],
-                        exp: '모래시계형 몸매는 딱 붙는 원피스를 입을때 정말정말 빛나는 몸매에요.\
-                            \n굴곡있는 몸매라인과 잘록한 허리라인의 장점을 잘 드러낼 수 있어요. '
+                        exp: '시원하면서도 맑은 아이스 블루는 여름 쿨톤에게 어울리는 대표적인 컬러 중 하나입니다!\
+                        \n 푸르스름한 톤은 여름 피부와 잘 어우러져 시원한 인상을 부각시켜줘요!'
                     },
                     {
-                        title: '3. 벨트가 있는 옷이나 원피스&코트'
+                        title: '3. 토크로(Cool Taupe)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_2_4_1.png')
+                                require('@/assets/images/personal/cootaupe.png')
                             ]
                         ],
-                        exp: '벨트가 있는 옷으로 허리라인을 강조하여 몸매를 부각시킬 수 있어요.\
-                            \n여기서 주의할 점은 모래시계형은 풍만한 가슴선을 가지고 있어서 \
-                            \n상의쪽에 과도한 장식이나 주머니가 있다면 너무 부각될수 있으니 조심하세요. '
+                        exp: '토크로는 회색과 푸른 기운을 가진 중성적인 컬러로,\
+                        \n 여름 쿨톤의 피부톤과 잘 조화됩니다!\
+                        \n 차분하면서도 세련된 느낌을 주어 다양한 스타일에 적용하기 좋은 컬러에요!'
                     }
                 ],
                 //3번추천
                 [
                     {
-                        title: '1. 러플이나 컬러등 디테일이 달린 셔츠나 탑'
+                        title: '1. 버건디(Burgundy)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_3_1_1.png')
-                                ,require('@/assets/images/style/r_3_1_2.png')
+                                require('@/assets/images/personal/burgundy.png')
                             ]
                         ],
-                        exp: '포인트가 있는 셔츠나 탑으로 시선을 분산시켜 일자형 몸매를 각인시키지 않아요.\
-                            \n중간 중간 강렬한 포인트가 있으면 좋아요.'
+                        exp: '따뜻하고 톤다운된 붉은색의 대표적인 예로, 가을 웜톤의 피부와 아주 잘 어울려요!\
+                        \n 세련된 분위기를 연출하면서도 부드러운 인상을 주는 컬러입니다!'
                     },
                     {
-                        title: '2. 골반까지 떨어지는 롱 재킷'
+                        title: '2. 올리브 그린(Olive Green)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_3_2_1.png')
-                                ,require('@/assets/images/style/r_3_2_2.png')
+                                require('@/assets/images/personal/olivegreen.png')
                             ]
                         ],
-                        exp: '길이감이 조금 있는 재킷을 매치하여 스키니진을 코디해준다면 좋아요.\
-                            \n또한 미니스커트하고도 매치하면 다리로도 시선이 분산되서 좋아요.'
+                        exp: '올리브 그린은 갈색이 섞인 톤의 그린 컬러로,\
+                        \n 가을의 자연적인 색감과 잘 어울립니! 톤다운된 녹색 톤은 가을 웜톤의 피부를 더욱 돋보이게 해줍니다'
+                    },
+                    {
+                        title: '3. 챠콜 그레이(Charcoal Gray)'
+                        ,src: [
+                            [
+                                require('@/assets/images/personal/charcoalgray.png')
+                            ]
+                        ],
+                        exp: '챠콜 그레이는 어두운 회색 중에서도 따뜻한 톤의 회색으로, \
+                        \n가을 웜톤에게 어울리는 대표적인 컬러입니다!\
+                        \n 톤다운된 회색은 가을의 분위기를 살려주면서도 고요하고 세련된 느낌을 줍니다!'
                     }
                 ],
                 //4번추천
                 [
                     {
-                        title: '1. 직선의 세로로 길고 수축색의 코트'
+                        title: '1. 로얄 블루(Royal Blue)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_4_1_1.jpg')
-                                ,require('@/assets/images/style/r_4_1_2.jpg')
+                                require('@/assets/images/personal/royalblue.png')
                             ]
                         ],
-                        exp: '둥근형의 체형은 살이 많아 둔해 보이는 느낌을 직선이나 각을 이용한 디자인으로 선명한 인상을 주도록 하며 \
-                            \n세로로 흐르는 선으로 실고 가늘어 보이는 착시현상을 활용하는게 좋아요.\
-                            \n전체적으로 밝은 색보다는 수축색을 사용하고 너무 얇거나 두꺼운 소재는 피하는게 좋아요'
+                        exp: '로얄 블루는 깊고 진한 파란색으로, 겨울 쿨톤의 피부톤과 아주 잘 어울립니다!\
+                        \n 선명하면서도 고급스러운 느낌을 주는 컬러로, 겨울의 차가운 분위기를 잘 대변합니다!'
                     },
                     {
-                        title: '2. 와이드 팬츠나 슬랙스 코디하기'
+                        title: '2. 푸시아(Puchsia)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_5_2_3.png')
+                                require('@/assets/images/personal/puchsia.png')
                             ]
                         ],
-                        exp: '아주 스타일리쉬한 느낌과 편한 착용감으로 계속 꾸준히 사랑 받고있는 아이템이죠.\
-                            \n일자로 쭉 오는 이쁜 핏에 적당한 통의 바지는 하체 비만을 잘 가려줘요.'
-                    }
-                ],
-                //5번추천
-                [
-                    {
-                        title: '1. A라인의 스커트&원피스 or 플레어 스커트 코디'
-                        ,src: [
-                            [
-                                require('@/assets/images/style/r_5_1_1.png')
-                                ,require('@/assets/images/style/r_5_1_2.png')
-                            ]
-                        ],
-                        exp: '엉덩이가 큰 하체 비만의 경우 밑으로 가면서 점점 퍼지는 스커트를 입어주어서 \
-                            \n허벅지나 다리가 부각 되지 않게 해줍니다.'
+                        exp: '푸시아는 밝고 선명한 분홍색으로, 겨울 쿨톤에게 활기와 생기를 불어넣어줍니다!\
+                        \n 시원하면서도 세련된 느낌을 연출할 수 있는 컬러 중 하나입니다'
                     },
                     {
-                        title: '2. 와이드 팬츠나 슬랙스 코디하기'
+                        title: '3. 차콜 블랙(Charcoal Black)'
                         ,src: [
                             [
-                                require('@/assets/images/style/r_5_2_1.png')
-                                ,require('@/assets/images/style/r_5_2_2.png')
+                                require('@/assets/images/personal/charcoalblack.png')
                             ]
                         ],
-                        exp: '아주 스타일리쉬한 느낌과 편한 착용감으로 계속 꾸준히 사랑 받고있는 아이템이죠.\
-                            \n일자로 쭉 오는 이쁜 핏에 적당한 통의 바지는 하체 비만을 잘 가려줘요.'
+                        exp: '차콜 블랙은 깊고 진한 검은색으로, 겨울 쿨톤의 피부와 잘 어울리며 고요하면서도 세련된 분위기를 만들어줍니다\
+                        \n 겨울의 시원한 느낌과 잘 어울리는 컬러입니다'
                     }
                 ]
             ]

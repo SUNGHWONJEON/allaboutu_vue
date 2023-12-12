@@ -27,7 +27,7 @@ export default {
     methods: {
         showComponent(){
             this.isComponentVisible = true;
-        }
-    }
+        }  // 테스트중
+    }  
 }
 </script>

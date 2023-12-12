@@ -24,7 +24,6 @@
             <div class="personal-exp-con">
                 <PersonalSub ref="personal_sub"/>
             </div>
-
         </div>
     </div>
 </template>
@@ -46,44 +45,41 @@ export default {
                     ,src: [
                         require('@/assets/images/personal/spring.png')
                     ]
-                    ,title: '역삼각형'
+                    ,title: '봄 웜톤'
                     ,index: 0
                     ,active: ''
                     ,exp: 
-                        '허리선를 기준으로 상반신은 크고 넓어 보이고 \
-                        허리가 굵고 짧아 다리가 깁니다. \n활동적이고 남성적인 이미지의 체형입니다.'
+                        '봄 웜톤은 주로 황금빛의 기운을 가지고 있으며, 피부가 화사하고 명랑한 인상을 줍니다!'
                 },
                 {
                     id: 2
                     ,src: [
                         require('@/assets/images/personal/summer.png')
                     ]
-                    ,title: '모래시계형'
+                    ,title: '여름 쿨톤'
                     ,index: 0
                     ,active: ''
-                    ,exp: '상체와 하체의 균형감이 좋고 허리가 가는 체형입니다. \
-                    \n곡선미가 있는 여성스러운 느낌의 체형입니다.'
+                    ,exp: '여름 쿨톤은 주로 시원하고 차가운 인상을 가지고 있으며, 피부톤은 연한 로즈 톤이나 푸른 기운을 가지고 있습니다!'
                 },
                 {
                     id: 3
                     ,src: [
                         require('@/assets/images/personal/autumn.png')     
                     ]
-                    ,title: '사각체형'
+                    ,title: '가을 웜톤'
                     ,index: 0
                     ,active: ''
-                    ,exp: '어깨 허리, 엉덩이 폭이 거의 같은 직선형의 체형입니다. \n현대적인 이미지의 체형입니다.'
+                    ,exp: '가을 웜톤은 따뜻하고 노란 기운이 도는 피부톤을 가지고 있습니다! 가을의 물든 자연 풍경과도 잘 어울려요!'
                 },
                 {
                     id: 4
                     ,src: [
                          require('@/assets/images/personal/winter.png')  
                     ]
-                    ,title: '둥근체형'
+                    ,title: '겨울 쿨톤'
                     ,index: 0
                     ,active: ''
-                    ,exp: '등과 팔이 크고 둥글며 가슴과 몸통 허리, 복부, 엉덩이, 다리가 발달되어 \
-                    \n신체에 살이 많아 보이는 체형입니다.'
+                    ,exp: '겨울 쿨톤은 차가운 피부톤을 가지고 있으며 주로 파란빛 기운이 도는 색조를 가지고 있습니다!'
                 },
             ]
             ,activePersonal: null
@@ -97,8 +93,8 @@ export default {
             }
         });
         
-        this.$personalType.personal = '고객님의 체형은 ' + this.personals[this.$personalType.num - 1].title + '입니다.';
-        this.$refs.personal_sub.changePersonal(this.personalNum);
+        this.$personalType.personal = '고객님의 퍼스널컬러는 ' + this.personals[this.$personalType.num - 1].title + '입니다.';
+        // this.$refs.personal_sub.changePersonal(this.personalNum);
     },
     methods: {
 
@@ -123,8 +119,8 @@ export default {
             this.$refs.persinal_sub.changePersinal(this.persinalNum);
         },
         onLinkCody(){
-            console.log('this.$persinalType.num : ' + this.$persinalType.num);
-            this.$persinalType.formNum = this.persinalNum;
+            console.log('this.$personalType.num : ' + this.$personalType.num);
+            this.$personalType.formNum = this.persinalNum;
             this.$router.push({
                 name: 'CodyMain',
                 query: {formNum : this.persinalNum}

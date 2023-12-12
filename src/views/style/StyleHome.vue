@@ -28,10 +28,10 @@
                 <Loading  v-if="isLoading"/>
             </div>
             
-            <!--
+            
             <div class="pic-inputbox">
                 
-                <div class="pic-input-div">
+                <!--<div class="pic-input-div">
                     <span>성별을 입력해주세요.</span>
                     <input type="text">
                 </div>
@@ -46,14 +46,14 @@
                 <div class="pic-input-div">
                     <span>몸무게를 입력해주세요.</span>
                     <input type="number">
-                </div>
+                </div>-->
                 
                 <div class="pic-input-div">
                     <span>허리 사이즈를 입력해주세요.</span>
                     <input type="number" @change="changeSize">
                 </div>
                 
-            </div>-->
+            </div>
 
             <div class="pic-btn-box">
                 <!--<button class="pic-btn" v-on:click="fnUpClick">사진찍기</button>-->
@@ -101,16 +101,16 @@ export default {
             console.log('imageFile : ' + imageFile);
         };
 
-        const changeSize = (e) => {
-            this.waistSize = e.target.value
-        }
+        // const changeSize = (e) => {
+        //     this.waistSize = e.target.value
+        // }
 
         return {
             imageFile,
             imageUrl,
             imageUploaded,
             handleFileUpload,
-            changeSize
+            //changeSize
         };
     },
     methods: {
@@ -157,6 +157,8 @@ export default {
                 .then(res => {
                     console.log('데이터베이스 저장 성공 res : ' + res.data)
                     this.imageUrl = '/style/image/' + change_path;
+                    this.$refs.pic_label.style.display = 'none';
+                    
                 })
                 .catch(error => {
                     //에러 처리
@@ -174,6 +176,11 @@ export default {
             
             if(this.imageFile == null) {
                 alert('사진을 업로드해주세요.');
+                return;
+            }
+
+            if(this.waistSize == -1) {
+                alert('허리사이즈를 입력해주세요.');
                 return;
             }
 
@@ -206,6 +213,10 @@ export default {
         },
         handleImageLoad(data){
             this.isLoading = false;
+        },
+        changeSize(e) {
+            this.waistSize = e.target.value;
+            console.log('waistSize : ' + waistSize);
         }
     }
 }

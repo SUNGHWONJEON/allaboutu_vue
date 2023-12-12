@@ -19,7 +19,7 @@
         <div class="insertcontents">
           <textarea
             id="noticecontents"
-            cols="100"
+            cols="63"
             rows="30"
             v-model="noticeContents"
             c
@@ -30,12 +30,13 @@
         <div id="attachment">
           <div id="noticenot">
             <form id="filenot" @submit.prevent="uploadFile">
-              <span v-if="renameFileName">첨부 파일: {{ originalFileName }}</span>
-              <span v-else>첨부파일 없음</span>
               <h4 class="attach">첨부파일 변경</h4>
-              <div id="noticenot">
-                <v-file-input v-model="file" ref="fileInput" @change="onFileChange" />
-              </div>
+              <input
+                type="file"
+                id="file_input"
+                ref="fileInput"
+                @change="getFileName($event.target.files)"
+              />
             </form>
           </div>
         </div>
@@ -88,13 +89,15 @@ export default {
         new Blob([JSON.stringify(notice)], { type: "application/json" })
       );
 
-      sendData.append("file", this.file[0]);
-      console.log("file:");
-      console.log(this.file[0]);
+      if (this.file != null) {
+        sendData.append("file", this.file[0]);
+        console.log("file:");
+      }
+
       this.$axios
         .patch("/notices/" + this.noticeNum, sendData, {
-          header: {
-            "Context-Type": "multipart/form-data",
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
         })
         .then((res) => {
@@ -118,24 +121,43 @@ export default {
           this.noticeContents = notice.noticeContents;
           this.originalFileName = notice.originalFileName;
           this.renameFileName = notice.renameFileName;
+          if (this.renameFileName != null) {
+            this.$axios
+              .get("/notices/image/" + this.renameFileName, {
+                responseType: "arraybuffer",
+              })
+              .then((res) => {
+                const blob = new Blob([res.data]);
+                const contentType = res.headers["content-type"];
+                let file = new File(
+                  [blob],
+                  this.originalFileName,
+                  { type: contentType, lastModified: new Date().getTime() },
+                  "utf-8"
+                );
+                this.file = file;
+                console.log(file);
 
-          this.$axios
-            .get("/notices/image/" + this.renameFileName, {
-              responseType: "blob",
-            })
-            .then((res) => {
-              const blob = new Blob([res.data]);
-              const imageUrl = URL.createObjectURL(blob);
-              this.file = imageUrl;
-              console.log(this.file);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+                let container = new DataTransfer();
+                container.items.add(file);
+                document.querySelector("#file_input").files = container.files;
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    getImageUrl() {
+      return this.renameFileName
+        ? `/notices/image/${
+            this.renameFileName
+          }?timestamp=${new Date().getTime()}`
+        : null;
     },
 
     getFileName(file) {
@@ -144,8 +166,16 @@ export default {
       }
     },
 
-     goBack() {
+    goBack() {
       this.$router.go(-1);
+    },
+
+    onFileChange(event) {
+      const files = event.target.files;
+      if (files.length > 0) {
+        this.file = files[0];
+        this.originalFileName = this.file.name;
+      }
     },
   },
 };

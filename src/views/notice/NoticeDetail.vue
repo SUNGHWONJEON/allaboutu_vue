@@ -52,7 +52,6 @@
         <input
           type="button"
           class="up"
-          @click="updateNotice(noticeNum)"
           value="공지 수정 페이지로 이동"
         />
       </router-link>
@@ -124,7 +123,8 @@ export default {
           document.body.removeChild(link);
         })
         .catch((error) => {
-          console.error("파일 다운로드 실패:", error);
+            console.error("파일 다운로드 실패:", error);
+            console.log("에러 응답:", error.response);
         });
     },
 
@@ -152,6 +152,11 @@ export default {
 </script>
 
 <style scoped>
+h4{
+  margin:0px;
+ 
+}
+
 #noticeTitle {
   font-size: 40px;
 }
@@ -170,7 +175,7 @@ export default {
 
 #button-group {
   margin-top: 40px;
-  margin-left: 1320px;
+  text-align: center;
 }
 
 #notice img {
@@ -219,7 +224,9 @@ export default {
 .tg td.border-leftnone {
   border-left: none;
   width: 150px;
+   height:40px;
 }
+
 
 .tg th.border-rightnone,
 .tg td.border-rightnone {
@@ -236,8 +243,8 @@ export default {
   width: 100%; /* 부모 요소에 맞게 테이블 확장 */
   border-collapse: collapse;
   border-spacing: 0;
-  margin-left: 950px;
-  margin-top: 20px;
+  margin:20px auto;
+  
 }
   
 
@@ -261,7 +268,7 @@ export default {
   font-weight: normal;
   padding: 15px 50px;
   overflow: hidden;
-  padding: 20px 5px 0 50px;
+  padding: 20px 5px 15px 50px;
   word-break: normal;
 }
 .tg .tg-0lax {

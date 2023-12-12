@@ -15,7 +15,7 @@
       &nbsp;
       <button class="searchtitle" @click="fnSearch">검색</button>
       &nbsp;
-      <button class="allList" @click="fnAll">전체목록</button>
+      <button class="allList" @click="fnAll">목록</button>
     </div>
 
     <table class="w3-table-all">
@@ -294,9 +294,18 @@ tr:hover {
   margin: 100px;
 }
 
+
+
 .searchtitle,
 .allList {
-  color: #ad578c;
+  color: black;
+  width: 80px;
+  height: 25px;
+  background-color: yellowgreen;
+  border-radius: 25px;
+ 
+
+
 }
 
 .current-page {
