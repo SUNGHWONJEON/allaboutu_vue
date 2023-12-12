@@ -24,7 +24,7 @@
             <input type="date" v-if="showCalendar" v-model="importanceDate" />
           </form>
         </div>
-        <div class="inserttitles">
+        <div >
           <input
             id="noticetitle"
             type="text"
@@ -37,7 +37,7 @@
         <div class="insertcontents">
           <textarea
             id="noticecontents"
-            cols="100"
+            cols="63"
             rows="30"
             v-model="noticeContents"
             c
@@ -45,17 +45,23 @@
           ></textarea>
         </div>
 
-        <h4 class="attach">첨부파일</h4>
+    
         <form @submit.prevent="uploadFile">
+          <label for="fileInput">첨부파일 선택</label>
           <input
             type="file"
             name="fileInput"
             id="fileInput"
             @change="getFileName($event.target.files)"
           />
-          <button type="submit">Upload</button>
+           <div
+              id="dropArea"
+              class="drop-area"
+              @dragover.prevent="handleDragOver"
+              @drop.prevent="handleDrop"
+            >
+            </div>
         </form>
-
 
         <div id="writebutton">
           <input type="button" class="regi" @click="writeNotice" value="등록" />
@@ -158,6 +164,36 @@ export default {
         });
     },
 
+   ethods: {
+    // ... (이전 메서드들)
+
+    // 드래그 앤 드롭 영역에 파일 드래그 오버 시 처리
+    handleDragOver(event) {
+      event.dataTransfer.dropEffect = "copy";
+      document.getElementById("dropArea").classList.add("drag-over");
+    },
+
+    // 드래그 앤 드롭 영역에서 드래그 떠났을 때 처리
+    handleDragLeave() {
+      document.getElementById("dropArea").classList.remove("drag-over");
+    },
+
+    // 파일이 드롭되었을 때 처리
+    handleDrop(event) {
+      event.preventDefault();
+      document.getElementById("dropArea").classList.remove("drag-over");
+
+      // 드롭된 파일 가져오기
+      const files = event.dataTransfer.files;
+
+      // 파일이 있는 경우에만 처리
+      if (files.length > 0) {
+        this.file = files[0];
+        console.log('Dropped file:', this.file);
+      }
+    },
+  },
+
     goBack() {
       this.$router.go(-1); // Vue Router를 사용하는 경우
       // window.history.back(); // 일반적인 브라우저의 이전 페이지로 이동하는 경우
@@ -176,10 +212,6 @@ p {
 
 h5 {
   font-size: 22px;
-}
-
-.inserttitle {
-  margin: 20px 0px;
 }
 
 #radioform {
@@ -210,6 +242,7 @@ h5 {
 #noticetitle {
   border: 1px solid #ad578c;
   margin-bottom: 10px;
+  
 }
 
 #noticecontents {
@@ -218,5 +251,40 @@ h5 {
 
 #writebutton {
   margin-top: 20px;
+}
+
+/* 첨부파일 영역 스타일 */
+.file-input {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.file-input input[type="file"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.file-input label {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ad578c;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+
+/* 드래그 오버 시 스타일 */
+.drop-area.drag-over {
+  background-color: #f0f0f0;
 }
 </style>
