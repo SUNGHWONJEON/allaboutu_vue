@@ -32,7 +32,7 @@
                         
                         <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px; border-radius: 100%" @click="goToMyPage">
                         <div style="margin-left: 2px; font-size: 12px">
-                            <div style="line-height: 14px">{{ username }}님</div>
+                            <div style="line-height: 14px; margin: 4px 0px 0px 0px">{{ username }}님</div>
                         
                             <router-link to="/logout" @click="logout">
                                 <div class="myinfo-box-div">
@@ -45,11 +45,11 @@
                     <!-- 로그인되어 있지 않을 때 -->
                     <template v-else>
                         <router-link to="/login">
+                            <div style="display: flex;">
                             <div class="myinfo-box-div">
                                 <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px border-radius: 100%">
                             </div>
-                            <div style="margin-left: 2px; font-size: 12px; line-height: 14px">
-                                <div @click="login">로그인</div>
+                                <div style="font-size: 14px; margin: 4px" @click="login">로그인</div>
                             </div>
                         </router-link>
                     </template>

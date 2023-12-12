@@ -72,15 +72,10 @@ export default {
                 })
                 .then((res) => {
                     console.log(res);
-                    localStorage.setItem("accessToken", res.data.accessToken);
-                    localStorage.setItem("refreshToken", res.data.refreshToken);
-                    this.$axios.defaults.headers.common["x-access-token"] =
-                        res.data.accessToken;
-
-                    // 토큰 저장
-                    // const token = response.data.token;
-                    // localStorage.setItem("token", token);
-
+                    sessionStorage.setItem("accessToken", res.data.accessToken);
+                    sessionStorage.setItem("refreshToken", res.data.refreshToken);
+                    sessionStorage.setItem("userId", this.userId);
+                    
                     // 로그인 성공 시 페이지 이동
                     this.changePage();
                 })
