@@ -8,8 +8,8 @@
                 {{ formattedCreateDate(comment.createDate) }}
             </div>
             <div class="comment-context-menu">
-                <button @click="editComment(comment)">수정</button>
-                <button @click="deleteComment(comment.commentNum)">삭제</button>
+                <button @click="editComment(comment)" v-show="checkPermission(comment.writer.userId)">수정</button>
+                <button @click="deleteComment(comment.commentNum)" v-show="checkPermission(comment.writer.userId)">삭제</button>
             </div>
         </div>
         <div class="comment-content" v-if="isEditing !== comment.commentNum">
@@ -40,7 +40,7 @@
             </div>
             
             <div class="reply-btns">
-                <button class="write-toggle-btn" @click="toggleReplyForm(comment.commentNum)">
+                <button class="write-toggle-btn" @click="toggleReplyForm(comment.commentNum)" v-show="loginUserId">
                     <span v-if="showReplyForm === comment.commentNum">답글 취소</span>
                     <span v-else>답글 달기</span>
                 </button>
@@ -56,6 +56,7 @@
 import ProfileHeader from './ProfileHeader.vue';
 import moment from 'moment';
 import 'moment/locale/ko';
+import base64 from 'base-64';
 
 export default {
     name: 'BoardComment',
@@ -71,7 +72,20 @@ export default {
             replyText: '', // 답글 텍스트
             isEditing: null, // 수정 중인 댓글 번호
             originalCommentContent: '', // 수정 전 댓글 내용
-            tempUserNum: 2, // 임시로 로그인한 유저 번호
+            loginUserId: "", // 로그인한 유저 아이디
+            loginUserNum: "", // 로그인한 유저 번호
+        }
+    },
+    created() {
+        // 액세스 토큰에서 정보 추출
+        let token = sessionStorage.getItem("accessToken");
+        if (token != null) {
+            let payload = token.split(".")[1];
+            let dec = base64.decode(payload);
+            dec = JSON.parse(dec);
+            
+            this.loginUserId = dec.sub;
+            this.loginUserNum = dec.userNum;
         }
     },
     emits: ['reply-posted', 'comment-deleted'],
@@ -86,7 +100,7 @@ export default {
             // replyText를 DB에 등록하는 로직
             const newReply = {
                 boardNum: this.comments[0].boardNum,
-                userNum: this.tempUserNum,
+                userNum: this.loginUserNum,
                 parentNum: commentNum,
                 content: this.replyText
             };
@@ -162,6 +176,10 @@ export default {
             // const textarea = event.target;
             textarea.style.height = 'auto';
             textarea.style.height = textarea.scrollHeight + 'px';
+        },
+        checkPermission(userId) {
+            // 로그인한 유저가 댓글 작성자인지 확인
+            return this.loginUserId === userId;
         },
     }
 }

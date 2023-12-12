@@ -20,16 +20,12 @@ export default {
     },
     mounted() {
         const query = this.$route.query.keyword;
-        console.log('query : ', query);
         if(query == undefined || query == null) {
             this.search_key = '';
-            console.log('undefinedundefinedundefinedundefinedundefined')
         }
         else {
             this.search_key = decodeURIComponent(query);
         }
-        
-        console.log('this.search_key : ', this.search_key);
     },
     methods: {
         search() {
