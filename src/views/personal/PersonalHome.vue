@@ -18,7 +18,7 @@
                 <Loading  v-if="isLoading"/>
             </div>
             
-            <div class="pic-btn-box">
+            <div class="pic-btn-box"> 
                 <!--<button class="pic-btn" v-on:click="fnUpClick">사진찍기</button>-->
                 <button class="pic-btn" v-on:click="fnTypeClick">퍼스널 컬러 타입 보기</button>
             </div>
@@ -32,10 +32,11 @@
 <script>
 import { ref } from 'vue';
 import Loading from '@/views/common/Loading.vue';
+import axios from 'axios';
 
-export default {
+export default {    
     components: {
-        Loading
+        Loading,
     },
     emits: ['show-component'],
     data() {
@@ -62,14 +63,14 @@ export default {
             imageFile,
             imageUrl,
             imageUploaded,
-            handleFileUpload
+            handleFileUpload,
         };
     },
     
     methods: {
         callPythonApi(dir_path, org_path, image_path) {
             
-            const apiUrl = 'http://localhost:8080/api';
+            const apiUrl = '/api';
             const requestBody = { 
                 dir_path: dir_path,
                 org_path: org_path,
@@ -77,7 +78,9 @@ export default {
             };
 
             this.$axios.post(apiUrl, requestBody, {
-                headers:{'Content-Type': 'application/json'}
+                headers:{
+                    'Content-Type': 'application/json',
+                }
             })
             .then(res => {
                 console.log('callPythonApi res.data : ' + res.data);
@@ -97,7 +100,7 @@ export default {
                     user_num: -1,
                     personal_img: org_path,  // 회원이 업로드한 사진
                     personal_reimg: change_path, // 회원이 업로드한 사진 이름 바꾼거
-                    personal_num: t023his.type // 번호
+                    personal_num: this.type // 번호
                 }
                 console.log('insertData : ' + JSON.stringify(insertData));
                 
@@ -110,6 +113,7 @@ export default {
                 .catch(error => {
                     //에러 처리
                     console.error(error);
+                    console.log("api 요청안된다");
                 });
                 
             })
@@ -135,9 +139,9 @@ export default {
                     headers:{'Content-Type': 'multipart/form-data'}
                 })
                 .then(res => {
-                    console.log('디비 저장 성공 : ' + res.data);
+                    console.log('upload 성공 : ' + res.data);
                     this.isLoading = true;
-                    this.callPythonApi(res.data[0], res.data[1], res.data[2]);
+                    // this.callPythonApi(res.data[0], res.data[1], res.data[2]);
                 })
                 .catch(err => {
                     console.log(err);
