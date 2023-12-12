@@ -116,7 +116,7 @@ export default {
     methods: {
         callPythonApi(dir_path, org_path, image_path, wsize) {
             
-            const apiUrl = 'http://localhost:4444/api';
+            const apiUrl = 'http://192.168.0.85:4444/api';
             const requestBody = { 
                 dir_path: dir_path,
                 org_path: org_path,
@@ -174,6 +174,17 @@ export default {
         },
         fnTypeClick(){
             
+            const token = sessionStorage.getItem('accessToken');
+            console.log('token : ' + token);
+
+            if(token == null) {
+                this.$router.push({
+                    path: '/login'
+                })
+
+                return;
+            }
+
             if(this.imageFile == null) {
                 alert('사진을 업로드해주세요.');
                 return;
@@ -216,7 +227,7 @@ export default {
         },
         changeSize(e) {
             this.waistSize = e.target.value;
-            console.log('waistSize : ' + waistSize);
+            console.log('waistSize : ' + this.waistSize);
         }
     }
 }

@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from '@/router/index.js'
+import axiosInstance from '@/plugins/axiosInstance.js';
 import axios from 'axios'
 
 const app = createApp(App)
@@ -17,7 +18,8 @@ const vuetify = createVuetify({
 })
 
 //전역변수 지정
-app.config.globalProperties.$axios = axios
+app.config.globalProperties.$axios = axiosInstance
+//app.config.globalProperties.$axios = axios
 app.config.globalProperties.$serverURL = '//loacalhost:2222'
 app.config.globalProperties.$styleType = {
     num: -1
