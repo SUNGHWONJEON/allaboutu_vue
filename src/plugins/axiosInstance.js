@@ -7,7 +7,7 @@ const router = useRouter();
 const axiosIns = axios.create({
   // 여기에 헤더 등을 추가하세요
   // ================================
-  baseURL: 'http://localhost:1111',
+  baseURL: 'http://localhost:2222',
   timeout: 360000,
   headers: {
     'Content-Type': 'application/json',

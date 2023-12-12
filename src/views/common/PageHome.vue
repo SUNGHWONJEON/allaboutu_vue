@@ -8,8 +8,9 @@
         </div>
         <div class="main-con main-style">
             <div class="thumbnail-list">
-                <button class="thumbnail-box" data-aos="zoom-in"
+                <router-link class="thumbnail-box" data-aos="zoom-in"
                     v-for="colorItem in colorList" :key="colorItem"
+                    :to="colorItem.path"
                 >
                         <div class="thumbnail color">
                             <img :src="colorItem.img">
@@ -20,49 +21,10 @@
                             </strong>
                         </div>
                     
-                </button>
+                </router-link>
             </div>
         </div>
-        <!--
-        <div class="main-con main-style">
-            <div class="thumbnail-list">
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail">
-                        <img src="https://lulugine.com/web/product/big/202310/76e7f277900262f27276d66bc84906c2.jpg">
-                    </div>
-                    <div class="description">
-                            <strong class="displayTitle name">
-                                <span>룰루진 엘리트 트리진세노믹스 매끈보들 클렌징젤 160ml</span>
-                            </strong>
-                            <ul class="description-ul">
-                                <li class="displayPrice">
-                                    <span>26,000원</span>
-                                </li>
-                                <li class="displayData">
-                                    <span>수분은 지켜주고 자극은 줄인    촉촉  깔끔  순둥이 클렌징젤</span>
-                                </li>
-                                <li class="displayReview">
-                                    <strong class="title ">
-                                        <span>Review</span> :
-                                    </strong> 
-                                    <span>13</span>
-                                </li>
-                            </ul>
-                        </div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-                <div class="thumbnail-box" data-aos="zoom-in">
-                    <div class="thumbnail"></div>
-                </div>
-            </div>
-            
-        </div>
-        -->
+        
     </div>
     <!--main-container end-->
     
@@ -75,8 +37,9 @@
 
         <div class="main-con main-style">
             <div class="thumbnail-list">
-                <button class="thumbnail-box" data-aos="zoom-in"
+                <router-link class="thumbnail-box" data-aos="zoom-in"
                     v-for="styleItem in styleList" :key="styleItem"
+                    :to="styleItem.path"
                 >
                         <div class="thumbnail">
                             <img :src="styleItem.img">
@@ -87,7 +50,7 @@
                             </strong>
                         </div>
                     
-                </button>
+                </router-link>
             </div>
             
         </div>
@@ -103,8 +66,9 @@
 
         <div class="main-con main-style">
             <div class="thumbnail-list">
-                <div class="thumbnail-box" data-aos="zoom-in"
+                <router-link class="thumbnail-box" data-aos="zoom-in"
                     v-for="faceItem in faceList" :key="faceItem"
+                    :to="faceItem.path"
                 >
                     <div class="thumbnail color">
                         <img :src="faceItem.img">
@@ -114,7 +78,7 @@
                             <span style="font-size: 20px;">{{ faceItem.title }}</span>
                         </strong>
                     </div>
-                </div>
+                </router-link>
                 
             </div>
             
@@ -130,9 +94,12 @@
         </div>
         
         <div class="main-con main-style">
-            <div class="comunity-box thumbnail-list" data-aos="fade-up">
+            <router-link 
+                class="comunity-box thumbnail-list" data-aos="fade-up"
+                to="/board"
+            >
                 <BoardRank ref="board_rank"/>
-            </div>
+            </router-link>
             
         </div>
     </div>
