@@ -17,8 +17,8 @@ const axiosIns = axios.create({
 // ℹ️ 로그인 후 각 요청에 인증 헤더를 보내기 위한 요청 인터셉터 추가
 axiosIns.interceptors.request.use(config => {
   // 로컬 스토리지에서 토큰을 가져옵니다.
-  const token = localStorage.getItem('accessToken');
-  const refresh = localStorage.getItem('refreshToken');
+  const token = sessionStorage.getItem('accessToken');
+  const refresh = sessionStorage.getItem('refreshToken');
 
   console.log("token value : ", token);
   console.log("refresh value : ", refresh);
@@ -53,8 +53,8 @@ axiosIns.interceptors.response.use(
     // 에러 처리
     if (error.response.status === 701 || error.response.status === 702) {
       const errorCode = error.response.status;
-      const refreshToken = localStorage.getItem('refreshToken');
-      const accessToken = localStorage.getItem('accessToken');
+      const refreshToken = sessionStorage.getItem('refreshToken');
+      const accessToken = sessionStorage.getItem('accessToken');
 
       // 비동기 함수 내부에서 처리
       return (async () => {
@@ -69,9 +69,9 @@ axiosIns.interceptors.response.use(
           console.log("refreshToken : ", response.data.refreshToken);
 
           if (error.response.status === 701) {
-            localStorage.setItem('accessToken', JSON.stringify(response.data.accessToken));
+            sessionStorage.setItem('accessToken', JSON.stringify(response.data.accessToken));
           } else if (error.response.status === 702) {
-            localStorage.setItem('refreshToken', JSON.stringify(response.data.refreshToken));
+            sessionStorage.setItem('refreshToken', JSON.stringify(response.data.refreshToken));
           }
 
           return axios(error.config);
