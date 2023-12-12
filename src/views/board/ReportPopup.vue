@@ -41,7 +41,7 @@ export default {
             type: Number,
             required: true,
         },
-        reportUserNum: {
+        reportUserId: {
             type: Number,
             required: true,
         },
@@ -59,7 +59,7 @@ export default {
             
             const reportData = {
                 boardNum: this.reportBoardNum,
-                reportUserNum: this.reportUserNum,
+                reportUserId: this.reportUserId,
                 reportCause: this.reportCause,
                 reportReason: this.reportReason,
             };

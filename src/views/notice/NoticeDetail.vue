@@ -30,8 +30,11 @@
             </td>
           </tr>
           <tr>
-            <td class="tg-0lax border-leftnone border-rightnone border-downnone" colspan="2">
-              <p class="noticep">{{ noticeContents }}</p>
+            
+            <td class="tg-0lax border-leftnone border-rightnone border-downnone" colspan="4">
+              <div class="notice-content-container">
+                    {{ noticeContents }}      
+               </div>
             </td>
           </tr>
         </tbody>
@@ -174,7 +177,8 @@ h4{
 }
 
 #button-group {
-  margin-top: 40px;
+  margin-top: 25px;
+  margin-bottom: 45px;
   text-align: center;
 }
 
@@ -194,7 +198,7 @@ h4{
 }
 
 .can {
-  margin-left: 30px;
+  margin-left: 20px;
   border: 1px solid #ad578c;
   background-color: #ad578c;
   color: #ffff;
@@ -212,7 +216,7 @@ h4{
 }
 
 .del {
-  margin-left: 30px;
+  margin-left: 20px;
   border: 1px solid #ad578c;
   background-color: #ad578c;
   color: #ffff;
@@ -224,23 +228,28 @@ h4{
 .tg td.border-leftnone {
   border-left: none;
   width: 150px;
-   height:40px;
+   height:20px;
 }
 
 
 .tg th.border-rightnone,
 .tg td.border-rightnone {
   border-right: none;
+  width: 50px;
 }
 
 .tg td.border-downnone{
   border:none;
+  height: 500px;
+  width: 100px;
+  word-break: break-all;
+
 }
 
 
  .tg {
-  max-width: 800px; /* 최대 테이블 너비 설정 */
-  width: 100%; /* 부모 요소에 맞게 테이블 확장 */
+  /* 최대 테이블 너비 설정 */
+  width: 500px; /* 부모 요소에 맞게 테이블 확장 */
   border-collapse: collapse;
   border-spacing: 0;
   margin:20px auto;
@@ -275,6 +284,15 @@ h4{
   text-align: left;
   vertical-align: top;
 }
+
+.notice-content-container {
+  max-height: 400px;
+  margin-top: 10px; 
+  word-break: break-all;
+  white-space: break-spaces;
+}
+
+
 
 
 </style>

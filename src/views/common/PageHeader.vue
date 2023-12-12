@@ -165,8 +165,8 @@ export default ({
         // 로그인
         // 성공시 isLoggedIn을 true로 설정하고 username을 설정
         login() {
-            if (localStorage.getItem('accessToken') != null) {
-                let token = localStorage.getItem('accessToken');
+            if (sessionStorage.getItem('accessToken') != null) {
+                let token = sessionStorage.getItem('accessToken');
                 let payload = token.substring(token.indexOf('.')+1, token.lastIndexOf('.'));
                 let decodingInfo = base64.decode(payload);
 
@@ -193,8 +193,8 @@ export default ({
         logout() {
             this.isLoggedIn = false;
             this.username = "";
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
+            sessionStorage.removeItem('accessToken');
+            sessionStorage.removeItem('refreshToken');
 
             this.$router.push('/');
         },

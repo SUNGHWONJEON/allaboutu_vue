@@ -32,7 +32,6 @@
 <script>
 import { ref } from 'vue';
 import Loading from '@/views/common/Loading.vue';
-import axios from 'axios';
 
 export default {    
     components: {
@@ -70,7 +69,7 @@ export default {
     methods: {
         callPythonApi(dir_path, org_path, image_path) {
             
-            const apiUrl = '/api';
+            const apiUrl = 'http://localhost:4444/upload';
             const requestBody = { 
                 dir_path: dir_path,
                 org_path: org_path,
@@ -104,11 +103,13 @@ export default {
                 }
                 console.log('insertData : ' + JSON.stringify(insertData));
                 
-                this.$axios.post('http://localhost:2222/personal/insert', insertData, {
+                this.$axios.post('/personal/insert', insertData, {
                     headers:{'Content-Type': 'application/json'}
                 })
                 .then(res => {
                     console.log('데이터베이스 저장 성공 res : ' + res.data)
+                    this.imageUrl = '/personal/image/' + change_path;
+                    this.$refs.pic_label.personal.display = 'none';
                 })
                 .catch(error => {
                     //에러 처리
@@ -120,6 +121,7 @@ export default {
             .catch(error => {
                 //에러 처리
                 console.error(error);
+                console.log("api 요청안된다");
             });
             
         },
@@ -141,7 +143,7 @@ export default {
                 .then(res => {
                     console.log('upload 성공 : ' + res.data);
                     this.isLoading = true;
-                    // this.callPythonApi(res.data[0], res.data[1], res.data[2]);
+                    this.callPythonApi(res.data[0], res.data[1], res.data[2]);
                 })
                 .catch(err => {
                     console.log(err);

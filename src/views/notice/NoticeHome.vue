@@ -1,4 +1,5 @@
 <template>
+ <h2 class="toptitile">NOTICE</h2>
   <div class="notice-contents">
     <div class="searchbox">
       <select id="noticeop" v-model="search_type">
@@ -328,5 +329,11 @@ tr:hover {
 .essential {
   color: #a52a2a;
   font-size: 14px;
+}
+
+.toptitile{
+  margin-bottom: 30px;
+  font-size: 40px;
+  color: #000000;
 }
 </style>
