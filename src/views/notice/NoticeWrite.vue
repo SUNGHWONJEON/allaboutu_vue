@@ -135,8 +135,6 @@ export default {
         noticeContents: this.noticeContents,
         importance: this.importance,
         importanceDate: new Date(this.importanceDate),
-        eventStart:  new Date(this.eventStart),
-        eventEnd: new Date (this.eventEnd),
         cartegory: this.cartegory,
       };
       console.log(JSON.stringify(notice));
@@ -163,36 +161,8 @@ export default {
           console.log(err);
         });
     },
-
-   ethods: {
-    // ... (이전 메서드들)
-
-    // 드래그 앤 드롭 영역에 파일 드래그 오버 시 처리
-    handleDragOver(event) {
-      event.dataTransfer.dropEffect = "copy";
-      document.getElementById("dropArea").classList.add("drag-over");
-    },
-
-    // 드래그 앤 드롭 영역에서 드래그 떠났을 때 처리
-    handleDragLeave() {
-      document.getElementById("dropArea").classList.remove("drag-over");
-    },
-
-    // 파일이 드롭되었을 때 처리
-    handleDrop(event) {
-      event.preventDefault();
-      document.getElementById("dropArea").classList.remove("drag-over");
-
-      // 드롭된 파일 가져오기
-      const files = event.dataTransfer.files;
-
-      // 파일이 있는 경우에만 처리
-      if (files.length > 0) {
-        this.file = files[0];
-        console.log('Dropped file:', this.file);
-      }
-    },
-  },
+  
+  
 
     goBack() {
       this.$router.go(-1); // Vue Router를 사용하는 경우
@@ -280,8 +250,6 @@ h5 {
   font-size: 16px;
   cursor: pointer;
 }
-
-
 
 /* 드래그 오버 시 스타일 */
 .drop-area.drag-over {
