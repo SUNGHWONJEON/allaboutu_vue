@@ -53,8 +53,6 @@
 </template>
 
 <script>
-import base64 from 'base-64';
-
 export default {
     name: 'BoardWrite',
     components: { 
@@ -80,7 +78,6 @@ export default {
             selectedImages: [],
             attachments: [],
             loginUserId: '',
-            loginUserNum: '',
         }
     },
     created() {
@@ -89,16 +86,7 @@ export default {
             this.getBoard(this.boardNum);
         }
 
-        // 액세스 토큰에서 정보 추출
-        let token = sessionStorage.getItem("accessToken");
-        if (token != null) {
-            let payload = token.split(".")[1];
-            let dec = base64.decode(payload);
-            dec = JSON.parse(dec);
-            
-            this.loginUserId = dec.sub;
-            this.loginUserNum = dec.userNum;
-        }
+        this.loginUserId = sessionStorage.getItem("userId");
     },
     computed: {
         titleCount() {
@@ -138,7 +126,9 @@ export default {
 
             const sendData = new FormData();
             const board = {
-                userNum: this.loginUserNum,
+                writer: {
+                    userId: this.loginUserId,
+                },
                 categoryNum: this.selectedCategory,
                 boardTitle: this.boardTitle,
                 boardContent: this.boardContent,

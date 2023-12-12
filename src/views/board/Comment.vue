@@ -56,7 +56,6 @@
 import ProfileHeader from './ProfileHeader.vue';
 import moment from 'moment';
 import 'moment/locale/ko';
-import base64 from 'base-64';
 
 export default {
     name: 'BoardComment',
@@ -73,20 +72,10 @@ export default {
             isEditing: null, // 수정 중인 댓글 번호
             originalCommentContent: '', // 수정 전 댓글 내용
             loginUserId: "", // 로그인한 유저 아이디
-            loginUserNum: "", // 로그인한 유저 번호
         }
     },
     created() {
-        // 액세스 토큰에서 정보 추출
-        let token = sessionStorage.getItem("accessToken");
-        if (token != null) {
-            let payload = token.split(".")[1];
-            let dec = base64.decode(payload);
-            dec = JSON.parse(dec);
-            
-            this.loginUserId = dec.sub;
-            this.loginUserNum = dec.userNum;
-        }
+        this.loginUserId = sessionStorage.getItem("userId");
     },
     emits: ['reply-posted', 'comment-deleted'],
     methods: {
@@ -100,7 +89,7 @@ export default {
             // replyText를 DB에 등록하는 로직
             const newReply = {
                 boardNum: this.comments[0].boardNum,
-                userNum: this.loginUserNum,
+                userId: this.loginUserId,
                 parentNum: commentNum,
                 content: this.replyText
             };
