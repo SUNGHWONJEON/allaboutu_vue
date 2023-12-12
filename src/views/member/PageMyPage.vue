@@ -8,13 +8,13 @@
                  <div class="col">
                      <div id="logo3" class="contents-boxes">마이페이지</div>
                      <h5 class='mt-4'>아이디</h5>
-                     <div>{{ infor.userId }}</div>
+                     <div>{{ member.userId }}</div>
                      <h5 class="mt-4">email</h5>
-                     <div>{{ infor.userEmail }}</div>
+                     <div>{{ member.userEmail }}</div>
                      <h5 class="mt-4">이름</h5>
-                     <div>{{ infor.userName }}</div>
+                     <div>{{ member.userName }}</div>
                      <h5 class="mt-4">전화번호</h5>
-                     <div>{{ infor.userPhone }}</div>
+                     <div>{{ member.userPhone }}</div>
                      <input type="button" @click="openPhone" class="btn btn-primary btn-default btn-sm mt-3" value="전화번호 변경하기">
                      <h5 class="mt-4">비밀번호 변경</h5>
                      <div>현재 비밀번호를 입력해주세요.</div>
@@ -35,26 +35,42 @@
 <style>
 #logo3{color: pink;font: italic 4em "Fira Sans", serif;}
 </style>
+
 <script>
+import axios from 'axios';
+
 export default {
-    name: 'PageMyPage',
-    data() {
-        return {
-            infor: {
-                userId: 'user01',
-                userName: '홍길동',
-                userEmail: 'useremail@test.org',
-                userPhone: '010-1234-5678'
-            }
-        };
+  name: 'myPage',
+  data() {
+    return {
+      member: {}
+    };
+  },
+  methods: {
+    updateMypage() {
+      this.$axios.patch('/api/user/info') // 사용자 정보를 가져오는 API 엔드포인트로 변경해야 합니다.
+        .then(response => {
+          this.infor = response.data; // 백엔드에서 받아온 사용자 정보를 할당합니다.
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
-    methods: {
-        updatePwd() {
-            // 비밀번호 수정 로직 작성
-        },
-        openPhone() {
-            // 전화번호 변경 로직 작성
-        }
+    getMyPage() {
+    this.$axios.get('/myPage/{userNum}')
+        .then((res) => {
+            this.member = res.data;
+        }).catch((err) => {
+            console.log(err);
+        });
+  },
+    updatePwd() {
+      // 비밀번호 수정 로직 작성
+    },
+    openPhone() {
+      // 전화번호 변경 로직 작성
     }
+  }
 };
 </script>
+
