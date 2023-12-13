@@ -1,6 +1,6 @@
 import { useRouter } from 'vue-router';
-//import axios from 'E:/poketAi_workspace/allaboutu_vue/node_modules/axios/index';
-import axios from 'axios'
+import axios from 'E:/poketAi_workspace/allaboutu_vue/node_modules/axios/index';
+//import axios from 'axios'
 
 const router = useRouter();
 
