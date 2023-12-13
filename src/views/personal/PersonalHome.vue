@@ -43,7 +43,7 @@ export default {
             isLoading: false
             ,tempUserNum : 1
             ,orgFile: null
-            ,type: -1
+            ,personalNum: -1
         }
     },
     setup() {
@@ -67,6 +67,18 @@ export default {
     },
     
     methods: {
+        personalChangeType(personalNum) { // 스플릿 해서 두번째 값
+            switch (personalNum) {
+                case 'Spring':
+                    return 1;
+                case 'Summer':
+                    return 2;
+                case 'Autumn':
+                    return 3;
+                case 'Winter':
+                    return 4;
+            }
+        },
         callPythonApi(dir_path, org_path, image_path) {
             
             const apiUrl = 'http://localhost:4444/upload';
@@ -74,6 +86,7 @@ export default {
                 dir_path: dir_path,
                 org_path: org_path,
                 image_path: image_path,
+                personalNum: this.personalNum,
             };
 
             this.$axios.post(apiUrl, requestBody, {
@@ -87,38 +100,29 @@ export default {
                 console.log('url_1 + res.data.change_path : ' +  ('/personal/image/' + res.data.change_path));
                 
                 
-                this.imageUrl = '/personal/image/' + res.data.change_path;
-                this.type = res.data.type;
-                const change_path = res.data.change_path;
+                //this.imageUrl = '/personal/image/' + res.data.change_path;
+                const ptype = res.data.result.pctype.split(' ')[1];
+                this.personalNum = this.personalChangeType(ptype);
 
-                this.$personalType.num = this.type;
-                console.log('type ' + this.type);
+                const change_path = res.data.change_path;
+                this.$personalType.num = this.personalNum;
+                console.log('personalNum : ' + this.personalNum);
                 this.$emit('show-component');
 
+                console.log('API 호출 전 personalNum: ' + this.personalNum);
                 //insert하기
                 const insertData = {
                     userNum: this.tempUserNum,
                     personalImg: res.data.org_path,  // 회원이 업로드한 사진
                     personalReimg: res.data.change_path, // 회원이 업로드한 사진 이름 바꾼거
-                    type: personalType(res.data.type)
+                    personalNum: this.personalNum
                 };
-                function personalType(type) {
-                    switch (type) {
-                        case 'Spring':
-                            return 1;
-                        case 'Summer':
-                            return 2;
-                        case 'Autumn':
-                            return 3;
-                        case 'Winter':
-                            return 4;
-                    }
-                }
+                
                 console.log('insertData : ' + JSON.stringify(insertData));
                 console.log('userNum : ' + this.tempUserNum);
                 console.log('personalImg : ' + res.data.org_path);
                 console.log('personalReimg : ' + res.data.change_path);
-                console.log('type : ' + res.data.type);
+                console.log('personalNum : ' + this.personalNum);
 
                 this.$axios.post('/personal/insert', insertData, {
                     headers:{'Content-Type': 'application/json'}
@@ -174,4 +178,5 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/css/base_pic.css';
+
 </style>
