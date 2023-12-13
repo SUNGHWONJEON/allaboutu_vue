@@ -180,7 +180,7 @@ export default {
 
             this.$axios.patch('/boards/' + this.boardNum, sendData, {
                 header: {
-                    'Context-Type': 'multipart/form-data',
+                    'Content-Type': 'multipart/form-data',
                 }
             })
             .then(res => {
