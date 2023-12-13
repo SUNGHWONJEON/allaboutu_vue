@@ -134,7 +134,7 @@ const routes = [
                 },
             },
             {
-                path: '/board/search',
+                path: '/board/search/:keyword',
                 name: 'BoardSearch',
                 component: BoardSearch
             },
