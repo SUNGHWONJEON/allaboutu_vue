@@ -1,12 +1,15 @@
 <template>
+<div class="content">
  <h2 class="toptitile">NOTICE</h2>
- <h4 class="noticesub">공지목록</h4>
+ <div class="pic-titile-sub noticesub">
+                게시글 목록
+            </div>
   <div class="notice-contents">
     <div class="searchbox">
       <select id="noticeop" v-model="search_type">
-        <option value="title" selected>제목</option>
-        <option value="contents">내용</option>
-      </select>
+        <!-- <option v-for="select in selectList" :value="select.value">{{ select.text }}</option> -->
+        <option v-for="select in selectList" :value="select.value" :key="select.value">{{ select.text }}</option>
+      </select> 
       &nbsp;
       <input
         id="notices"
@@ -85,7 +88,7 @@
             >{{ row.noticeTitle }}</router-link
           >
         </td>
-        <td>{{ row.userName }}</td>
+        <td>{{ row.userName }}</td> 
         <td>{{ row.writeDate }}</td>
         <td>
           <img
@@ -98,6 +101,7 @@
         <td>{{ row.readCount }}</td>
       </tr>
     </table>
+  </div>
 
     <!-- 페이징 버튼 추가 -->
     <div>
@@ -122,13 +126,15 @@
       </button>
     </div>
 
-    <router-link to="/notice/write">
+    <!-- <router-link to="/notice/write">
       <button class="register">작성하기</button>
-    </router-link>
-
-     <!-- <router-link v-if="userId.includes('admin')" to="/notice/write">
-        <button class="register">작성하기</button>
     </router-link> -->
+
+   <router-link to="/notice/write">
+   <div v-if="this.showRegisterBtn()"> 
+      <button  class="register">작성하기</button>
+   </div>
+  </router-link> 
   </div>
 </template>
 
@@ -137,18 +143,29 @@ export default {
   data() {
     return {
       list: [],
+      userId: "",
+      userName:"",
       importanceList: [],
-      search_type: "",
+      search_type: "title",
       search_keyword: "",
       currentPage: 1,
       totalPages: 1,
+       selectList:{
+          0: {text:"제목", value:"title"},
+          1: {text:"내용", value:"contents"}
+          
+       }
+          
     };
   },
   mounted() {
     this.fnPage();
     this.getImportance();
+    this.userId = sessionStorage.getItem("userId");
     console.log("Data:", this.list);
     console.log(this.importanceList);
+    console.log("userId:", this.userId);
+    
   },
   computed: {
     pageNumbers() {
@@ -161,6 +178,18 @@ export default {
   },
 
   methods: {
+    showRegisterBtn(){
+
+      const userId = sessionStorage.getItem('userId')
+      if(this.userId !=null ){
+        if(this.userId.includes("admin")){
+          return true;
+        }
+
+      }
+      return false;
+    },
+
     fnPage() {
       this.$axios
         .get("/notices", {
@@ -338,7 +367,8 @@ tr:hover {
   color: #000000;
 }
 
-.noticesub{
+.noticesub {
   margin-bottom: 20px;
 }
+
 </style>

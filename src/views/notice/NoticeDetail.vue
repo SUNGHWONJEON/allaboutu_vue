@@ -59,26 +59,17 @@
           type="button"
           class="up"
           value="공지 수정 페이지로 이동"
+          v-if="showUpdateBtn()"
         /> 
       </router-link> 
-      <!-- <router-link v-if="userId.includes('admin')" :to="'/notice/update/' + noticeNum">
-      <input type="button" class="up" value="공지 수정 페이지로 이동" />
-    </router-link>
-
-    <input
-      type="button"
-      class="del"
-      @click="deleteNotice(noticeNum)"
-      v-if="userId.includes('admin')"
-      value="공지 글 삭제"
-    /> -->
 
      <input
         type="button"
         class="del"
         @click="deleteNotice(noticeNum)"
+         v-if="showDeleteBtn()"
         value="공지 글 삭제"
-      /> -
+      /> 
       <input type="button" class="can" @click="goBack" value="목록" />
     </div>
   </div>
@@ -92,6 +83,7 @@ export default {
   name: "NoticeDetail",
   data() {
     return {
+      userId: "", 
       noticeTitle: "",
       noticeContents: "",
       writeDate: "",
@@ -104,8 +96,31 @@ export default {
   mounted() {
     this.noticeNum = this.$route.params.noticeNum;
     this.getNoticeDetails(this.noticeNum);
+    this.userId = sessionStorage.getItem("userId");
   },
   methods: {
+    showUpdateBtn(){
+       const userId = sessionStorage.getItem('userId')
+      if(this.userId !=null ){
+        if(this.userId.includes("admin")){
+          return true;
+        }
+
+      }
+      return false;
+    },
+
+    showDeleteBtn(){
+       const userId = sessionStorage.getItem('userId')
+      if(this.userId !=null ){
+        if(this.userId.includes("admin")){
+          return true;
+        }
+
+      }
+      return false;
+    },
+
     getNoticeDetails(noticeNum) {
       this.$axios
         .get("/notices/detail/" + noticeNum)
