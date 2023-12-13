@@ -146,8 +146,8 @@ export default {
 
       this.$axios
         .post("/notices", sendData, {
-          header: {
-            "Context-Type": "multipart/form-data",
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
         })
         .then((res) => {

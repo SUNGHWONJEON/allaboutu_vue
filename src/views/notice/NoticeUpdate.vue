@@ -69,6 +69,9 @@ export default {
       file: null,
     };
   },
+  
+
+  
   created() {
     this.noticeNum = this.$route.params.noticeNum;
     this.getNotice();

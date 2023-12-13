@@ -1,5 +1,6 @@
 <template>
  <h2 class="toptitile">NOTICE</h2>
+ <h4 class="noticesub">공지목록</h4>
   <div class="notice-contents">
     <div class="searchbox">
       <select id="noticeop" v-model="search_type">
@@ -124,6 +125,10 @@
     <router-link to="/notice/write">
       <button class="register">작성하기</button>
     </router-link>
+
+     <!-- <router-link v-if="userId.includes('admin')" to="/notice/write">
+        <button class="register">작성하기</button>
+    </router-link> -->
   </div>
 </template>
 
@@ -295,8 +300,6 @@ tr:hover {
   margin: 100px;
 }
 
-
-
 .searchtitle,
 .allList {
   color: black;
@@ -304,8 +307,6 @@ tr:hover {
   height: 25px;
   background-color: yellowgreen;
   border-radius: 25px;
- 
-
 
 }
 
@@ -332,8 +333,12 @@ tr:hover {
 }
 
 .toptitile{
-  margin-bottom: 30px;
+  
   font-size: 40px;
   color: #000000;
+}
+
+.noticesub{
+  margin-bottom: 20px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="notice-container">
     <div class="notice-header">
-      <h2 class="notice">공지사항</h2>
+       <h2 id="noticesub">공지사항</h2>
       <table class="tg">
         <thead>
           <tr>
@@ -23,18 +23,21 @@
           <tr>
             <td class="tg-0lax border-leftnone"><h4>첨부파일</h4></td>
             <td class="tg-0lax border-rightnone" colspan="3">
-              <span v-if="renameFileName">{{ originalFileName }}
-               <button @click="downloadFile"> 다운로드</button>
+              <span v-if="renameFileName"
+                >{{ originalFileName }}
+                <button @click="downloadFile">다운로드</button>
               </span>
               <span v-else>첨부파일 없음</span>
             </td>
           </tr>
           <tr>
-            
-            <td class="tg-0lax border-leftnone border-rightnone border-downnone" colspan="4">
+            <td
+              class="tg-0lax border-leftnone border-rightnone border-downnone"
+              colspan="4"
+            >
               <div class="notice-content-container">
-                    {{ noticeContents }}      
-               </div>
+                {{ noticeContents }}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -56,14 +59,26 @@
           type="button"
           class="up"
           value="공지 수정 페이지로 이동"
-        />
-      </router-link>
-      <input
+        /> 
+      </router-link> 
+      <!-- <router-link v-if="userId.includes('admin')" :to="'/notice/update/' + noticeNum">
+      <input type="button" class="up" value="공지 수정 페이지로 이동" />
+    </router-link>
+
+    <input
+      type="button"
+      class="del"
+      @click="deleteNotice(noticeNum)"
+      v-if="userId.includes('admin')"
+      value="공지 글 삭제"
+    /> -->
+
+     <input
         type="button"
         class="del"
         @click="deleteNotice(noticeNum)"
         value="공지 글 삭제"
-      />
+      /> -
       <input type="button" class="can" @click="goBack" value="목록" />
     </div>
   </div>
@@ -107,8 +122,8 @@ export default {
           console.log(err);
         });
     },
-    
-    downloadFile(){
+
+    downloadFile() {
       // 서버에 파일 다운로드 요청 보내기
       axios({
         url: `/notices/download/${this.renameFileName}`,
@@ -126,12 +141,11 @@ export default {
           document.body.removeChild(link);
         })
         .catch((error) => {
-            console.error("파일 다운로드 실패:", error);
-            console.log("에러 응답:", error.response);
+          console.error("파일 다운로드 실패:", error);
+          console.log("에러 응답:", error.response);
         });
     },
 
-    
     deleteNotice(noticeNum) {
       if (confirm("정말로 이 공지를 삭제하시겠습니까?")) {
         this.$axios
@@ -155,9 +169,8 @@ export default {
 </script>
 
 <style scoped>
-h4{
-  margin:0px;
- 
+h4 {
+  margin: 0px;
 }
 
 #noticeTitle {
@@ -228,9 +241,8 @@ h4{
 .tg td.border-leftnone {
   border-left: none;
   width: 150px;
-   height:20px;
+  height: 20px;
 }
-
 
 .tg th.border-rightnone,
 .tg td.border-rightnone {
@@ -238,24 +250,20 @@ h4{
   width: 50px;
 }
 
-.tg td.border-downnone{
-  border:none;
+.tg td.border-downnone {
+  border: none;
   height: 500px;
   width: 100px;
   word-break: break-all;
-
 }
 
-
- .tg {
+.tg {
   /* 최대 테이블 너비 설정 */
   width: 500px; /* 부모 요소에 맞게 테이블 확장 */
   border-collapse: collapse;
   border-spacing: 0;
-  margin:20px auto;
-  
+  margin: 20px auto;
 }
-  
 
 .tg td {
   border-color: black;
@@ -287,12 +295,13 @@ h4{
 
 .notice-content-container {
   max-height: 400px;
-  margin-top: 10px; 
+  margin-top: 10px;
   word-break: break-all;
   white-space: break-spaces;
 }
 
-
-
-
+#noticesub {
+  margin: 80px 900px;
+  font-size: 35px;
+}
 </style>
