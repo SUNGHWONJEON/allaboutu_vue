@@ -34,7 +34,7 @@
                             <hr content="SNS로 3초 로그인" class="SNS" />
                             <div class="mb-4">
                                 <div class="social-button mb-2">
-                                    <a href="https://kauth.kakao.com/oauth/authorize?client_id=b2f72c2fd16ce9a5b5ee4b0c3c6b28e2&redirect_uri=http://localhost:2222/oauth&response_type=code">
+                                    <a href="https://kauth.kakao.com/oauth/authorize?client_id=b2f72c2fd16ce9a5b5ee4b0c3c6b28e2&redirect_uri=http://localhost:2222/auth/login&response_type=code">
                                         <img src="@/assets/images/KakaoLoginCircle.png" />
                                     </a>
                                     

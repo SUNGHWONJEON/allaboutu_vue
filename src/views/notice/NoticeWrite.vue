@@ -79,7 +79,7 @@ export default {
 
   data() {
     return {
-      ruserNum: 1,
+      userId: "",
       noticeTitle: "",
       noticeContents: "",
       cartegory: "notice",
@@ -130,11 +130,11 @@ export default {
       }
       const sendData = new FormData();
       const notice = {
-        userNum: this.ruserNum,
+        userId: sessionStorage.getItem('userId'),
         noticeTitle: this.noticeTitle,
         noticeContents: this.noticeContents,
         importance: this.importance,
-        importanceDate: new Date(this.importanceDate),
+        //importanceDate: new Date(this.importanceDate),
         cartegory: this.cartegory,
       };
       console.log(JSON.stringify(notice));

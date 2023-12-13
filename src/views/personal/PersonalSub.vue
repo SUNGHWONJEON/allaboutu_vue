@@ -36,38 +36,26 @@ export default {
                 [
                     {
                         title: '1. 코랄(Coral)'
-                        ,src: [
-                            [
-                                require('@/assets/images/personal/coral.png')
-                            ]
-                        ],
+                        ,src: require('@/assets/images/personal/coral.png'),
                         exp: '봄 웜톤의 화사하고 따뜻한 피부톤에 잘 어울리는 컬러 중 하나입니다!\
                         \n코랄은 주황과 분홍이 조화롭게 섞인 색으로, \
                         \n어떤 봄 웜톤이든 상쾌하고 활기찬 느낌을 부각시켜줘요!!'
                     },
                     {
                         title: '2. 라이트 옐로우(Light Yellow)'
-                        ,src: [
-                            [
-                                require('@/assets/images/personal/lightyellow.png')
-                            ]
-                        ],
+                        ,src: require('@/assets/images/personal/lightyellow.png'),
                         exp: '밝은 옐로우는 따뜻한 톤의 피부와 아주 잘 어울려요!\
                         \n봄 웜톤의 인상을 더욱 화사하게 만들어주며, \
                         \n자연의 햇빛을 연상케 하는 컬러로 분위기를 밝게 만들어줍니다!'
                     },
                     {
                         title: '3. 민트 그린(Mint Green)'
-                        ,src: [
-                            [
-                                require('@/assets/images/personal/mintgreen.png')
-                            ]
-                        ],
+                        ,src: require('@/assets/images/personal/mintgreen.png'),
                         exp: '민트 그린은 상큼하고 시원한 느낌을 주어, \
                         \n봄 웜톤의 화사한 이미지를 강조시켜줘요!\
                         \n 특히, 연한 피부톤과의 조합이 아주 매력적입니다!'
                     }
-                ],
+                ]
                 //2번추천
                 [
                     {
@@ -157,7 +145,7 @@ export default {
                             ]
                         ],
                         exp: '푸시아는 밝고 선명한 분홍색으로, 겨울 쿨톤에게 활기와 생기를 불어넣어줍니다!\
-                        \n 시원하면서도 세련된 느낌을 연출할 수 있는 컬러 중 하나입니다'
+                        \n 시원하면서도 세련된 느낌을 연출할 수 있는 컬러1 중 하나입니다'
                     },
                     {
                         title: '3. 차콜 블랙(Charcoal Black)'

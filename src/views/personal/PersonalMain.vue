@@ -2,7 +2,7 @@
     <div class="main-wrapper">
         <div class="main-container">
             <div class="contents-boxes">
-                <PersonalHome /><!-- 퍼스널컬러 컴포넌트 -->
+                <PersonalHome @show-component="showComponent"  /><!-- 퍼스널컬러 컴포넌트 -->
                 <PersonalRecommand v-if="isComponentVisible" /><!-- 퍼스널컬러 추천 컴포넌트 -->
             </div>
         </div>
