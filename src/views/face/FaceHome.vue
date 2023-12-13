@@ -14,7 +14,10 @@
             <div class="pic-upload">
                 <label for="pic_up" ref="pic_label" :class="{ 'pic-label': imageUploaded}">업로드</label>
                 <input class="pic-img-box" id="pic_up" type="file" @change="handleFileUpload" accept="image/*">
-                <img class="my-img-box" :src="imageUrl" v-if="imageUrl" :style="{ display: imageUrl ? 'block' : 'none' }">
+                <img class="my-img-box" @load="handleImageLoad" :src="imageUrl" v-if="imageUrl" 
+                :style="{ display: imageUrl ? 'block' : 'none' }">
+            
+                <Loading  v-if="isLoading"/>
             </div>
             
             <div class="pic-btn-box">
@@ -23,28 +26,34 @@
             </div>
 
             <div class="pic-btn-box color-box-face">
-
+                <!--
                 <div>
                     <button class="hair-btn" v-on:click="toggleHairOptions">Hair</button>
                     <button class="lip-btn" v-on:click="fnLipClick">Lip</button>
                 </div>
-                
+                -->
+                <div class="sub-title">Hair color</div>
+                <div>머리색을 선택해주세요.</div>
                 <div class="hair-btn-container" v-if="hairOptionsVisible">
                     <button 
                         v-for="index in hairOptionCount"
                         :key="index"
                         class="hair-option-btn"
+                        :class="hairNum == index ? 'active' : ''"
                         @click="handleHairOptionClick(index)"
                     >
                         <img :src="require(`@/assets/images/face/hair/hair${index}.jpg`)">
                     </button>
                 </div>
                 
-                <div class="lip-btn-container" v-if="lipOptionsVisible">
+                <div class="sub-title">Lip color</div>
+                <div>입술색을 선택해주세요.</div>
+                <div class="hair-btn-container" v-if="lipOptionsVisible">
                     <button 
                         v-for="index in lipOptionCount"
                         :key="index"
                         class="lip-option-btn"
+                        :class="lipNum == index ? 'active' : ''"
                         @click="handleLipOptionClick(index)"
                     >
                         <img :src="require(`@/assets/images/face/lip/lip${index}.jpg`)">
@@ -64,11 +73,24 @@ import { ref } from 'vue';
 export default ({
     data(){
       return{
-        hairOptionsVisible: false,
+        isLoading: false,
+        hairOptionsVisible: true,
         hairOptionCount: 7,
         hairImagePath: '../../src/assets/images/face/hair/',
-        lipOptionsVisible: false,
+        lipOptionsVisible: true,
         lipOptionCount: 8,
+        hairColorList: [
+            [14, 157, 204], [204, 157, 14], [120, 55, 80], [80, 55, 120], 
+            [215, 232, 250], [32, 133, 205], [0, 0, 128]
+        ],
+        lipColorList: [
+            [186, 186, 255], [123, 123, 255], [82, 82, 255], [205, 194, 255], 
+            [172, 147, 255], [137, 98, 137], [104, 52, 255], [74, 8, 255]
+        ],
+        hairNum: null,
+        lipNum: null,
+        myHairList : [],
+        myLipList : [],
         lipImagePath: '../../src/assets/images/face/lip/'
       };  
     },
@@ -96,14 +118,15 @@ export default ({
         fnUpClick(){
 
         },
-        callPythonApi(dir_path, org_path, image_path, list) {
+        callPythonApi(dir_path, org_path, image_path, hair, lip) {
             
             const apiUrl = 'http://localhost:4444/face';
             const requestBody = { 
                 dir_path: dir_path,
                 org_path: org_path,
                 image_path: image_path,
-                list : list
+                hair : hair,
+                lip : lip
             };
 
             this.$axios.post(apiUrl, requestBody, {
@@ -114,7 +137,7 @@ export default ({
                 console.log('callPythonApi res.data str : ' +  JSON.stringify(res.data));
                 //console.log('url_1 + res.data.change_path : ' +  ('/style/image/' + res.data.change_path));
                 //const url = '../../allaboutu_springboot/src/main/resources/style_upload/';
-                //this.imageUrl = 'http://localhost:2222/style/image/20231206173103_form.jpg'//
+                //this.imageUrl = 'http://localhost:2222/face/image/20231213162814_form.jpg'//
                 
                 const change_path = res.data.change_path;
                 this.imageUrl = '/face/image/' + change_path;
@@ -160,10 +183,14 @@ export default ({
                 alert('사진 등록 성공');
                 console.log('res.data : ' + res.data);
                 console.log('res stringify : ' + JSON.stringify(res))
-                let list = [[80, 55, 120], [123, 123, 255], [123, 123, 255]]
+                
+                const hair = this.myHairList;
+                const lip = this.myLipList;
+                
+                console.log('hair : ' + hair);
                 //로딩 시작
                 this.isLoading = true;
-                this.callPythonApi(res.data[0], res.data[1], res.data[2], list);
+                this.callPythonApi(res.data[0], res.data[1], res.data[2], hair, lip);
                 
             })
             .catch(err => {
@@ -189,15 +216,24 @@ export default ({
         },
         handleHairOptionClick(index){
             // 각 버튼 클릭 시 동작하는 로직 추가
+            console.log('index : ' + index);
+            this.hairNum = index;
+            this.myHairList = this.hairColorList[index-1]
         },
         handleLipOptionClick(index){
             // 각 버튼 클릭 시 동작하는 로직 추가
+            console.log('index : ' + index);
+            this.lipNum = index;
+            this.myLipList = this.lipColorList[index-1]
         },
         getHairImageUrl(index){
             return require(this.hairImagePath + 'hair' + index + '.jpg');
         },
         getLipImageUrl(index){
             return require(this.lipImagePath + 'lip' + index + '.jpg');
+        },
+        handleImageLoad(data){
+            this.isLoading = false;
         },
         fnLipClick(){
 
@@ -255,9 +291,27 @@ export default ({
     margin: 5px;
 }
 
-.hair-option-btn:focus {
-  opacity: .6;
+.hair-option-btn.active,.hair-option-btn:hover {
+    opacity: .6;
+}
 
+
+.lip-option-btn img{
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    margin: 5px;
+}
+.lip-option-btn.active,.lip-option-btn:hover {
+    opacity: .6;
+}
+
+.sub-title {
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 24px;
+    
+    margin-top: 20px;
 }
 
 </style>
