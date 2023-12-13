@@ -86,6 +86,7 @@ export default {
                 console.log('callPythonApi res.data str : ' +  JSON.stringify(res.data));
                 console.log('url_1 + res.data.change_path : ' +  ('/personal/image/' + res.data.change_path));
                 
+                
                 this.imageUrl = '/personal/image/' + res.data.change_path;
                 this.type = res.data.type;
                 const change_path = res.data.change_path;
@@ -96,13 +97,29 @@ export default {
 
                 //insert하기
                 const insertData = {
-                    user_num: -1,
-                    personal_img: org_path,  // 회원이 업로드한 사진
-                    personal_reimg: change_path, // 회원이 업로드한 사진 이름 바꾼거
-                    personal_num: this.type // 번호
+                    userNum: this.tempUserNum,
+                    personalImg: res.data.org_path,  // 회원이 업로드한 사진
+                    personalReimg: res.data.change_path, // 회원이 업로드한 사진 이름 바꾼거
+                    type: personalType(res.data.type)
+                };
+                function personalType(type) {
+                    switch (type) {
+                        case 'Spring':
+                            return 1;
+                        case 'Summer':
+                            return 2;
+                        case 'Autumn':
+                            return 3;
+                        case 'Winter':
+                            return 4;
+                    }
                 }
                 console.log('insertData : ' + JSON.stringify(insertData));
-                
+                console.log('userNum : ' + this.tempUserNum);
+                console.log('personalImg : ' + res.data.org_path);
+                console.log('personalReimg : ' + res.data.change_path);
+                console.log('type : ' + res.data.type);
+
                 this.$axios.post('/personal/insert', insertData, {
                     headers:{'Content-Type': 'application/json'}
                 })
@@ -114,7 +131,7 @@ export default {
                 .catch(error => {
                     //에러 처리
                     console.error(error);
-                    console.log("api 요청안된다");
+                    console.log("insert 실패");
                 });
                 
             })
@@ -136,6 +153,8 @@ export default {
             console.log('this.imageFile : ' + this.imageFile);
             formData.append('file', this.imageFile);
             formData.append('userNum', this.tempUserNum);
+
+            console.log('this.tempUserNum : ' + this.tempUserNum);
 
             this.$axios.post('/personal/upload', formData, {
                     headers:{'Content-Type': 'multipart/form-data'}
