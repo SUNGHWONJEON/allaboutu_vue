@@ -40,6 +40,16 @@
                     </button>
                 </div>
                 
+                <div class="lip-btn-container" v-if="lipOptionsVisible">
+                    <button 
+                        v-for="index in lipOptionCount"
+                        :key="index"
+                        class="lip-option-btn"
+                        @click="handleLipOptionClick(index)"
+                    >
+                        <img :src="require(`@/assets/images/face/lip/lip${index}.jpg`)">
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -56,7 +66,10 @@ export default ({
       return{
         hairOptionsVisible: false,
         hairOptionCount: 7,
-        hairImagePath: '../../src/assets/images/face/hair/'
+        hairImagePath: '../../src/assets/images/face/hair/',
+        lipOptionsVisible: false,
+        lipOptionCount: 8,
+        lipImagePath: '../../src/assets/images/face/lip/'
       };  
     },
     setup() {
@@ -83,22 +96,108 @@ export default ({
         fnUpClick(){
 
         },
-        fnTypeClick(){
+        callPythonApi(dir_path, org_path, image_path, list) {
+            
+            const apiUrl = 'http://localhost:4444/face';
+            const requestBody = { 
+                dir_path: dir_path,
+                org_path: org_path,
+                image_path: image_path,
+                list : list
+            };
 
+            this.$axios.post(apiUrl, requestBody, {
+                headers:{'Content-Type': 'application/json'}
+            })
+            .then(res => {
+                console.log('callPythonApi res.data : ' + res.data);
+                console.log('callPythonApi res.data str : ' +  JSON.stringify(res.data));
+                //console.log('url_1 + res.data.change_path : ' +  ('/style/image/' + res.data.change_path));
+                //const url = '../../allaboutu_springboot/src/main/resources/style_upload/';
+                //this.imageUrl = 'http://localhost:2222/style/image/20231206173103_form.jpg'//
+                
+                const change_path = res.data.change_path;
+                this.imageUrl = '/face/image/' + change_path;
+                this.$refs.pic_label.style.display = 'none';
+                
+                
+            })
+            .catch(error => {
+                //에러 처리
+                console.error(error);
+            });
+            
+        },
+        fnTypeClick(){
+            const token = sessionStorage.getItem('accessToken');
+            console.log('token : ' + token);
+
+            // if(token == null) {
+            //     this.$router.push({
+            //         path: '/login'
+            //     })
+
+            //     return;
+            // }
+
+            if(this.imageFile == null) {
+                alert('사진을 업로드해주세요.');
+                return;
+            }
+
+
+            const formData = new FormData();
+            console.log('this.imageFile : ' + this.imageFile);
+            formData.append('file', this.imageFile);
+            formData.append('userNum', this.tempUserNum);
+
+            this.$axios.post('/face/upload', formData, {
+                headers:{
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(res => {
+                alert('사진 등록 성공');
+                console.log('res.data : ' + res.data);
+                console.log('res stringify : ' + JSON.stringify(res))
+                let list = [[80, 55, 120], [123, 123, 255], [123, 123, 255]]
+                //로딩 시작
+                this.isLoading = true;
+                this.callPythonApi(res.data[0], res.data[1], res.data[2], list);
+                
+            })
+            .catch(err => {
+                alert('사진 등록 실패');
+                console.log(err);
+            })
         },
         toggleHairOptions(){
            this.hairOptionsVisible = !this.hairOptionsVisible;
+        },
+        toggleLipOptions(){
+           this.lipOptionsVisible = !this.lipOptionsVisible;
         },
         fnHairClick(){
             if (!this.hairButtonCreated){
                 this.hairButtonCreated = true;
             }
         },
+        fnLipClick(){
+            if (!this.lipButtonCreated){
+                this.lipButtonCreated = true;
+            }
+        },
         handleHairOptionClick(index){
+            // 각 버튼 클릭 시 동작하는 로직 추가
+        },
+        handleLipOptionClick(index){
             // 각 버튼 클릭 시 동작하는 로직 추가
         },
         getHairImageUrl(index){
             return require(this.hairImagePath + 'hair' + index + '.jpg');
+        },
+        getLipImageUrl(index){
+            return require(this.lipImagePath + 'lip' + index + '.jpg');
         },
         fnLipClick(){
 
