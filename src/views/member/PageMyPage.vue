@@ -1,39 +1,47 @@
 <template>
     <table id="outer" align="center" width="700" celspacing="5" cellpadding="0">
-     <tr class="MyPage">
-         <td class="container-fluid">
-             <div class="row align-items-center">
-                 <div class="col">
-                 </div>
-                 <div class="col">
-                     <div id="logo3" class="contents-boxes">마이페이지</div>
-                     <h5 class='mt-4'>아이디</h5>
-                     <div>{{ member.userId }}</div>
-                     <h5 class="mt-4">email</h5>
-                     <div>{{ member.userEmail }}</div>
-                     <h5 class="mt-4">이름</h5>
-                     <div>{{ member.userName }}</div>
-                     <h5 class="mt-4">전화번호</h5>
-                     <div>{{ member.userPhone }}</div>
-                     <input type="button" @click="openPhone" class="btn btn-primary btn-default btn-sm mt-3" value="전화번호 변경하기">
-                     <h5 class="mt-4">비밀번호 변경</h5>
-                     <div>현재 비밀번호를 입력해주세요.</div>
-                     <input type="password" class="form-control joinInput mt-2" id="originPwd" placeholder="현재 비밀번호를 입력해주세요.">
-                     <div>새로 사용하실 비밀번호를 입력해주세요.</div>
-                     <input type="password" class="form-control joinUnpyt mt-2" id="pwd" placeholder="새로 사용하실 비밀번호를 입력해주세요.">
-                     <div>한 번 더 입력해주세요.</div>
-                     <input type="password" class="'form-control joinInput mt-2" id="pwd2" placeholder="새로 사용하실 비밀번호를 입력해주세요.">
-                     <input type="button" @click="updatePwd" class="btn btn-primary btn-default btn-sm mt-2" value="비밀번호 수정"> 
-                 </div>
-                 <div class="col">
-                 </div>
-             </div>
-         </td>
-     </tr>
+        <tr class="MyPage">
+            <td class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col">
+                    </div>
+                    <div class="col">
+                        <div id="logo3" class="contents-boxes">마이페이지</div>
+                        <h5 class='mt-4'>아이디</h5>
+                        <div>{{ myPage.userId }}</div>
+                        <h5 class="mt-4">email</h5>
+                        <div>{{ myPage.userEmail }}</div>
+                        <h5 class="mt-4">이름</h5>
+                        <div>{{ myPage.userName }}</div>
+                        <h5 class="mt-4">전화번호</h5>
+                        <div>{{ myPage.userPhone }}</div>
+                        <input type="button" @click="openPhone" class="btn btn-primary btn-default btn-sm mt-3" value="전화번호 변경하기">
+                        <h5 class="mt-4">비밀번호 변경</h5>
+                        <div>현재 비밀번호를 입력해주세요.</div>
+                        <input type="password" class="form-control joinInput mt-2" id="originPwd" placeholder="현재 비밀번호" style="width: 200px;" align="center">
+                        <div>새로 사용하실 비밀번호를 입력해주세요.</div>
+                        <input type="password" class="form-control joinUnpyt mt-2" id="pwd" placeholder="새로운 비밀번호" style="width: 200px;" align="center">
+                        <div>한 번 더 입력해주세요.</div>
+                        <input type="password" class="'form-control joinInput mt-2" id="pwd2" placeholder="한 번 더 입력" style="width: 200px;" align="center"><br>
+                        <input type="button" @click="updatePwd" class="btn btn-primary btn-default btn-sm mt-2 my-custom-button" value="비밀번호 수정">
+ 
+                    </div>
+                    <div class="col">
+                    </div>
+                </div>
+            </td>
+        </tr>
     </table>
- </template>
+</template>
+
 <style>
-#logo3{color: pink;font: italic 4em "Fira Sans", serif;}
+#logo3{color: pink;font: italic 4em "Fira Sans", serif; margin: 10px;}
+.my-custom-button {
+    background-color: #f0f0f0;
+    border: 2px solid #ad578c;
+    padding: 8px 16px;
+    /* 추가적인 스타일 속성 정의 */
+}
 </style>
 
 <script>
@@ -43,34 +51,33 @@ export default {
   name: 'myPage',
   data() {
     return {
-      member: {}
+      myPage: {}
     };
+  },
+  mounted() {
+    console.log('session = ', sessionStorage)
   },
   methods: {
     updateMypage() {
-      this.$axios.patch('/api/user/info') // 사용자 정보를 가져오는 API 엔드포인트로 변경해야 합니다.
+      const userNum = updateUser; // 사용자 번호를 가져오는 방법에 따라 구현
+      this.$axios.patch(`/myPage/${userNum}`)
         .then(response => {
-          this.infor = response.data; // 백엔드에서 받아온 사용자 정보를 할당합니다.
+          this.myPage = response.data;
         })
         .catch(error => {
           console.error(error);
         });
     },
     getMyPage() {
-    this.$axios.get('/myPage/{userNum}')
+      const userNum = getMyPage; // 사용자 번호를 가져오는 방법에 따라 구현
+      this.$axios.get(`/myPage/${userNum}`)
         .then((res) => {
-            this.member = res.data;
-        }).catch((err) => {
-            console.log(err);
+          this.myPage = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
         });
-  },
-    updatePwd() {
-      // 비밀번호 수정 로직 작성
     },
-    openPhone() {
-      // 전화번호 변경 로직 작성
-    }
   }
 };
 </script>
-
