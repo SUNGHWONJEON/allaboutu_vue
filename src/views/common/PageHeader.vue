@@ -195,6 +195,7 @@ export default ({
             this.username = "";
             sessionStorage.removeItem('accessToken');
             sessionStorage.removeItem('refreshToken');
+            sessionStorage.removeItem('userId');
 
             this.$router.push('/');
         },
