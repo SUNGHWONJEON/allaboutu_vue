@@ -19,7 +19,7 @@ export default {
         };
     },
     mounted() {
-        const query = this.$route.query.keyword;
+        const query = this.$route.params.keyword;
         if(query == undefined || query == null) {
             this.search_key = '';
         }
@@ -36,12 +36,14 @@ export default {
                 return;
             }
 
-            this.$router.push({
-                name: "BoardSearch",
-                query: {
-                    keyword: encodeURIComponent(this.search_key),
-                },
-            });
+            this.$router.push('/board/search/' + this.search_key
+                // {
+                // name: "BoardSearch",
+                // params: {
+                //     // keyword: encodeURIComponent(this.search_key),
+                //     keyword: this.search_key,
+                // },
+            );
         },
     },
 };

@@ -116,7 +116,7 @@ export default {
     methods: {
         callPythonApi(dir_path, org_path, image_path, wsize) {
             
-            const apiUrl = 'http://192.168.0.85:4444/api';
+            const apiUrl = 'http://localhost:4444/api';
             const requestBody = { 
                 dir_path: dir_path,
                 org_path: org_path,

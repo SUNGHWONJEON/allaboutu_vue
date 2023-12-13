@@ -133,15 +133,16 @@ export default {
                 boardTitle: this.boardTitle,
                 boardContent: this.boardContent,
             };
+            
             sendData.append('board', new Blob([JSON.stringify(board)], { type: 'application/json' }));
             sendData.append('hashtags', new Blob([JSON.stringify(this.registeredHashtags)], { type: 'application/json' }));
             for (let i = 0; i < this.attachments.length; i++) {
                 sendData.append('attachments', this.attachments[i]);
             }
-
+            
             this.$axios.post('/boards', sendData, {
-                header: {
-                    'Context-Type': 'multipart/form-data',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 }
             })
             .then(res => {
@@ -179,7 +180,7 @@ export default {
 
             this.$axios.patch('/boards/' + this.boardNum, sendData, {
                 header: {
-                    'Context-Type': 'multipart/form-data',
+                    'Content-Type': 'multipart/form-data',
                 }
             })
             .then(res => {

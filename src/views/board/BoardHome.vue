@@ -16,21 +16,12 @@
     </div>
 
     <div class="fixed-elements">
-        <!-- 주간 인기글 Best5 -->
-        <!-- <BoardRank /> -->
-
-        <!-- 검색바 -->
-        <!-- <Searchbar /> -->
-
-        <!-- 모달 팝업 -->
-
         <!-- 글쓰기 버튼 -->
-        <router-link to="/board/write">
-            <img
-                class="board-write-btn"
-                src="@/assets/images/community/board_write_btn.png"
-            />
-        </router-link>
+        <img
+            class="board-write-btn"
+            src="@/assets/images/community/board_write_btn.png"
+            @click="moveToWritePage"
+        />
 
         <!-- 챗봇 버튼 -->
         <router-link to="/board/write">
@@ -57,6 +48,25 @@ export default {
         BoardRank,
         Searchbar,
         ReportPopup,
+    },
+    methods: {
+        moveToWritePage() {
+            if (!this.isLogin()) return;
+
+            this.$router.push("/board/write");
+        },
+        isLogin() {
+            const loginUserId = sessionStorage.getItem("userId");
+
+            if (loginUserId == "" || loginUserId == null) {
+                if (confirm("로그인 후 이용해주세요.")) {
+                    this.$router.push("/login");
+                }
+                return false;
+            }
+
+            return true;
+        }
     },
 };
 </script>

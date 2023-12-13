@@ -89,7 +89,9 @@ export default {
             // replyText를 DB에 등록하는 로직
             const newReply = {
                 boardNum: this.comments[0].boardNum,
-                userId: this.loginUserId,
+                writer: {
+                    userId: this.loginUserId,
+                },
                 parentNum: commentNum,
                 content: this.replyText
             };
