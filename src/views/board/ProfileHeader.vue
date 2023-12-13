@@ -30,12 +30,9 @@ export default {
             return hashtags;
         }
     },
-    mounted() {
-        console.log(this.writer);
-    },
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/scss/board.scss';
-</style>
+</style>    
