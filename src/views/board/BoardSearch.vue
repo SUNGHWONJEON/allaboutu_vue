@@ -35,8 +35,8 @@ export default {
         }
     },
     mounted() {
-        this.keyword = decodeURIComponent(this.$route.query.keyword);
-        console.log('this.$route.query.keyword : ', this.keyword);
+        this.keyword = decodeURIComponent(this.$route.params.keyword);
+        console.log('this.$route.params.keyword : ', this.keyword);
         window.addEventListener('scroll', () => {
             const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
             if (scrollTop + clientHeight >= scrollHeight - 100) {

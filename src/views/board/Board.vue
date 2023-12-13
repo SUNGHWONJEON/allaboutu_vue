@@ -154,22 +154,24 @@ export default {
     },
     created() {
         this.loginUserId = sessionStorage.getItem("userId");
-
-        if (this.loginUserId != "") {
-            this.hasPermission = this.checkPermission();
-
-            // 좋아요 여부 확인
-            this.$axios
-                .get(
-                    `/boards/${this.board.boardNum}/likes/${this.loginUserId}`
-                )
-                .then((res) => {
-                    this.isLiked = res.data;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+        
+        if (this.loginUserId == "") {
+            return;
         }
+        
+        this.hasPermission = this.checkPermission();
+
+        // 좋아요 여부 확인
+        this.$axios
+            .get(
+                `/boards/${this.board.boardNum}/likes/${this.loginUserId}`
+            )
+            .then((res) => {
+                this.isLiked = res.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     },
     computed: {
         formattedCreateDate() {
@@ -178,16 +180,16 @@ export default {
     },
     methods: {
         postComment() {
-            if (this.loginUserId == "") {
-                alert("로그인 후 이용해주세요.");
-                this.$router.push("/login");
+            if (!this.isLogin()) {
                 return;
             }
-
+            
             // newCommentText를 DB에 등록하는 로직
             const newComment = {
                 boardNum: this.board.boardNum,
-                reportUserId: this.loginUserId,
+                writer: {
+                    userId: this.loginUserId,
+                },
                 parentNum: null,
                 content: this.newCommentText,
             };
@@ -216,20 +218,19 @@ export default {
                 .get("/boards/" + this.board.boardNum + "/comments")
                 .then((res) => {
                     this.comments = res.data;
+                    console.log('loadComments:')
+                    console.log(this.comments)
                 })
                 .catch((err) => {
                     console.log(err);
                 });
         },
         like() {
-            const url = `/boards/${this.board.boardNum}/likes/${this.loginUserId}`;
-
-            if (this.loginUserId == "") {
-                alert("로그인 후 이용해주세요.");
-                this.$router.push("/login");
+            if (!this.isLogin()) {
                 return;
             }
-
+            
+            const url = `/boards/${this.board.boardNum}/likes/${this.loginUserId}`;
             if (this.isLiked) {
                 // 좋아요 취소
                 this.$axios
@@ -305,17 +306,29 @@ export default {
                 });
         },
         searchHashtag(hashtag) {
-            this.$router.push({
-                name: "BoardSearch",
-                params: {
-                    keyword: hashtag,
-                },
-            });
+            this.$router.push(
+                "/board/search/" + hashtag
+                // {
+                // name: "BoardSearch",
+                // params: {
+                //     keyword: hashtag,
+                // },
+            );
         },
         checkPermission() {
             // 로그인한 유저가 게시글 작성자인지 확인
             return this.loginUserId === this.board.writer.userId;
         },
+        isLogin() {
+            if (this.loginUserId == "" || this.loginUserId == null) {
+                if (confirm("로그인 후 이용해주세요.")) {
+                    this.$router.push("/login");
+                }
+                return false;
+            }
+
+            return true;
+        }
     },
 };
 </script>
