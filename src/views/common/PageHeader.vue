@@ -29,7 +29,6 @@
                 <div class="header_right_widget">
                     <!-- 로그인되어 있을 때 --> 
                     <template v-if="isLoggedIn == true">
-                        
                         <img src="@/assets/images/default_profile.png" style="width: 30px; height: 30px; border-radius: 100%" @click="goToMyPage">
                         <div style="margin-left: 2px; font-size: 12px">
                             <div style="line-height: 14px; margin: 4px 0px 0px 0px">{{ username }}님</div>
@@ -169,16 +168,21 @@ export default ({
                 let token = sessionStorage.getItem('accessToken');
                 let payload = token.substring(token.indexOf('.')+1, token.lastIndexOf('.'));
                 let decodingInfo = base64.decode(payload);
-
+                
                 console.log('token: ' + token);
                 console.log('decodingInfo: ' + decodingInfo);
-
+                
                 this.isLoggedIn = true;
                 this.userId = JSON.parse(decodingInfo).sub;
                 this.$axios.get('/member/' + this.userId).then((res) => {
                     console.log(res.data);
                     this.username = res.data.userName;
                 });
+                this.$axios.get('/member/' + this.userId).then((res) => {
+                    console.log(res.data);
+                    this.userProfile = res.data.userProfile;
+                });
+
                 let expired = JSON.parse(decodingInfo).exp;
                 console.log('isLoggedIn: ' + this.isLoggedIn)
                 console.log(this.userId);

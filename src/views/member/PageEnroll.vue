@@ -75,9 +75,9 @@ export default {
         ],
         userName: "",
         idRules: [
-            (v) => !!v || "아이디를 작성해주세요",
+            (v) => !!v || "이름을 작성해주세요",
             (v) =>
-                (v && v.length <= 15) || "아이디는 15글자를 넘을 수 없습니다.",
+                (v && v.length <= 4) || "이름은 4글자를 넘을 수 없습니다.",
         ],
         userEmail: "",
         emailRules: [
@@ -97,12 +97,6 @@ export default {
             (v) => (v && v.length >= 5) || "비밀번호는 5글자 이상 작성해주세요",
             (v) => /(?=.*\d)/.test(v) || "숫자를 포함해야합니다",
             (v) => /([!@$%])/.test(v) || "특수문자를 포함해야합니다 [!@#$%]",
-        ],
-        nickname: "",
-        nameRules: [
-            (v) => !!v || "닉네임을 작성해주세요",
-            (v) =>
-                (v && v.length <= 10) || "닉네임을 10글자를 넘을 수 없습니다.",
         ],
     }),
     computed: {
@@ -230,6 +224,7 @@ label {
 
 input,
 select {
+    appearance: auto;
     width: 300px;
     padding: 10px;
     margin: 0px 0px 8px 50px;
