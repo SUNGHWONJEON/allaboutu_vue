@@ -1,3 +1,5 @@
+PersonalHome.vue
+
 <template>
     <div class="pic-title-box">
         <div class="pic-titile">
@@ -123,7 +125,7 @@ export default {
                 console.log('personalImg : ' + res.data.org_path);
                 console.log('personalReimg : ' + res.data.change_path);
                 console.log('personalNum : ' + this.personalNum);
-
+                this.isLoading = false;
                 this.$axios.post('/personal/insert', insertData, {
                     headers:{'Content-Type': 'application/json'}
                 })
