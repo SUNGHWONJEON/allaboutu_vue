@@ -1,3 +1,5 @@
+PersonalHome.vue
+
 <template>
     <div class="pic-title-box">
         <div class="pic-titile">
