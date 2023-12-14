@@ -22,7 +22,7 @@ export default ({
     },
     data(){
         return {
-            isComponentVisible: false
+            isComponentVisible: true
         }
     },
     methods: {
