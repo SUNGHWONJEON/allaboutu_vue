@@ -16,7 +16,7 @@
                             ref="btns" 
                             :to="item.path" 
                             :class="{ active: isActive(item.path) }"
-                            v-if="i !== 0"
+                            v-if="i !== 0 && (item.role == null || checkUserRole())"
                         >
                         {{ item.text }}
                         </RouterLink >
@@ -76,8 +76,18 @@ export default ({
         return path.split('/')[1] == route.path.split('/')[1];
     }
 
+    function checkUserRole() {
+        let userId = sessionStorage.getItem('userId');
+        
+        // 로그인 안한 경우이거나 일반 사용자인 경우
+        if (userId == null || !userId.includes('admin')) return false;
+        
+        return true;
+    }
+
     return {
-      isActive
+      isActive,
+      checkUserRole,
     };
   },
     data(){
@@ -119,6 +129,7 @@ export default ({
                     id: 6
                     ,text: 'ADMIN'
                     ,path: '/admin'
+                    ,role: 'admin'
                 }
             ]
         }
