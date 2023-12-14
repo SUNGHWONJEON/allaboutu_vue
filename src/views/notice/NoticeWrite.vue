@@ -54,13 +54,14 @@
             id="fileInput"
             @change="getFileName($event.target.files)"
           />
-           <div
+           <!-- <div
               id="dropArea"
               class="drop-area"
               @dragover.prevent="handleDragOver"
               @drop.prevent="handleDrop"
             >
-            </div>
+            </div> -->
+             <button type="button" @click="cancelFileSelection">취소</button>
         </form>
 
         <div id="writebutton">
@@ -134,7 +135,7 @@ export default {
         noticeTitle: this.noticeTitle,
         noticeContents: this.noticeContents,
         importance: this.importance,
-        //importanceDate: new Date(this.importanceDate),
+        importanceDate: new Date(this.importanceDate),
         cartegory: this.cartegory,
       };
       console.log(JSON.stringify(notice));
@@ -161,12 +162,16 @@ export default {
           console.log(err);
         });
     },
-  
-  
 
     goBack() {
       this.$router.go(-1); // Vue Router를 사용하는 경우
       // window.history.back(); // 일반적인 브라우저의 이전 페이지로 이동하는 경우
+    },
+
+    cancelFileSelection() {
+      // 파일 선택을 취소하는 로직
+      const fileInput = document.getElementById('fileInput');
+      fileInput.value = ''; // 파일 선택 input의 값을 비웁니다.
     },
 
     
