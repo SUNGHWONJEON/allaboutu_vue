@@ -4,7 +4,7 @@
       <div>
         <div>
           <p>공지사항 작성</p>
-  
+
           <form id="radioform" @submit.prevent="writeNotice">
             <input
               type="radio"
@@ -13,7 +13,8 @@
               value="option1"
               checked
               @change="handleEventRadio"
-            /> 공지
+            />
+            공지
             <input
               type="checkbox"
               class="cartegory1"
@@ -24,7 +25,7 @@
             <input type="date" v-if="showCalendar" v-model="importanceDate" />
           </form>
         </div>
-        <div >
+        <div>
           <input
             id="noticetitle"
             type="text"
@@ -45,7 +46,6 @@
           ></textarea>
         </div>
 
-    
         <form @submit.prevent="uploadFile">
           <label for="fileInput">첨부파일 선택</label>
           <input
@@ -54,14 +54,14 @@
             id="fileInput"
             @change="getFileName($event.target.files)"
           />
-           <!-- <div
+          <!-- <div
               id="dropArea"
               class="drop-area"
               @dragover.prevent="handleDragOver"
               @drop.prevent="handleDrop"
             >
             </div> -->
-             <button type="button" @click="cancelFileSelection">취소</button>
+          <button type="button" @click="cancelFileSelection">취소</button>
         </form>
 
         <div id="writebutton">
@@ -108,59 +108,63 @@ export default {
       this.importance = this.showCalendar ? "Y" : "N";
     },
 
-    compareDates(){
-        const selectedDate = new Date(this.importanceDate)
-        const isPastDate = selectedDate < new Date();
-        
-        return isPastDate;
+    compareDates() {
+      const selectedDate = new Date(this.importanceDate);
+      const isPastDate = selectedDate < new Date();
+
+      return isPastDate;
     },
     writeNotice() {
-
-
       if (confirm("공지 글을 등록하시겠습니까?")) {
         console.log("공지 글 등록 ");
-        if (this.importance === "Y" && (!this.importanceDate  )) {
+        if (this.importance === "Y" && !this.importanceDate) {
           alert("필독 날짜를 선택해주세요.");
           console.log(this.importanceDate);
           return;
-        } else if(this.importance === "Y" && this.compareDates()){
-          alert("필독 날짜를 선택해주세요.");
+        } else if (this.importance === "Y" && this.compareDates()) {
+          alert("필독 날짜를 오늘 이후 날짜로 선택해주세요.");
+          return;
         }
+
+        const sendData = new FormData();
+        const notice = {
+          userId: sessionStorage.getItem("userId"),
+          noticeTitle: this.noticeTitle,
+          noticeContents: this.noticeContents,
+          importance: this.importance,
+          // importanceDate: new Date(this.importanceDate),
+          cartegory: this.cartegory,
+        };
+
+        if (this.importanceDate != null) {
+          notice["importanceDate"] = this.importanceDate.toString()
+        }
+
+        console.log(JSON.stringify(notice));
+        sendData.append(
+          "notice",
+          new Blob([JSON.stringify(notice)], { type: "application/json" })
+        );
+        sendData.append("file", this.file);
+
+        this.$axios
+          .post("/notices", sendData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            alert("게시글 등록 성공");
+            // 게시글 등록 후 게시판 목록으로 이동
+            this.$router.push("/notice/");
+          })
+          .catch((err) => {
+            alert("게시글 등록 실패");
+            console.log(err);
+          });
       } else {
         console.log("공지 등록 취소");
       }
-      const sendData = new FormData();
-      const notice = {
-        userId: sessionStorage.getItem('userId'),
-        noticeTitle: this.noticeTitle,
-        noticeContents: this.noticeContents,
-        importance: this.importance,
-        importanceDate: new Date(this.importanceDate),
-        cartegory: this.cartegory,
-      };
-      console.log(JSON.stringify(notice));
-      sendData.append(
-        "notice",
-        new Blob([JSON.stringify(notice)], { type: "application/json" })
-      );
-      sendData.append("file", this.file);
-
-      this.$axios
-        .post("/notices", sendData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          alert("게시글 등록 성공");
-
-          // 게시글 등록 후 게시판 목록으로 이동
-          this.$router.push("/notice/");
-        })
-        .catch((err) => {
-          alert("게시글 등록 실패");
-          console.log(err);
-        });
     },
 
     goBack() {
@@ -170,11 +174,10 @@ export default {
 
     cancelFileSelection() {
       // 파일 선택을 취소하는 로직
-      const fileInput = document.getElementById('fileInput');
-      fileInput.value = ''; // 파일 선택 input의 값을 비웁니다.
+      const fileInput = document.getElementById("fileInput");
+      fileInput.value = ""; // 파일 선택 input의 값을 비웁니다.
+      this.file = null;
     },
-
-    
   },
 };
 </script>
@@ -217,7 +220,6 @@ h5 {
 #noticetitle {
   border: 1px solid #ad578c;
   margin-bottom: 10px;
-  
 }
 
 #noticecontents {
