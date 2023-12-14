@@ -28,39 +28,46 @@
                 <Loading  v-if="isLoading"/>
             </div>
             
-            
             <div class="pic-inputbox">
-                
-                <!--<div class="pic-input-div">
-                    <span>성별을 입력해주세요.</span>
-                    <input type="text">
-                </div>
-                <div class="pic-input-div">
-                    <span>나이를 입력해주세요.</span>
-                    <input type="number">
-                </div>
-                <div class="pic-input-div">
-                    <span>키를 입력해주세요.</span>
-                    <input type="number">
-                </div>
-                <div class="pic-input-div">
-                    <span>몸무게를 입력해주세요.</span>
-                    <input type="number">
-                </div>-->
-                
+                <!--
                 <div class="pic-input-div">
                     <span>허리 사이즈를 입력해주세요.</span>
                     <input type="number" @change="changeSize">
                 </div>
+                -->
+                <div class="pic-cody-settitle">
+                    Cody set
+                </div>
+                <div class="pic-cody-settitle-sub">
+                    코디 셋을 하나 고르세요.
+                </div>
+                
+                <div class="pic-cody-setbox">
+                    <button class="pic-cody-set-btn" 
+                        @click="button_click(index)" 
+                        @mouseover="button_over(index)"
+                        @mouseout="button_out"
+                        :class="{active: codySet.active}"
+                        v-bind:disabled="codySet.active === 'active'"
+                        v-for="(codySet, index) in codySetList" :key="index"
+                    >
+                        <div class="pic-cody-set-item">
+                            <img :src="codySet.top">
+                        </div>
+                        <div class="pic-cody-set-item">
+                            <img :src="codySet.bottom">
+                        </div>
+                    </button>
+                </div>
                 
             </div>
-
-            <div class="pic-btn-box">
-                <!--<button class="pic-btn" v-on:click="fnUpClick">사진찍기</button>-->
-                <button class="pic-btn" v-on:click="fnTypeClick">치수보기</button>
-            </div>
+            
+            
         </div>
-
+        <div class="pic-btn-box">
+            <button class="pic-btn" ref="result_btn"
+                v-on:click="fnTypeClick">치수보기</button>
+        </div>
     </div>
 
     
@@ -83,6 +90,14 @@ export default {
             ,waistSize: -1
             ,type: -1
             ,newImageUrl : null
+            ,myCodySetNum : -1
+            ,codySetList: [
+                {
+                    top: require('@/assets/images/cody/codyset_t_1.png'),
+                    bottom: require('@/assets/images/cody/codyset_b_1.png'),
+                    active: ''
+                }
+            ]
         }
     },
     setup() {
@@ -158,6 +173,7 @@ export default {
                     console.log('데이터베이스 저장 성공 res : ' + res.data)
                     this.imageUrl = '/style/image/' + change_path;
                     this.$refs.pic_label.style.display = 'none';
+                    this.$refs.result_btn.style.display = 'none';
                     
                 })
                 .catch(error => {
@@ -190,8 +206,8 @@ export default {
                 return;
             }
 
-            if(this.waistSize == -1) {
-                alert('허리사이즈를 입력해주세요.');
+            if(this.myCodySetNum == -1) {
+                alert('코디셋을 선택해주세요.');
                 return;
             }
 
@@ -228,6 +244,22 @@ export default {
         changeSize(e) {
             this.waistSize = e.target.value;
             console.log('waistSize : ' + this.waistSize);
+        },
+        button_out(){
+            this.codySetList.forEach(item => {
+                item.active = '';
+            });
+        },
+        button_over(index){
+            console.log('index : ' + index)
+            if(this.codySetList[index].active == 'active') return; 
+            this.button_out();
+            this.codySetList[index].active = 'active';
+        },
+        button_click(index){
+            console.log('index : ' + index);
+            this.codySetList[index].active = 'active';
+            this.myCodySetNum = index;
         }
     }
 }
@@ -235,4 +267,40 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/base_pic.scss';
+
+.pic-box .pic-upload-box .pic-btn-box {
+    width: 48%;
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+
+
+.pic-box .pic-upload-box{
+    width: 100%;
+    height: 400px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.pic-box .pic-upload-box .pic-upload {
+    width: 400px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.pic-box .pic-upload-box .pic-inputbox {
+    width: 300px;
+    height: 100%;
+    margin: 0px;
+    padding: 10px;
+}
+
+
 </style>

@@ -18,8 +18,7 @@
         </div>
 
         <div class="style-exp-box">
-            <div class="style-title">{{ this.$styleType.num === this.styleNum ? 
-                this.$styleType.style : this.styles[this.styleNum - 1].title }}</div>
+            <div class="style-title">{{ this.styles[this.styleNum - 1].title }}</div>
             <button class="reco-btn" @click="onLinkCody">추천코디 보러가기</button>
             <div class="style-exp-con">
                 <StyleSub ref="style_sub"/>
@@ -114,7 +113,7 @@ export default {
             }
         });
         
-        this.$styleType.style = '고객님의 체형은 ' + this.styles[this.$styleType.num - 1].title + '입니다.';
+        //this.$styleType.style = '고객님의 체형은 ' + this.styles[this.$styleType.num - 1].title + '입니다.';
         this.$refs.style_sub.changeStyle(this.styleNum);
     },
     methods: {

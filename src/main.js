@@ -22,7 +22,7 @@ app.config.globalProperties.$axios = axiosInstance
 //app.config.globalProperties.$axios = axios
 app.config.globalProperties.$serverURL = '//loacalhost:2222'
 app.config.globalProperties.$styleType = {
-    num: -1
+    num: 1
 }
 app.config.globalProperties.$personalType = {
     num: -1
