@@ -37,7 +37,9 @@
                 ref="fileInput"
                 @change="getFileName($event.target.files)"
               />
+               <button type="button" @click="cancelFileSelection">취소</button>
             </form>
+
           </div>
         </div>
 
@@ -169,6 +171,13 @@ export default {
       }
     },
 
+    cancelFileSelection() {
+      // 파일 선택을 취소하는 로직
+      const fileInput = document.getElementById('file_input');
+      fileInput.value = ''; // 파일 선택 input의 값을 비웁니다.
+      this.file = null;
+    },
+
     goBack() {
       this.$router.go(-1);
     },
@@ -181,6 +190,8 @@ export default {
       }
     },
   },
+
+  
 };
 </script>
 
