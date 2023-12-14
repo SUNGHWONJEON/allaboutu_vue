@@ -130,7 +130,7 @@ export default {
                 .then(res => {
                     console.log('데이터베이스 저장 성공 res : ' + res.data)
                     this.imageUrl = '/personal/image/' + change_path;
-                    this.$refs.pic_label.personal.display = 'none';
+                    this.$refs.pic_label.style.display = 'none';
                 })
                 .catch(error => {
                     //에러 처리

@@ -1,4 +1,13 @@
 <template>
+    <div class="pic-title-box">
+        <div class="pic-titile">
+            Style
+        </div>
+        <div class="pic-titile-sub">
+            유형별 스타일 정보를 확인해보세요.
+        </div>
+    </div>
+
     <div class="style-reco" ref="style_recommand" v-if="this.styleNum != -1">
         <div class="style-item-con">
             <div class="style-item-box" v-for="style in styles" :key="style.id">
@@ -152,5 +161,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/style.scss';
+
+.pic-titile {
+    margin-top: 60px;
+}
 
 </style>
