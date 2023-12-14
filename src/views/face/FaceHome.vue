@@ -22,7 +22,7 @@
             
             <div class="pic-btn-box">
                 <!--<button class="pic-btn" v-on:click="fnUpClick">사진찍기</button>-->
-                <button class="pic-btn" v-on:click="fnTypeClick">적용한 사진 보기</button>
+                <button class="pic-btn" v-on:click="fnTypeClick" ref="result_btn">적용한 사진 보기</button>
             </div>
 
             <div class="pic-btn-box color-box-face">
@@ -69,8 +69,12 @@
 
 <script>
 import { ref } from 'vue';
+import Loading from '@/views/common/Loading.vue';
 
 export default ({
+    components: {
+        Loading
+    },
     data(){
       return{
         isLoading: false,
@@ -142,8 +146,8 @@ export default ({
                 const change_path = res.data.change_path;
                 this.imageUrl = '/face/image/' + change_path;
                 this.$refs.pic_label.style.display = 'none';
-                
-                
+                this.$refs.result_btn.style.display = 'none';
+                this.isLoading = false;
             })
             .catch(error => {
                 //에러 처리
@@ -168,7 +172,7 @@ export default ({
                 return;
             }
 
-
+            this.isLoading = true;
             const formData = new FormData();
             console.log('this.imageFile : ' + this.imageFile);
             formData.append('file', this.imageFile);
@@ -189,7 +193,7 @@ export default ({
                 
                 console.log('hair : ' + hair);
                 //로딩 시작
-                this.isLoading = true;
+                
                 this.callPythonApi(res.data[0], res.data[1], res.data[2], hair, lip);
                 
             })
@@ -233,7 +237,7 @@ export default ({
             return require(this.lipImagePath + 'lip' + index + '.jpg');
         },
         handleImageLoad(data){
-            this.isLoading = false;
+            
         },
         fnLipClick(){
 
