@@ -23,56 +23,7 @@ $borderColor : #e2e2e2;
     .pic-upload-box {
         width: 400px;
 
-        .pic-upload {
-            position: relative;
-            border: 1px solid $borderColor;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-
-            label {
-                display: inline-block;
-                padding: .5em .75em;
-                color: #808080;
-                font-size: inherit;
-                line-height: normal;
-                vertical-align: middle;
-                background-color: #fdfdfd;
-                cursor: pointer;
-                border: 1px solid $borderColor;
-                border-bottom-color: $borderColor;
-                border-radius: .25em;
-            }
-            label.pic-label {
-                border: none;
-                position: absolute;
-                width: 100%;
-                padding: 0;
-                height: 100%;
-                background: none;
-                text-indent: -99999px;
-            }
-
-            input[type="file"] {  /* 파일 필드 숨기기 */
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                margin: -1px;
-                overflow: hidden;
-                clip:rect(0,0,0,0);
-                border: 0;
-            }
-
-            .my-img-box, .new-img-box{
-                display: none;
-                /*width: calc(100% - 10px);*/
-                height: auto;
-                height: calc(100% - 10px);
-            }
-        }
+        
 
         .pic-inputbox {
             /*
@@ -107,45 +58,6 @@ $borderColor : #e2e2e2;
                 }
             }
 
-            .pic-cody-settitle {
-                font-size: 20px;
-                font-weight: bold;
-            }
-
-            .pic-cody-settitle-sub {
-                font-size: 13px;
-                margin-bottom: 10px;
-            }
-
-            .pic-cody-setbox {
-                grid-template-columns: repeat(2,1fr);
-                display: grid;
-                place-items: center;
-                width: 100%;
-                grid-row-gap: 3px;
-                grid-column-gap: 3px;
-
-                .pic-cody-set-btn {
-                    width: 100%;
-                    border: 1px solid $borderColor;
-                    height: 70px;
-                    display: flex;
-                    padding: 5px;
-                    flex-direction: row;
-                    justify-content: space-around;
-                    align-items: stretch;
-                    cursor: pointer;
-
-                    .pic-cody-set-item img{
-                        width: 100%;
-                        height: 100%;
-                    }
-                }
-
-                .pic-cody-set.active{
-
-                }
-            }
         }
 
         .pic-btn-box {
@@ -177,4 +89,101 @@ $borderColor : #e2e2e2;
 
     }
 
+}
+
+
+.pic-inputbox {
+    
+
+    .pic-cody-settitle {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .pic-cody-settitle-sub {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .pic-cody-setbox {
+        grid-template-columns: repeat(2,1fr);
+        display: grid;
+        place-items: center;
+        width: 100%;
+        grid-row-gap: 3px;
+        grid-column-gap: 3px;
+
+        .pic-cody-set-btn {
+            width: 100%;
+            border: 1px solid $borderColor;
+            height: 70px;
+            display: flex;
+            padding: 5px;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: stretch;
+            cursor: pointer;
+
+            .pic-cody-set-item img{
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .pic-cody-set.active{
+
+        }
+    }
+}
+
+
+.pic-upload {
+    position: relative;
+    border: 1px solid $borderColor;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+    label {
+        display: inline-block;
+        padding: .5em .75em;
+        color: #808080;
+        font-size: inherit;
+        line-height: normal;
+        vertical-align: middle;
+        background-color: #fdfdfd;
+        cursor: pointer;
+        border: 1px solid $borderColor;
+        border-bottom-color: $borderColor;
+        border-radius: .25em;
+    }
+    label.pic-label {
+        border: none;
+        position: absolute;
+        width: 100%;
+        padding: 0;
+        height: 100%;
+        background: none;
+        text-indent: -99999px;
+    }
+
+    input[type="file"] {  /* 파일 필드 숨기기 */
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip:rect(0,0,0,0);
+        border: 0;
+    }
+
+    .my-img-box, .new-img-box{
+        display: none;
+        /*width: calc(100% - 10px);*/
+        height: auto;
+        height: calc(100% - 10px);
+    }
 }

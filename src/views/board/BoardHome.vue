@@ -24,12 +24,13 @@
         />
 
         <!-- 챗봇 버튼 -->
-        <router-link to="/board/write">
+        <router-link to="/chatbot">
             <img
                 class="chatbot-btn"
                 src="@/assets/images/community/chatbot_icon.png"
             />
         </router-link>
+        
     </div>
 </template>
 
