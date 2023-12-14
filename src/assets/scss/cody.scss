@@ -94,9 +94,14 @@ $listBackColor:  #f6f6f6;
         width: 100%;
         grid-row-gap: 3px;
         grid-column-gap: 3px;
+        align-items: start;
 
         .goods-list {
             text-align: left;
+
+            img {
+                height: 252px;
+            }
 
             .goods-list div {
                 
