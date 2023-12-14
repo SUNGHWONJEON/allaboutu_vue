@@ -23,7 +23,7 @@
           <tr>
             <td class="tg-0lax border-leftnone"><h4>첨부파일</h4></td>
             <td class="tg-0lax border-rightnone" colspan="3">
-              <span v-if="renameFileName"
+              <span v-if="originalFileName"
                 >{{ originalFileName }}
                 <button @click="downloadFile">다운로드</button>
               </span>
