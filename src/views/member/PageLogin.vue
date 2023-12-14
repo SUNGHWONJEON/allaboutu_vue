@@ -81,6 +81,7 @@ export default {
                 })
                 .catch((err) => {
                     console.error("로그인 실패:", err);
+                    alert("로그인에 실패하였습니다. 관리자에게 문의하세요.");
                 });
         },
         changePage() {
