@@ -22,6 +22,7 @@ import BoardWrite from '@/views/board/BoardWrite.vue'
 import BoardHome from '@/views/board/BoardHome.vue';
 import BoardDetail from '@/views/board/BoardDetail.vue';
 import BoardSearch from '@/views/board/BoardSearch.vue';
+import Chatbot from '@/views/board/Chatbot.vue'
 import NoticeMain from '@/views/notice/NoticeMain.vue'
 import NoticeWrite from '@/views/notice/NoticeWrite.vue';
 import NoticeDetail from '@/views/notice/NoticeDetail.vue';
@@ -139,6 +140,11 @@ const routes = [
                 component: BoardSearch
             },
         ]
+    },
+    {
+        path: '/chatbot',
+        name: 'Chatbot',
+        component: Chatbot
     },
     {
         path: '/notice',
