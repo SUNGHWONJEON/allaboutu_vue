@@ -40,7 +40,7 @@
                                         <img src="@/assets/images/KakaoLoginCircle.png" />
                                     </a>
                                     
-                                    <a href=""><img src="@/assets/images/NaverLoginCircle.png" /></a>
+                                    <a :href="naverLoginUrl"><img src="@/assets/images/NaverLoginCircle.png" /></a>
                                     
                                     <a href=""><img src="@/assets/images/GoogleLoginCircle.png" /></a>
                                     
@@ -62,6 +62,7 @@ export default {
             userId: "",
             userPwd: "",
             rememberMe: false,
+            naverLoginUrl: "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=" + process.env.VUE_APP_NAVER_CLIENT_ID + "&redirect_uri=" + process.env.VUE_APP_NAVER_REDIRECT_URI + "&state=" + process.env.VUE_APP_NAVER_STATE,
         };
     },
     methods: {
