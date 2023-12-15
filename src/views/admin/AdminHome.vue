@@ -13,19 +13,26 @@
                 <th class="th">사유</th>
                 <th class="th">상세설명</th>
                 <th class="th">게시글삭제일</th>
-                <th class="th">게시글삭제</th> 
+                <th class="th">게시글삭제</th>
             </tr>
-            <tr v-for="(report, index) in displayedPosts" :key="index" @click="detailReportBoard(report)">
-                <!--  @click="showDetail(report)" -->
-                <td>{{ report.boardNum }}</td>
-                <td>{{ report.reportNum }}</td>
-                <td>{{ report.reportCause }}</td>
-                <td>{{ report.reportReason }}</td>
-                <td>{{ report.deleteDate }}</td>
-                <td>
-                    <button class="delete-btn" @click="confirmDelete(report)">삭제</button>
-                </td>
-            </tr>
+            <!--  @click="detailReportBoard(report)" -->
+            
+                <tr v-for="(report, index) in displayedPosts" :key="index">
+                    <td>
+                        <router-link :to="'/board/' + report.boardNum">
+                        {{ report.boardNum }}
+                        </router-link>
+                    </td>
+                        <td>{{ report.reportNum }}</td>
+                        <td>{{ report.reportCause }}</td>
+                        <td>{{ report.reportReason }}</td>
+                        <td>{{ report.deleteDate }}</td>
+            
+                    <td>
+                        <button class="delete-btn" @click="confirmDelete(report)">삭제</button>
+                    </td>
+                </tr>
+            
         </table>
     </div>
     <div class="page-btn">
@@ -38,6 +45,8 @@
 </template>
 
 <script>
+import BoardDetail from '@/views/board/BoardDetail.vue'
+
 export default {
     name: 'reports',
     data() {
@@ -78,15 +87,17 @@ export default {
             this.currentPage = page;
         },
         
-        async detailReportBoard(report){
-            console.log("detailBoardNum", report.reportNum);
-            try {
-                const response = await this.$axios.get(`/reports/${report.reportNum}`);
-                this.selectedReport = response.data;
-            }catch (err){
-                console.error(err);
-            }
-        },
+        // async detailReportBoard(report){
+        //     console.log("detailBoardNum", report.reportNum);
+        //     try {
+        //         // const response = await this.$axios.get(`/board/${report.boardNum}`);
+        //         // this.selectedReport = response.data;
+        //         // console.log("res.data : " + response.data);
+        //         this.$router.push({ path: `/board/${report.boardNum}`})
+        //     }catch (err){
+        //         console.error(err);
+        //     }
+        // },
         confirmDelete(report) {
             console.log(report.reportNum);
             if (confirm("게시글을 신고 처리 하시겠습니까?")) {
