@@ -23,6 +23,7 @@
             <div class="pic-btn-box">
                 <!--<button class="pic-btn" v-on:click="fnUpClick">사진찍기</button>-->
                 <button class="pic-btn" v-on:click="fnTypeClick" ref="result_btn">적용한 사진 보기</button>
+                <button class="pic-btn" v-on:click="goToWebsite">추천사이트</button>
             </div>
 
             <div class="pic-btn-box color-box-face">
@@ -119,6 +120,11 @@ export default ({
         };
     },
     methods: {
+
+        goToWebsite: function() {
+        window.location.href = 'http://localhost:2222/website';
+        },
+        
         fnUpClick(){
 
         },
