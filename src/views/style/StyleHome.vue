@@ -410,11 +410,11 @@ export default {
                     }
                 })
             }else{
-                s_w = Math.floor(tempData.shoulder_w*650);
+                s_w = Math.floor(tempData.shoulder_w*600);
                 s_x = Math.floor(tempData.shoulder_x*360);
                 s_y = Math.floor(tempData.shoulder_y*270);
-                h_w = Math.floor(tempData.hip_w*920);
-                h_x = Math.floor(tempData.hip_x*320);
+                h_w = Math.floor(tempData.hip_w*990);
+                h_x = Math.floor(tempData.hip_x*340);
                 h_y = Math.floor(tempData.hip_y*340);
             }
 

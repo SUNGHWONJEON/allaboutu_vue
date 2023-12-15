@@ -1,0 +1,49 @@
+$borderColor : #e2e2e2;
+
+.cody-insert-box {
+    margin-top: 20px;
+    .insert-title {
+        font-size: 16px;
+        font-weight: bold;
+    }
+    table {
+        width: 100%;
+        margin-top: 10px;
+
+        .table-td1 {
+            width: 20%;
+            text-align: center;
+        }
+
+        td {
+            text-align: left;
+            padding: 2px 5px;
+        }
+    }
+
+    select {
+        border: 1px solid $borderColor;
+        padding: 2px 0px 2px 2px;
+    }
+
+    .input-box {
+        border: 1px solid $borderColor;
+        padding: 2px;
+        width: 100%;
+    }
+    
+    .attach-btn, .file-delete-btn {
+        width: 25px;
+        height: 25px;
+        vertical-align: middle;
+    }
+
+    .sel-img {
+        width: 60px;
+    }
+
+
+    .insert-btn {
+        
+    }
+}
