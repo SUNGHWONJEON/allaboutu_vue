@@ -34,7 +34,7 @@
 
 <script>
 export default {
-    name: "PageFindId",
+    name: "PageFindID",
     methods: {
         BtnContinue() {
             if (this.userEmail == "") {

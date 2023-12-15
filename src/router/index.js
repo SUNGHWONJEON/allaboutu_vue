@@ -31,7 +31,7 @@ import PageMyPage from '@/views/member/PageMyPage.vue';
 import AdminMain from '@/views/admin/AdminMain.vue'
 import AdminUser from '@/views/admin/AdminUser.vue'
 import AdminHome from '@/views/admin/AdminHome.vue'
-import PageFindId from '@/views/member/PageFindId.vue'
+import PageFindID from '@/views/member/PageFindID.vue'
 import PageFindPwd from '@/views/member/PageFindPwd.vue'
 import PageChangePwd from '@/views/member/PageChangePwd.vue'
 
@@ -54,8 +54,8 @@ const routes = [
     },
     {
         path: '/findid',
-        name: 'PageFindId',
-        component: PageFindId
+        name: 'PageFindID',
+        component: PageFindID
     },
     {
         path: '/findpwd',
