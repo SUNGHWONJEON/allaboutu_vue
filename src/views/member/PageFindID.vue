@@ -7,12 +7,13 @@
                         <span> 아이디 찾기 </span>
                         <v-form class="pt-3">
                             <v-text-field
-                                prepend-inner-icon="mdi-account"
+                                prepend-inner-icon="mdi-email"
                                 name="login"
                                 label="Email"
                                 type="text"
-                                v-model="email"
+                                v-model="userEmail"
                                 outlined
+                                @keyup.enter="BtnContinue()"
                             >
                             </v-text-field>
                             <v-btn
@@ -21,7 +22,7 @@
                                 x-large
                                 dark
                                 @click="BtnContinue()"
-                                >
+                            >
                                 Continue
                             </v-btn>
                         </v-form>
@@ -34,27 +35,22 @@
 
 <script>
 export default {
-    name: "PageFindID",
-    data() {
-        return {
-            loginId: "",
-            phone: "",
-        };
-    },
+    name: "PageFindId",
     methods: {
         BtnContinue() {
-            this.$axios.post("/member/findId", {
-                params: {
-                    email: this.email,
-                },
-            })
-            .then((res) => {
-                alert("입력하신 이메일로 아이디가 발송되었습니다.");
-                window.location = "/login";
-            })
-            .catch((err) => {
-                alert("입력하신 이메일로 가입된 아이디가 없습니다.");
-            });
+            if (this.userEmail == "") {
+                alert("이메일을 입력해주세요.");
+                return;
+            }
+            
+            this.$axios
+                .get("/member/findId", this.userEmail)
+                .then((res) => {
+                    alert("회원님의 아이디는 " + res.data + " 입니다.");
+                })
+                .catch((err) => {
+                    alert("입력하신 이메일로 가입된 아이디가 없습니다.");
+                });
         },
     },
 };
