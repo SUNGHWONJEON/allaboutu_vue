@@ -63,17 +63,7 @@ export default {
         },
     },
     methods: {
-        // detailReportBoard(report){
-        //     console.log("detailBoardNum", report.boardNum);
-        //     this.$axios.get(`/reports/${report.boardNum}`)
-            
-        //     .then((res) => {
-        //         console.log(this.reports = res.data.content);
-        //     })
-        //     .catch((err) => {
-        //             console.log(err);
-        //         });
-        // },
+
         prevPage() {
             if (this.currentPage > 1) {
                 this.currentPage--;
@@ -87,6 +77,7 @@ export default {
             goToPage(page) {
             this.currentPage = page;
         },
+        
         async detailReportBoard(report){
             console.log("detailBoardNum", report.reportNum);
             try {
