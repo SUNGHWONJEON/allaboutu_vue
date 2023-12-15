@@ -11,6 +11,8 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import { createVueKakaoSdk } from 'vue3-kakao-sdk';
+app.use(createVueKakaoSdk('dd784338fdd67a80ba971146b1de232b'))
 
 const vuetify = createVuetify({
     components,

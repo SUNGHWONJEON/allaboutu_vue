@@ -31,11 +31,12 @@ import PageMyPage from '@/views/member/PageMyPage.vue';
 import AdminMain from '@/views/admin/AdminMain.vue'
 import AdminUser from '@/views/admin/AdminUser.vue'
 import AdminHome from '@/views/admin/AdminHome.vue'
-import PageFindId from '@/views/member/PageFindId.vue'
+import PageFindID from '@/views/member/PageFindID.vue'
 import PageFindPwd from '@/views/member/PageFindPwd.vue'
 import PageChangePwd from '@/views/member/PageChangePwd.vue'
 
 import WebSiteMain from '@/views/website/WebSiteMain.vue'
+import WebSiteInsert from '@/views/website/WebSiteInsert.vue'
 
 //각 페이지 컴포넌트에 대한 url path 지정
 //routes는 고정변수임
@@ -53,8 +54,8 @@ const routes = [
     },
     {
         path: '/findid',
-        name: 'PageFindId',
-        component: PageFindId
+        name: 'PageFindID',
+        component: PageFindID
     },
     {
         path: '/findpwd',
@@ -188,6 +189,11 @@ const routes = [
         path: '/website',
         name: 'WebSiteMain',
         component: WebSiteMain
+    },
+    {
+        path: '/website/insert',
+        name: 'WebSiteInsert',
+        component: WebSiteInsert
     },
     {
         path: '/member/mypage',

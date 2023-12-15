@@ -188,6 +188,7 @@ export default ({
                 this.$axios.get('/member/' + this.userId).then((res) => {
                     console.log(res.data);
                     this.username = res.data.userName;
+                    console.log('this.username : ' , this.username);
                 });
                 this.$axios.get('/member/' + this.userId).then((res) => {
                     console.log(res.data);
