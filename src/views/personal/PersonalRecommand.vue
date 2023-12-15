@@ -42,7 +42,7 @@ export default {
         return {
             personalNum: this.$personalType.num,
             recommand: null
-            //스타일 이미지
+
             ,personals: [
                 {
                     id: 1
@@ -187,7 +187,7 @@ export default {
 .personal-sub-imgbox img {
     position: absolute;
     width: 200px;
-    height: auto;
+    height: 200px;
     max-width: 100%;
     max-height: 100%;
     border-radius: 10px;

@@ -59,7 +59,6 @@ export default ({
             return sortedMembers.slice(startIndex, endIndex);
         },
         totalPages() {
-            // 총 페이지 수 계산하는 computed 속성!
             return Math.ceil(this.members.length / this.postsPerPage);
         },
     },
@@ -84,7 +83,6 @@ export default ({
                 account: status,
             })
             .then((res) => {
-                console.log("제한되거나 풀림", res.data);
                 this.members = res.data;
                 const updateMember = this.members.map((m) => {
                     if (m.userNum === member.userNum){
