@@ -29,6 +29,7 @@
                     </div>
                 </a>
             </div>
+            <button @click="goToInsert" class="register-btn">등록</button>
         </div>
     </div>
  </template>
@@ -67,6 +68,11 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    goToInsert() {
+        this.$router.push('/website/insert');
+    }
   }
 }
 </script>
@@ -97,5 +103,16 @@ export default {
         width: 100%;
         grid-row-gap: 3px;
         grid-column-gap: 3px;
+}
+
+.register-btn {
+    right: 20px;  /* 오른쪽에서 20px 떨어진 곳 */
+    bottom: 20px;  /* 아래에서 20px 떨어진 곳 */
+    padding: 10px 20px;  /* 패딩 설정 */
+    font-size: 20px;  /* 폰트 크기 설정 */
+    background-color: #ff7b7b;  /* 배경색 설정 */
+    color: white;  /* 글자색 설정 */
+    border: none;  /* 테두리 없음 */
+    border-radius: 5px;  /* 둥근 모서리 */
 }
 </style>
