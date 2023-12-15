@@ -46,57 +46,83 @@
         <div class="pic-upload-box">
             
         </div>
-        <div class="pic-btn-box">
-            <button class="pic-btn" ref="result_btn"
-                v-on:click="fnTypeClick">치수보기</button>
-        </div>
+        
     </div>
-
-    <div class="pic-upload dropzone" 
-        ref="drop_zone"
-        @dragover="handleDragOver"
-        @dragenter="handleDragEnter"
-        @dragleave="handleDragLeave"
-        @drop="handleDrop($event)"
-    >
-        <label for="pic_up" ref="pic_label" :class="{ 'pic-label': imageUploaded}">업로드</label>
-        <input class="pic-img-box" type="file" id="pic_up"
-            @change="handleFileUpload" accept="image/*"
+    <div class="pic-btn-box">
+        <button class="pic-btn" ref="result_btn"
+            v-on:click="fnTypeClick">치수보기</button>
+    </div>
+    <div class="dropzone-box">
+        <div class="pic-upload dropzone" 
+            ref="drop_zone"
+            @dragover="handleDragOver"
+            @dragenter="handleDragEnter"
+            @dragleave="handleDragLeave"
+            @drop="handleDrop($event)"
         >
-        <img class="my-img-box" ref="img_box" @load="handleImageLoad"
-            :src="imageUrl" v-if="imageUrl" 
-            :style="{ display: imageUrl ? 'block' : 'block' }"
-        >
-        <img class="my-img-box" 
-            :src="newImageUrl"
-            :style="{ display: newImageUrl ? 'block' : 'none' }"
-        >
-        <img class="set-item-img" 
-            ref="item_img" 
-            :src="codyDrag.src"
-            :data-id="codyDrag.id"
-            v-for="codyDrag in codyDragList"
-            :key="codyDrag.id"
-            draggable="true"
-            :style="{ display: itemVisible ? 'block' : 'none' }"
-            @dragstart="handleDragStart($event, codyDrag.id)"
-            @mousemove="handleDragOn($event)"
-
+            <label for="pic_up" ref="pic_label" :class="{ 'pic-label': imageUploaded}">업로드</label>
+            <input class="pic-img-box" type="file" id="pic_up"
+                @change="handleFileUpload" accept="image/*"
+            >
+            <img class="my-img-box" ref="img_box" @load="handleImageLoad"
+                :src="imageUrl" v-if="imageUrl" 
+                :style="{ display: imageUrl ? 'block' : 'block' }"
+            >
+            <img class="my-img-box" 
+                :src="newImageUrl"
+                :style="{ display: newImageUrl ? 'block' : 'none' }"
+            >
             
-        >
-        <!--:style="{
+            <div class="drop-box" >
+
+            </div>
+            <Loading  v-if="isLoading"/>
+
+
+
+            <div class="myCody" v-for="codyDrag in codyDragList" :key="codyDrag"
+            :style="{ 
+                left: (codyDrag.x + 0) + 'px',
+                top: (codyDrag.y + 0) + 'px',
+                zIndex: codyDrag.zIndex,
+                
                 width: codyDrag.width + 'px',
-                height: codyDrag.height + 'px'
-            }"-->
-        <div class="drop-box" >
+                height: codyDrag.height + 'px',
+            }"
+            >   
+                <div class="dragBar"
+                    ref="drag_img"
+                    :data-id="codyDrag.id"
+                    :style="{ 
+                        display: itemVisible ? 'block' : 'none',
+                        width: (codyDrag.width + 20) + 'px',
+                        height: 'calc(100% + 20px)'
+                    }"
+                    :draggable="true"
+                    @dragstart="widthDdragDown($event)"
+                    @drag="widthDdragOn($event)"
+                    @dragend="widthDdragEnd($event)"
+                >
+                    <div class="line-box top-left-line"></div>
+                    <div class="line-box top-right-line"></div>
+                    <div class="line-box bottom-left-line"></div>
+                    <div class="line-box bottom-right-line"></div>
+                </div>
 
+                <img class="set-item-img" 
+                    ref="item_img" 
+                    :src="codyDrag.id == 1 ? codySetList[myCodySetNum-1].top : codySetList[myCodySetNum-1].bottom"
+                    :data-id="codyDrag.id"
+                    :draggable="true"
+                    
+                    @dragstart="handleDragStart($event, codyDrag.id)"
+                    :style="{ 
+                        display: itemVisible ? 'block' : 'none'
+                    }"
+                >
+            </div>
         </div>
-        <Loading  v-if="isLoading"/>
     </div>
-
-
-    
-
     
 </template>
 
@@ -105,6 +131,14 @@ import { ref } from 'vue';
 import Loading from '@/views/common/Loading.vue';
 
 export default {
+    computed: {
+        dynamicHeight() {
+            return (id) => {
+                console.log('id : ' + id);
+                return id === 1 ? 100 : 200;
+            };
+        }
+    },
     components: {
         Loading
     },
@@ -115,14 +149,15 @@ export default {
         //console.log('this.$refs.drop_zone.style.top : ' + this.$refs.drop_zone.offsetTop);
         //this.refArray = this.codyDragList.map((item, index) => `myImage${index}`);
         //this.setItem();
-
     },
     data() {
         return {
-            widthDrag: false,
+            barCount: 4,
+            test: false,
+            dragType: null,
             itemVisible: false,
             refArray: ['img_1', 'img_2'], // ref 값을 저장할 배열
-            //imageUrl: '/style/image/20231214123623_form.jpg'
+            //imageUrl: 'http://localhost:2222/style/image/20231214191151_form.jpg'
             //imageUrl: '/style/image/20231214120201_form.jpg'
             imageUrl: null
             ,isLoading: false
@@ -132,31 +167,43 @@ export default {
             ,type: 1
             ,keypoints: null
             ,newImageUrl : null
-            ,myCodySetNum : -1
+            ,myCodySetNum : 1
             ,codyDragList: [
                 {
                     id: 1,
-                    src: require('@/assets/images/cody/codyset_t_1.png'),
                     x: 0,
                     y: 0,
-                    width: 0,
-                    height: 0,
-                    isDragging: false
+                    width: 100,
+                    height: 100,
+                    zIndex: 99,
+                    isDragging: false,
+                    widthDragging: false
                 },
                 {
                     id: 2,
-                    src: require('@/assets/images/cody/codyset_b_1.png'),
                     x: 0,
                     y: 0,
-                    width: 0,
-                    height: 0,
-                    isDragging: false
+                    width: 100,
+                    height: 100,
+                    zIndex: 98,
+                    isDragging: false,
+                    widthDragging: false
                 }
             ]
             ,codySetList: [
                 {
                     top: require('@/assets/images/cody/codyset_t_1.png'),
                     bottom: require('@/assets/images/cody/codyset_b_1.png'),
+                    active: ''
+                },
+                {
+                    top: require('@/assets/images/cody/codyset_t_2.png'),
+                    bottom: require('@/assets/images/cody/codyset_b_2.png'),
+                    active: ''
+                },
+                {
+                    top: require('@/assets/images/cody/codyset_t_3.png'),
+                    bottom: require('@/assets/images/cody/codyset_b_3.png'),
                     active: ''
                 }
             ]
@@ -196,30 +243,34 @@ export default {
             event.dataTransfer.effectAllowed = 'move';
             event.dataTransfer.setData('itemId', id);
 
-            if(this.widthDrag) {
-                this.codyDragList[id-1].isDragging = true;
-                this.dragStartX = event.clientX;
-                this.dragStartY = event.clientY;
-            }
+
+            this.codyDragList[id-1].zIndex = this.codyDragList.reduce(
+                (maxZIndex, item) => Math.max(maxZIndex, item.zIndex), 0) + 1;
+
+            this.codyDragList[id-1].isDragging = true;
             
         },
         handleDrop(event) {
             event.preventDefault();
+            this.allDraggingFirst();
             const itemId = event.dataTransfer.getData('itemId');
             //const dropX = event.clientX - this.$refs.drop_zone.style.left;
             //const dropY = event.clientY - this.$refs.drop_zone.style.top;
+            //const abTop = window.scrollY + this.$refs.drop_zone.getBoundingClientRect().top;
+            //const abLeft = this.$refs.drop_zone.getBoundingClientRect().left;
+            console.log('this.$refs.drop_zone.getBoundingClientRect().top : ' + this.$refs.drop_zone.getBoundingClientRect().top);
+            console.log('this.$refs.drop_zone.getBoundingClientRect().left : ' + this.$refs.drop_zone.getBoundingClientRect().left);
+            //(document.body.offsetWidth - 900)/2 - 
             const abTop = window.scrollY + this.$refs.drop_zone.getBoundingClientRect().top;
             const abLeft = this.$refs.drop_zone.getBoundingClientRect().left;
-            console.log('abTop : ' + abTop);
-            console.log('abTop : ' + abTop);
             console.log('abLeft : ' + abLeft);
-            const dropX = event.clientX - abLeft - 50;
-            const dropY = event.clientY - abTop - 50;
+            console.log('abTop : ' + abTop);
+            console.log('event.clientX : ' + event.clientX);
+            console.log('event.clientY : ' + event.clientY);
+            const dropX = event.clientX - 50  - abLeft;//-abTop//
+            const dropY = event.clientY -50  - abTop;//-abLeft//
             const itemIndex = this.codyDragList.findIndex((item) => item.id === Number(itemId));
             
-            for (const item of this.codyDragList) {
-                item.isDragging = false;
-            }
 
             if (itemIndex > -1) {
                 console.log('itemIndex : ' + itemIndex);
@@ -228,16 +279,18 @@ export default {
                 console.log('dropX : ' + dropX);
                 console.log('dropY : ' + dropY);
                 
-                this.codyDragList[itemIndex].x = dropX;
+                this.codyDragList[itemIndex].x = dropX //-100;
                 this.codyDragList[itemIndex].y = dropY;
 
-                this.codyDragList[itemIndex].width = 200 + 'px';
-                this.codyDragList[itemIndex].height = 200 + 'px';
+                //this.codyDragList[itemIndex].width = 200 + 'px';
+                //this.codyDragList[itemIndex].height = 200 + 'px';
 
-                const ref= this.$refs.item_img[itemIndex];
-                ref.style.left = dropX + 'px';
-                ref.style.top = dropY + 'px';
+                
+                //ref.style.left = dropX + 'px';
+                //ref.style.top = dropY + 'px';
             }
+
+            console.log('this.codyDragList : ' + JSON.stringify(this.codyDragList));
             /*
             // 드래그 종료 시 호출되는 이벤트 핸들러
             const newIndex = event.target.dataset.id
@@ -253,7 +306,8 @@ export default {
         },
         handleDragOver(event) {
             // 드래그된 요소가 드롭 가능한 영역 위에 있을 때 호출되는 이벤트 핸들러
-            event.preventDefault();
+            event.preventDefault(); // 기본 동작 막기
+            
         },
         handleDragEnter(event) {
             // 드래그된 요소가 드롭 가능한 영역에 진입했을 때 호출되는 이벤트 핸들러
@@ -262,24 +316,64 @@ export default {
         handleDragLeave(event) {
             // 드래그된 요소가 드롭 가능한 영역을 떠났을 때 호출되는 이벤트 핸들러
             event.target.classList.remove('highlight');
+            
         },
-        handleDragOn(event) {
-            for (const item of this.codyDragList) {
-                if (item.isDragging) {
-                    console.log('??????')
-                    console.log('handleDragOn item id : ' + item.id)
-                    const deltaX = event.clientX - this.dragStartX;
-                    const deltaY = event.clientY - this.dragStartY;
-                    item.width += deltaX;
-                    item.height += deltaY;
-                    this.dragStartX = event.clientX;
-                    this.dragStartY = event.clientY;
-                }
+
+
+        //마우스로 크기 늘리기
+        widthDdragDown(event){
+            const num = Number(event.target.getAttribute('data-id'));
+            console.log('event.target.id : ' + event.target.getAttribute('data-id'))
+            this.codyDragList[num-1].widthDragging = true;
+            this.dragStartX = event.clientX;
+            this.dragStartY = event.clientY;
+            event.dataTransfer.setDragImage(new Image(), 0, 0);
+            console.log('==================> dragStartX : ' + this.dragStartX);
+        },
+        widthDdragOn(event) {
+
+            const num = Number(event.target.getAttribute('data-id'));
+            const item = this.codyDragList[num-1];
+            console.log('num : ' + num)
+            console.log('item.widthDragging : ' + item.widthDragging)
+            if (item.widthDragging) {
+                console.log('this.dragStartXX 1 : ' + this.dragStartX);
+                console.log('event.clientX : ' + event.clientX);
+                const deltaX = event.clientX - this.dragStartX;
+                const deltaY = event.clientY - this.dragStartY;
+                console.log('deltaX : ' + deltaX);
+                console.log('deltaY : ' + deltaY);
+                item.width += deltaX;
+                //item.height += deltaY;
+
+                const ref_img = this.$refs.item_img[num-1];
+                item.height = ref_img.height;
+                console.log('======ref_img height : ' + ref_img.height)
+                this.dragStartX = event.clientX;
+                this.dragStartY = event.clientY;
+
+                console.log('this.dragStartXX 2 : ' + this.dragStartX);
             }
+
+        },
+        widthDdragEnd(event){
+            event.preventDefault(); // 기본 동작 막기
+            this.allDraggingFirst();
+            console.log('this.codyDragList : ' + JSON.stringify(this.codyDragList));
+            
         },
 
+        allDraggingFirst(){
+            this.codyDragList.forEach(item => {
+                item.widthDragging = false;
+                item.isDragging = false;
+            });
 
-        setItem(data){
+            this.dragStartX = null;
+            this.dragStartY = null;
+        },
+
+        setItem(data, type){
             console.log('refArray : ' + this.refArray);
             let tempData = {}
             if(this.test) {
@@ -301,34 +395,57 @@ export default {
                     shoulder_y: data.shoulder_y
                 }
             }
-            this.widthDrag = true;
+
+            let s_w, s_x, s_y, h_w, h_x, h_y;
+            if(type === 'click') {
+                this.codyDragList.forEach(item => {
+                    if(item.id == 1) {
+                        s_w = item.width;
+                        s_x = item.x;
+                        s_y = item.y;
+                    }else{
+                        h_w = item.width;
+                        h_x = item.x;
+                        h_y = item.y;
+                    }
+                })
+            }else{
+                s_w = Math.floor(tempData.shoulder_w*650);
+                s_x = Math.floor(tempData.shoulder_x*360);
+                s_y = Math.floor(tempData.shoulder_y*270);
+                h_w = Math.floor(tempData.hip_w*920);
+                h_x = Math.floor(tempData.hip_x*320);
+                h_y = Math.floor(tempData.hip_y*340);
+            }
+
             this.itemVisible = true;
             //this.imageUrl = '/style/image/20231214120201_form.jpg';
-            const s_w = (tempData.shoulder_w*650).toFixed(5);
-            const s_x = (tempData.shoulder_x*360).toFixed(5);
-            const s_y = (tempData.shoulder_y*270).toFixed(5);
+            
             console.log('s_w : ' + s_w)
             console.log('s_x : ' + s_x)
             console.log('s_y : ' + s_y)
             console.log('this.refArray : ' + this.refArray)
-            const ref_1 = this.$refs.item_img[0];
-            const ref_2 = this.$refs.item_img[1];
-            console.log('ref_1 : ' + ref_1);
-            ref_1.style.width = s_w + 'px';
-            ref_1.style.height = 'auto';
-            ref_1.style.left = s_x + 'px';
-            ref_1.style.top = s_y + 'px';
+            
+            console.log('h_w : ' + h_w);
+            console.log('h_x : ' + h_x);
+            console.log('h_y : ' + h_y);
+            const arr = [
+                [s_w, s_x, s_y],
+                [h_w, h_x, h_y]
+            ]
+            
+            this.codyDragList.forEach(item => {
+                item.width = arr[item.id-1][0];
+                item.x = arr[item.id-1][1];
+                item.y = arr[item.id-1][2];
+                
+                const per = item.width / this.$refs.item_img[item.id-1].width;
+                item.height = this.$refs.item_img[item.id-1].height * per;
+            })
+            //비율계산
 
-            const h_w = (tempData.hip_w*920).toFixed(5);
-            const h_x = (tempData.hip_x*320).toFixed(5);
-            const h_y = (tempData.hip_y*340).toFixed(5);
-            console.log('h_w : ' + h_w)
-            console.log('h_x : ' + h_x)
-            console.log('h_y : ' + h_y)
-            ref_2.style.width = h_w + 'px';
-            ref_2.style.height = 'auto';
-            ref_2.style.left  = h_x + 'px';
-            ref_2.style.top = h_y + 'px';
+            
+
         },
         callPythonApi(dir_path, org_path, image_path) {
             
@@ -359,7 +476,7 @@ export default {
                 this.$emit('show-component');
                 
                 this.setItem(this.keypoints);
-
+                
                 //insert하기
                 const insertData = {
                     userNum: 1,
@@ -460,6 +577,13 @@ export default {
             this.codySetList[index].active = 'active';
             this.myCodySetNum = index+1;
             console.log('button_click this.myCodySetNum : ' + this.myCodySetNum);
+
+            //this.setItem();
+            
+            if(this.keypoints) {
+                this.setItem(this.keypoints, 'click');
+            }
+            
             
         }
     }
@@ -469,24 +593,80 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/scss/base_pic.scss';
 
+.dragBar {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    cursor: ne-resize;
+}
+
+
+$border-line : #969696;
+
+.line-box {
+    position: absolute;
+    width: 10%;
+    height: 10%;
+}
+
+.top-left-line {
+    top: 0px;
+    left: 0px;
+    border-top: 1px solid $border-line;
+    border-left: 1px solid $border-line;
+}
+.top-right-line {
+    top: 0px;
+    right: 0px;
+    border-top: 1px solid $border-line;
+    border-right: 1px solid $border-line;
+}
+.bottom-left-line {
+    bottom: 0px;
+    left: 0px;
+    border-bottom: 1px solid $border-line;
+    border-left: 1px solid $border-line;
+}
+.bottom-right-line {
+    bottom: 0px;
+    right: 0px;
+    border-bottom: 1px solid $border-line;
+    border-right: 1px solid $border-line;
+}
+
+
+
 .pic-img-box{
     display: none;
 }
 .set-item-img {
     position: absolute;
-    z-index: 9999999;
+    width: 100%;
 }
 
 .pic-upload label{
     display: block;
 }
 
+.myCody {
+    position: absolute;
+    z-index: 9999999;
+    cursor: pointer;
+}
+
+.dropzone-box {
+    position: absolute;
+    top: -40px;
+    left: 0px;
+    width: 100%;
+}
+
 .pic-upload {
     position: absolute;
     width: 400px;
     height: 400px;
-    top: 180px;
-    left: 100px;
+    top: 220px;
+    left: calc(50% - 340px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -503,7 +683,18 @@ export default {
     padding: 10px;
 }
 
+.pic-btn-box {
+    margin: 0 auto;
+    width: 48%;
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+
+
 .pic-box {
+    pointer-events: none;
     .pic-upload-box{
         position: relative;
         width: 100%;
@@ -512,17 +703,8 @@ export default {
         flex-direction: row;
         align-items: flex-start;
         justify-content: center;
-
         
-        .pic-btn-box {
-            width: 48%;
-            display: flex;
-            margin-top: 15px;
-            justify-content: center;
-        }
-
         
-
         .drop-box {
             position: absolute;
             left: 500px;
