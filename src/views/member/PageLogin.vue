@@ -27,8 +27,10 @@
                                 </div>
                             </div>
                             <div class="id_pwd_enroll">
-                                <a href="#" class="link-separator">아이디 찾기 | </a>
-                                <a href="#" class="link-separator">비밀번호 찾기 | </a>
+                                <!-- <a href="#" class="link-separator">아이디 찾기 | </a> -->
+                                <v-btn text color="primary" @click="forgotId()">아이디 찾기</v-btn> |
+                                <!-- <a href="#" class="link-separator">비밀번호 찾기 | </a> -->
+                                <v-btn text color="primary" @click="forgotPwd()">비밀번호 찾기</v-btn> |
                                 <router-link to="/enroll" class="">회원가입</router-link>
                             </div>
                             <hr content="SNS로 3초 로그인" class="SNS" />
@@ -87,6 +89,12 @@ export default {
         changePage() {
             // 페이지 이동
             this.$router.push({ path: "/" });
+        },
+        forgotId() {
+            window.open("/findid", "_blank", "width=480, height=720");
+        },
+        forgotPwd() {
+            window.open("/findpwd", "_blank", "width=480, height=720");
         },
     },
 };

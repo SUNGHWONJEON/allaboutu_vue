@@ -31,6 +31,9 @@ import PageMyPage from '@/views/member/PageMyPage.vue';
 import AdminMain from '@/views/admin/AdminMain.vue'
 import AdminUser from '@/views/admin/AdminUser.vue'
 import AdminHome from '@/views/admin/AdminHome.vue'
+import PageFindId from '@/views/member/PageFindId.vue'
+import PageFindPwd from '@/views/member/PageFindPwd.vue'
+import PageChangePwd from '@/views/member/PageChangePwd.vue'
 
 import WebSiteMain from '@/views/website/WebSiteMain.vue'
 
@@ -47,6 +50,21 @@ const routes = [
         path: '/login',
         name: 'PageLogin',
         component: PageLogin
+    },
+    {
+        path: '/findid',
+        name: 'PageFindId',
+        component: PageFindId
+    },
+    {
+        path: '/findpwd',
+        name: 'PageFindPwd',
+        component: PageFindPwd
+    },
+    {
+        path: '/chgpwd',
+        name: 'PageChangePwd',
+        component: PageChangePwd
     },
     {
         path: '/enroll',
