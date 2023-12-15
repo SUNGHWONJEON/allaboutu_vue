@@ -36,6 +36,7 @@ import PageFindPwd from '@/views/member/PageFindPwd.vue'
 import PageChangePwd from '@/views/member/PageChangePwd.vue'
 
 import WebSiteMain from '@/views/website/WebSiteMain.vue'
+import WebSiteInsert from '@/views/website/WebSiteInsert.vue'
 
 //각 페이지 컴포넌트에 대한 url path 지정
 //routes는 고정변수임
@@ -188,6 +189,11 @@ const routes = [
         path: '/website',
         name: 'WebSiteMain',
         component: WebSiteMain
+    },
+    {
+        path: '/website/insert',
+        name: 'WebSiteInsert',
+        component: WebSiteInsert
     },
     {
         path: '/member/mypage',
