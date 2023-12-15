@@ -1,5 +1,3 @@
-PersonalHome.vue
-
 <template>
     <div class="pic-title-box">
         <div class="pic-titile">
@@ -21,8 +19,7 @@ PersonalHome.vue
             </div>
             
             <div class="pic-btn-box"> 
-                <!--<button class="pic-btn" v-on:click="fnUpClick">사진찍기</button>-->
-                <button class="pic-btn" v-on:click="fnTypeClick">퍼스널 컬러 타입 보기</button>
+                <button class="pic-btn" ref="result_btn" v-on:click="fnTypeClick">퍼스널 컬러 타입 보기</button>
             </div>
         </div>
 
@@ -46,6 +43,14 @@ export default {
             ,tempUserNum : 1
             ,orgFile: null
             ,personalNum: -1
+            ,loginUserId: "" 
+        }
+    },
+    created() {
+        this.loginUserId = sessionStorage.getItem("userId");
+
+        if (this.loginUserId == "") {
+            return;
         }
     },
     setup() {
@@ -69,6 +74,15 @@ export default {
     },
     
     methods: {
+        checkLogin() {
+            if (this.loginUserId == "" || this.loginUserId == null) {
+                if (confirm("로그인 후 이용해주세요.")) {
+                    this.$router.push("/login");
+                }
+                return false;
+            }
+            return true;
+        },
         personalChangeType(personalNum) { // 스플릿 해서 두번째 값
             switch (personalNum) {
                 case 'Spring':
@@ -100,9 +114,7 @@ export default {
                 console.log('callPythonApi res.data : ' + res.data);
                 console.log('callPythonApi res.data str : ' +  JSON.stringify(res.data));
                 console.log('url_1 + res.data.change_path : ' +  ('/personal/image/' + res.data.change_path));
-                
-                
-                //this.imageUrl = '/personal/image/' + res.data.change_path;
+
                 const ptype = res.data.result.pctype.split(' ')[1];
                 this.personalNum = this.personalChangeType(ptype);
 
@@ -112,11 +124,11 @@ export default {
                 this.$emit('show-component');
 
                 console.log('API 호출 전 personalNum: ' + this.personalNum);
-                //insert하기
+
                 const insertData = {
                     userNum: this.tempUserNum,
-                    personalImg: res.data.org_path,  // 회원이 업로드한 사진
-                    personalReimg: res.data.change_path, // 회원이 업로드한 사진 이름 바꾼거
+                    personalImg: res.data.org_path,
+                    personalReimg: res.data.change_path,
                     personalNum: this.personalNum
                 };
                 
@@ -126,6 +138,7 @@ export default {
                 console.log('personalReimg : ' + res.data.change_path);
                 console.log('personalNum : ' + this.personalNum);
                 this.isLoading = false;
+                
                 this.$axios.post('/personal/insert', insertData, {
                     headers:{'Content-Type': 'application/json'}
                 })
@@ -133,22 +146,27 @@ export default {
                     console.log('데이터베이스 저장 성공 res : ' + res.data)
                     this.imageUrl = '/personal/image/' + change_path;
                     this.$refs.pic_label.style.display = 'none';
+                    this.$refs.result_btn.style.display = 'none';
                 })
                 .catch(error => {
-                    //에러 처리
                     console.error(error);
                     console.log("insert 실패");
                 });
                 
             })
             .catch(error => {
-                //에러 처리
+                alert("정면 얼굴 사진을 업로드 해주세요.");
+                this.isLoading = false;
                 console.error(error);
                 console.log("api 요청안된다");
             });
             
         },
         fnTypeClick(){
+
+            if (!this.checkLogin()) {
+                return;
+            }
 
             if(this.imageFile == null) {
                 alert('사진을 업로드해주세요.');

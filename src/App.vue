@@ -38,8 +38,11 @@ export default {
     updateHeaderFooterVisibility() {
       const isLoginPage = this.$route.path === '/login';
       const isEnrollPage = this.$route.path === '/enroll';
-      this.showHeader = !isLoginPage && !isEnrollPage;
-      this.showFooter = !isLoginPage && !isEnrollPage;
+      const isFindIdPage = this.$route.path === '/findid';
+      const isFindPwdPage = this.$route.path === '/findpwd';
+      const isChangePwdPage = this.$route.path === '/chgpwd';
+      this.showHeader = !isLoginPage && !isEnrollPage && !isFindIdPage && !isFindPwdPage && !isChangePwdPage;
+      this.showFooter = !isLoginPage && !isEnrollPage && !isFindIdPage && !isFindPwdPage && !isChangePwdPage;
     },
     fnMain() {
       this.$router.push({

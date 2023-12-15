@@ -24,6 +24,8 @@ export default {
     computed: {
         hashtags() {
             var hashtags = '';
+
+            console.log('writer: ', this.writer);
             this.writer.hashtags.forEach(hashtag => {
                 hashtags += '#' + hashtag.hashtagName + ' ';
             });

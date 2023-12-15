@@ -5,7 +5,8 @@
       <div class="signupForm">
         <div>
           <label for="id">아이디</label>
-          <input type="text" id="id" placeholder="아이디를 입력해주세요." v-model="userId" />
+          <input type="text" id="id" placeholder="아이디를 입력해주세요." v-model="userId" @blur="checkDupId" />
+          <span class="checkDupId" v-if="!isDupId">이미 사용중인 아이디입니다.</span>
         </div>
         <div>
           <label for="name">이름</label>
@@ -17,7 +18,7 @@
         </div>
         <div>
           <label for="passwordConfirm">비밀번호 확인</label>
-          <input type="password" id="passwordConfirm" placeholder="비밀번호를 입력해주세요." v-model="passwordConfirm" />
+          <input type="password" id="passwordConfirm" placeholder="비밀번호를 다시 입력해주세요." v-model="passwordConfirm" />
         </div>
         <div>
           <label for="email">이메일</label>
@@ -62,14 +63,82 @@ export default {
     };
   },
   methods: {
+    /* 사용자 아이디 중복 검사 */
+    async checkDupId() {
+      this.isDupId = true;
+      // console.log("checkDupId 실행됨");
+
+      const response = await this.checkDupId(this.userId);
+      if (!response.data) {
+        this.isDupId = false;
+      } else {
+        this.isDupId = true;
+      }
+    },
+
+    /* 회원가입 폼 유효성 검사 */
     submitForm() {
-      // 사용자 이름이 "admin"을 포함하는지 검사
+
+      /* 사용자 아이디 유효성 검사 */
       if (this.userId.toLowerCase().includes('admin')) {
-        alert('"admin"을 포함한 사용자 이름은 허용되지 않습니다.');
-        return; // 회원가입 로직을 진행하지 않음
+        alert('"admin"을 포함한 아이디는 허용되지 않습니다.');
+        return;
+      } else if (this.userId === '') {
+          alert('아이디를 입력해주세요.');
+          return;
       }
 
-      // 회원가입 로직을 계속 진행
+      /* 사용자 아이디 중복일 때 검사 */
+
+      /* 사용자 이름 유효성 검사 */
+      if (this.userName.length <= 2 || this.userName.length >= 4) {
+        alert('이름은 2글자 이상, 4자리 이하로 입력해주세요.');
+        return;
+      } else if (this.userName.includes('관리자')) {
+          alert('"관리자"를 포함한 이름은 허용되지 않습니다.');
+          return;
+      } else if (this.userName === '') {
+          alert('이름을 입력해주세요.');
+          return;
+      }
+      
+      /* 비밀번호 유효성 검사 */
+      if (this.userPwd !== this.passwordConfirm) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      } else if (!this.userPwd.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/)) {
+          alert('비밀번호는 8~16자의 길이로 영문 대소문자, 숫자, 특수문자가 각각 1개 이상 포함되어야 합니다.');
+          return;
+      } else if (this.userPwd === '') {
+          alert('비밀번호를 입력해주세요.');
+          return;
+      }
+
+      /* 이메일 유효성 검사 */
+      if (!this.userEmail.match(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
+        alert('이메일 형식이 올바르지 않습니다.');
+        return;
+      } else if (this.userEmail === '') {
+          alert('이메일을 입력해주세요.');
+          return;
+      }
+
+      /* 생년월일 유효성 검사 */
+      if (new Date(this.userBirth) >= new Date() || new Date(this.userBirth) <= new Date('1920-01-01')) {
+        alert('생년월일을 다시 확인해주세요.');
+        return;
+      }
+
+      /* 연락처 유효성 검사 */
+      if (!this.userPhone.match(/^\d{3}-\d{3,4}-\d{4}$/)) {
+        alert('연락처 형식이 올바르지 않습니다.');
+        return;
+      } else if (this.userPhone === '') {
+          alert('연락처를 입력해주세요.');
+          return;
+      }
+
+      /* 설정한 유효성 검사를 모두 통과할 시 회원가입 요청 */
       this.signUpSubmit();
     },
 
