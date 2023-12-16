@@ -26,7 +26,7 @@
                                 :key="codyItem"
                                 class="slide-item"
                             >
-                                <img :src="'/cody/image/' + codyItem.codyImg">
+                                <img :src="'/cody/image/' + codyItem.codyReImg">
                             </slide>
 
                             <template #addons>
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="model-box">
-                        <img :src="'/cody/image/'+cody.modelImg" >
+                        <img :src="'/cody/image/'+cody.modelReImg" >
                         <div class="model-str-box">
                             <div class="model-str">{{ cody.modelName }}</div>
                             <div class="model-str">{{ cody.modelHeight }}cm, {{ cody.modelWeight }}kg</div>
@@ -53,11 +53,11 @@
                                 v-for="goods in goodsList" :key="goods"
                                 @click="goodsLink(goods.goodsLink)"
                             >
-                                <img :src="'/cody/image/'+goods.goodsImg">
+                                <img :src="'/cody/image/'+goods.goodsReImg">
                                 <div class="brand-name">{{ goods.brandName }}</div>
                                 <div class="goods-name">{{ goods.goodsName }}</div>
                                 <div class="goods-price">{{ goods.goodsPrice }}</div>
-
+                                
                                 <div class="goods-size">{{ goods.goodsSize }}</div>
                             </button>
                         </div>

@@ -15,6 +15,7 @@ import StyleMain from '@/views/style/StyleMain.vue'
 import CodyMain from '@/views/cody/CodyMain.vue'
 import CodyDetail from '@/views/cody/CodyDetail.vue'
 import CodyInsert from '@/views/cody/CodyInsert.vue'
+import CodySelect from '@/views/cody/CodySelect.vue'
 import FaceMain from '@/views/face/FaceMain.vue'
 import PersonalMain from '@/views/personal/PersonalMain.vue'
 import BoardMain from '@/views/board/BoardMain.vue'
@@ -34,6 +35,7 @@ import AdminHome from '@/views/admin/AdminHome.vue'
 import PageFindID from '@/views/member/PageFindID.vue'
 import PageFindPwd from '@/views/member/PageFindPwd.vue'
 import PageChangePwd from '@/views/member/PageChangePwd.vue'
+import PageNaverCallback from '@/views/member/PageNaverCallback.vue'
 
 import WebSiteMain from '@/views/website/WebSiteMain.vue'
 import WebSiteInsert from '@/views/website/WebSiteInsert.vue'
@@ -91,6 +93,11 @@ const routes = [
         path: '/style/codyinsert',
         name: 'CodyInsert',
         component: CodyInsert
+    },
+    {
+        path: '/style/codyselect',
+        name: 'CodySelect',
+        component: CodySelect
     },
     {
         path: '/face',
@@ -196,9 +203,19 @@ const routes = [
         component: WebSiteInsert
     },
     {
+        path: '/website/insert/:webNum',
+        name: 'WebSiteUpdate',
+        component: WebSiteInsert
+    },
+    {
         path: '/member/mypage',
         name: 'PageMyPage',
         component: PageMyPage
+    },
+    {
+        path: '/login/naver/callback',
+        name: 'PageNaverCallback',
+        component: PageNaverCallback
     }
 ]
 

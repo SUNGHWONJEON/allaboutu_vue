@@ -1,5 +1,7 @@
 <template>
-    <Board v-if="board" :board="board" />
+    <div class="board-list-section">
+        <Board v-if="board" :board="board" />
+    </div>
 </template>
 
 <script>
@@ -17,6 +19,7 @@ export default {
     },
     methods: {
         loadPage() {
+            console.log('params : ' + this.$route.params.boardNum);
             this.$axios.get('/boards/' + this.$route.params.boardNum)
             .then(res => {
                 this.board = res.data;

@@ -16,6 +16,7 @@
     </div>
 
     <div class="fixed-elements">
+
         <!-- 글쓰기 버튼 -->
         <img
             class="board-write-btn"

@@ -1,4 +1,29 @@
 $borderColor : #e2e2e2;
+$borderColor2 : #ff6d6d;
+
+.page-box {
+    .page-btn {
+        color: #000;
+    }
+
+    .page-btn.disabled {
+        opacity: .2;
+    }
+}
+
+
+.cody-insert-box.select-box {
+    border: 1px solid $borderColor;
+    padding: 10px;
+
+    table {
+        table-layout: fixed;
+
+        td {
+            overflow: auto;
+        }
+    }
+}
 
 .cody-insert-box {
     margin-top: 20px;
@@ -9,15 +34,26 @@ $borderColor : #e2e2e2;
     table {
         width: 100%;
         margin-top: 10px;
+        
 
         .table-td1 {
             width: 20%;
             text-align: center;
         }
 
+        .table-th {
+            width: 70px;
+            text-align: center;
+        }
+
         td {
             text-align: left;
             padding: 2px 5px;
+            
+        }
+
+        .text-center{
+            text-align: center;
         }
     }
 
@@ -42,8 +78,38 @@ $borderColor : #e2e2e2;
         width: 60px;
     }
 
-
-    .insert-btn {
-        
+    .minus-btn, .plus-btn {
+        float: right;
+        border: 1px solid $borderColor2;
+        color: $borderColor2;
+        padding: 0px 6px;
     }
+    .plus-btn {
+        margin-bottom: 10px;
+    }
+    
+
+    .cody-list-sel {
+        margin-top: 10px;
+    }
+    .cody-list-title {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .bottom-line {
+        width: 100%;
+        margin: 10px 0px;
+        border-bottom: 1px solid $borderColor;
+    }
+}
+
+.insert-btn {
+    margin-top: 20px;
+    width: 150px;
+    height: 30px;
+    border: 1px solid $borderColor2;
+    background: $borderColor2;
+    color: #fff;
 }

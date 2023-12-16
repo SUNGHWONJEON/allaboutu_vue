@@ -26,7 +26,7 @@
                                 코디 제목
                             </td>
                             <td>
-                                <input class="input-box input-title" v-model="codyData.title" type="text" placeholder="코디 제목을 입력하세요."/>
+                                <input class="input-box input-title" v-model="codyData.codyTitle" type="text" placeholder="코디 제목을 입력하세요."/>
                             </td>
                         </tr>
 
@@ -35,8 +35,8 @@
                                 체형 번호 
                             </td>
                             <td>
-                                <!-- FORM_NUM -->
-                                <select v-model="codyData.form_num">
+                                <!-- formNum -->
+                                <select v-model="codyData.formNum">
                                     <option v-for="form in formList" :key="form.id" :value="form.id">
                                         {{ form.text }}
                                     </option>
@@ -49,7 +49,7 @@
                                 코디 내용
                             </td>
                             <td>
-                                <input class="input-box input-title" v-model="codyData.content" type="text" placeholder="코디 내용을 입력하세요."/>
+                                <input class="input-box input-title" v-model="codyData.codyContent" type="text" placeholder="코디 내용을 입력하세요."/>
                             </td>
                         </tr>
                         
@@ -58,7 +58,7 @@
                                 모델이름
                             </td>
                             <td>
-                                <input class="input-box input-title" v-model="codyData.model_name" type="text" placeholder="모델 이름을 입력하세요."/>
+                                <input class="input-box input-title" v-model="codyData.modelName" type="text" placeholder="모델 이름을 입력하세요."/>
                             </td>
                         </tr>
 
@@ -67,7 +67,7 @@
                                 모델 키
                             </td>
                             <td>
-                                <input class="input-box input-title" v-model="codyData.model_height" type="text" placeholder="모델 키를 입력하세요."/>
+                                <input class="input-box input-title" v-model="codyData.modelHeight" type="text" placeholder="모델 키를 입력하세요."/>
                             </td>
                         </tr>
 
@@ -76,7 +76,7 @@
                                 모델 몸무게
                             </td>
                             <td>
-                                <input class="input-box input-title" v-model="codyData.model_weight" type="text" placeholder="모델 몸무게를 입력하세요."/>
+                                <input class="input-box input-title" v-model="codyData.modelWeight" type="text" placeholder="모델 몸무게를 입력하세요."/>
                             </td>
                         </tr>
 
@@ -85,8 +85,8 @@
                                 모델 이미지
                             </td>
                             <td>
-                                <div class="selected-image" v-if="codyData.model_img_url">
-                                    <img class="sel-img" :src="codyData.model_img_url"/>
+                                <div class="selected-image" v-if="codyData.modelImgUrl">
+                                    <img class="sel-img" :src="codyData.modelImgUrl"/>
                                     <img
                                         src="@/assets/images/community/delete_file.png"
                                         class="file-delete-btn"
@@ -106,7 +106,7 @@
                                     <img
                                         src="@/assets/images/community/add_file.png"
                                         class="attach-btn"
-                                        v-if="!codyData.model_img_url"
+                                        v-if="!codyData.modelImgUrl"
                                     />
                                 </label>
                             </td>
@@ -162,6 +162,7 @@
                             </th>
                             <th>
                                 내용
+                                <button class="minus-btn" @click="onMinus(index)">빼기</button>
                             </th>
                         </tr>
                         <tr>
@@ -259,22 +260,21 @@ export default ({
     data() {
         return {
             formList: [
-                {text: '1 삼각체형', id: 1},
+                {text: '1 역삼각형', id: 1},
                 {text: '2 모래시계형', id: 2},
-                {text: '3 둥근체형', id: 3},
-                {text: '4 사각체형', id: 4},
-                {text: '5 역삼각체형', id: 5}
+                {text: '3 사각체형', id: 3},
+                {text: '4 둥근체형', id: 4},
+                {text: '5 삼각체형', id: 5}
             ],
             codyData: {
-                form_num: 1,
-                title: '',
-                content: '',
-                model_name: '',
-                model_height: '',
-                model_weight: '',
-                model_img: null,
-                model_img_url: null,
-                attachments: []
+                formNum: 1,
+                codyTitle: '',
+                codyContent: '',
+                modelName: '',
+                modelHeight: 0,
+                modelWeight: 0,
+                modelImg: null,
+                modelImgUrl: null
             },
             goodsList: [],
             selectedImages: [],
@@ -283,15 +283,74 @@ export default ({
     },
     methods: {
         onSend(){
-            for (let i = 0; i < this.attachments.length; i++) {
-                console.log('this.attachments : ', JSON.stringify(this.attachments))
-                this.codyData.attachments.push(this.attachments[i]);
-            }
+            
             console.log('this.attachments : ', JSON.stringify(this.attachments))
             console.log('this.attachments : ', JSON.stringify(this.attachments[0]))
             console.log('this.goodsList : ', JSON.stringify(this.goodsList))
             console.log('this.codyData : ', JSON.stringify(this.codyData))
+            
+            const cody = {
+                formNum: this.codyData.formNum,
+                codyTitle: this.codyData.codyTitle,
+                codyContent: this.codyData.codyContent,
+                modelName: this.codyData.modelName,
+                modelHeight: this.codyData.modelHeight,
+                modelWeight: this.codyData.modelWeight
+            }
 
+            let goods = [];
+            let goodsAttachment = [];
+            this.goodsList.forEach(item => {
+                goods.push({
+                    goodsName: item.name,
+                    brandName: item.brand,
+                    goodsPrice: item.price,
+                    goodsSize: item.size,
+                    goodsLink: item.link,
+                })
+
+                goodsAttachment.push(item.goods_img);
+
+            });
+
+
+            const sendData = new FormData();
+            // sendData.append(
+            //     "cody",
+            //     new Blob([JSON.stringify(this.codyData)], { type: "application/json" })
+            // );
+            sendData.append("cody", new Blob([JSON.stringify(cody)], { type: "application/json" }));
+            sendData.append("modelImg", this.codyData.modelImg);
+            for (let i = 0; i < this.attachments.length; i++) {
+                sendData.append("attachments", this.attachments[i]);
+            }
+
+            sendData.append("goods", new Blob([JSON.stringify(goods)], { type: "application/json" }));
+            for (let i = 0; i < this.goodsList.length; i++) {
+                sendData.append("goodsAttachment", this.goodsList[i].goods_img);
+            }
+
+            for (let key of sendData.keys()) {
+                console.log('===' , key, ":", sendData.get(key));
+            }
+
+            this.$axios
+            .post("/cody", sendData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+            .then((res) => {
+                alert("게시글 등록 성공");
+                
+                // 게시글 등록 후 게시판 목록으로 이동
+                this.$router.push("/style/codyselect");
+            })
+            .catch((err) => {
+                alert("게시글 등록 실패");
+                console.log(err);
+            });
+            
         },
         onPlus(){
             this.goodsList.push({
@@ -303,6 +362,9 @@ export default ({
                 goods_img: null,
                 goods_img_url: null,
             })
+        },
+        onMinus(index){
+            this.goodsList.splice(index, 1);
         },
         getFileNameGoods(index, files){
             const item = this.goodsList[index];
@@ -321,15 +383,15 @@ export default ({
 
         getFileNameModel(files) {
             if(files[0]){
-                this.codyData.model_img = files[0];
+                this.codyData.modelImg = files[0];
                 console.log('file : ' + files[0]);
                 console.log('file : ' + URL.createObjectURL(files[0]));
-                this.codyData.model_img_url = URL.createObjectURL(files[0]);
+                this.codyData.modelImgUrl = URL.createObjectURL(files[0]);
             } 
         },
         removeModelImg(){
-            this.codyData.model_img = null;
-            this.codyData.model_img_url = null;
+            this.codyData.modelImg = null;
+            this.codyData.modelImgUrl = null;
         },
         removeSelectedImage(index) {
             // 이미지 클릭 시 이미지 삭제
@@ -360,4 +422,9 @@ export default ({
 
 <style lang="scss" scoped>
 @import '@/assets/scss/cody_insert.scss';
+
+.insert-btn {
+    left: calc(50% - 75px);
+
+}
 </style>

@@ -38,7 +38,7 @@ export default {
             boards: [],
         }
     },
-    created() {
+    mounted() {
         this.getBoardRank();
     },
     methods: {
