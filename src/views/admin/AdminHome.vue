@@ -15,12 +15,10 @@
                 <th class="th">게시글삭제일</th>
                 <th class="th">게시글삭제</th>
             </tr>
-            <!--  @click="detailReportBoard(report)" -->
-            
                 <tr v-for="(report, index) in displayedPosts" :key="index">
                     <td>
                         <router-link :to="'/board/' + report.boardNum">
-                        {{ report.boardNum }}
+                            <span>{{ report.boardNum }}</span>
                         </router-link>
                     </td>
                         <td>{{ report.reportNum }}</td>
@@ -45,7 +43,6 @@
 </template>
 
 <script>
-import BoardDetail from '@/views/board/BoardDetail.vue'
 
 export default {
     name: 'reports',
@@ -86,18 +83,6 @@ export default {
             goToPage(page) {
             this.currentPage = page;
         },
-        
-        // async detailReportBoard(report){
-        //     console.log("detailBoardNum", report.reportNum);
-        //     try {
-        //         // const response = await this.$axios.get(`/board/${report.boardNum}`);
-        //         // this.selectedReport = response.data;
-        //         // console.log("res.data : " + response.data);
-        //         this.$router.push({ path: `/board/${report.boardNum}`})
-        //     }catch (err){
-        //         console.error(err);
-        //     }
-        // },
         confirmDelete(report) {
             console.log(report.reportNum);
             if (confirm("게시글을 신고 처리 하시겠습니까?")) {
