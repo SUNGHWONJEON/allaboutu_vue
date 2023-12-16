@@ -122,7 +122,7 @@ export default ({
     methods: {
 
         goToWebsite: function() {
-        window.location.href = 'http://localhost:2222/website';
+            this.$router.push('/website');
         },
         
         fnUpClick(){
