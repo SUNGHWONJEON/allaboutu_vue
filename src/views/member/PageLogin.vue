@@ -27,10 +27,10 @@
                                 </div>
                             </div>
                             <div class="id_pwd_enroll">
-                                <!-- <a href="#" class="link-separator">아이디 찾기 | </a> -->
-                                <v-btn text color="primary" @click="forgotId()">아이디 찾기</v-btn> |
-                                <!-- <a href="#" class="link-separator">비밀번호 찾기 | </a> -->
-                                <v-btn text color="primary" @click="forgotPwd()">비밀번호 찾기</v-btn> |
+                                <a href="#" class="link-separator" @click.prevent="forgotId()">아이디 찾기 | </a>
+                                <!-- <v-btn text color="primary" @click="forgotId()">아이디 찾기</v-btn> | -->
+                                <a href="#" class="link-separator" @click.prevent="forgotPwd()">비밀번호 찾기 | </a>
+                                <!-- <v-btn text color="primary" @click="forgotPwd()">비밀번호 찾기</v-btn> | -->
                                 <router-link to="/enroll" class="">회원가입</router-link>
                             </div>
                             <hr content="SNS로 3초 로그인" class="SNS" />
@@ -40,7 +40,9 @@
                                         <img src="@/assets/images/KakaoLoginCircle.png" />
                                     </a>
                                     
-                                    <a :href="naverLoginUrl"><img src="@/assets/images/NaverLoginCircle.png" /></a>
+                                    <a href="" @click.prevent="fnNaverLogin">
+                                        <img src="@/assets/images/NaverLoginCircle.png" />
+                                    </a>
                                     
                                     <a href=""><img src="@/assets/images/GoogleLoginCircle.png" /></a>
                                     
@@ -62,7 +64,6 @@ export default {
             userId: "",
             userPwd: "",
             rememberMe: false,
-            naverLoginUrl: "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=" + process.env.VUE_APP_NAVER_CLIENT_ID + "&redirect_uri=" + process.env.VUE_APP_NAVER_REDIRECT_URI + "&state=" + process.env.VUE_APP_NAVER_STATE,
         };
     },
     methods: {
@@ -92,10 +93,23 @@ export default {
             this.$router.push({ path: "/" });
         },
         forgotId() {
-            window.open("/findid", "_blank", "width=480, height=720");
+            window.open("/findid", "_blank", "width=480, height=500");
         },
         forgotPwd() {
-            window.open("/findpwd", "_blank", "width=480, height=720");
+            window.open("/findpwd", "_blank", "width=480, height=500");
+        },
+        fnNaverLogin() {
+            this.$axios.get('/auth/social/naver/requrl')
+            .then((res) => {
+                console.log('fnNaverLogin() 실행됨')
+                console.log('response data : ' + res.data);
+                const requrl = res.data;
+                window.location.href = requrl;
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+            
         },
     },
 };
