@@ -51,6 +51,7 @@
     <div class="pic-btn-box">
         <button class="pic-btn" ref="result_btn"
             v-on:click="fnTypeClick">치수보기</button>
+        <button class="pic-btn codyinsert" ref="codyinsert_btn" @click="fnCodyInsert">코디 입력</button>
     </div>
     <div class="dropzone-box">
         <div class="pic-upload dropzone" 
@@ -143,7 +144,6 @@ export default {
         Loading
     },
     emits: ['show-component'],
-    
     mounted() {
         //console.log('this.$refs.drop_zone.style.left : ' + this.$refs.drop_zone.offsetLeft);
         //console.log('this.$refs.drop_zone.style.top : ' + this.$refs.drop_zone.offsetTop);
@@ -583,8 +583,10 @@ export default {
             if(this.keypoints) {
                 this.setItem(this.keypoints, 'click');
             }
-            
-            
+        },
+        fnCodyInsert(){
+            this.$router.push({'path' : '/style/codyinsert'});
+            //console.log('this.$admin : ' + this.$admin);
         }
     }
 }
@@ -600,6 +602,15 @@ export default {
     cursor: ne-resize;
 }
 
+.codyinsert {
+    position: absolute;
+    top: 601px;
+    right: 80px;
+    width: 150px;
+    background: #ff6d6d;
+    color: #fff;
+    display: none;
+}
 
 $border-line : #969696;
 
