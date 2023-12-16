@@ -94,13 +94,15 @@
         </div>
         
         <div class="main-con main-style">
+            <BoardRank ref="board_rank"/>
+            <!--
             <router-link 
                 class="comunity-box thumbnail-list" data-aos="fade-up"
                 to="/board"
             >
-                <BoardRank ref="board_rank"/>
+                
             </router-link>
-            
+            -->
         </div>
     </div>
     <!--main-container end-->
