@@ -13,7 +13,7 @@
             <button class="cody-list" 
                 v-for="cody in codyList" :key="cody"
                 @click="fnListClick(cody)">
-                <img class="cody-list-img" :src="'/cody/image/'+cody.codyImgList[0].codyImg" >
+                <img class="cody-list-img" :src="'/cody/image/'+cody.codyImgList[0].codyReImg" >
                 <img class="cody-list-simg" src="@/assets/images/cody/picup.png">
             </button>
         </div>
@@ -34,6 +34,7 @@ import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 export default ({
     data() {
         return {
+            search_key: '',
             codyList : [],
             pageable :{},
             pageSize: 12,
@@ -73,21 +74,24 @@ export default ({
     },
     methods: {
         fnPage() {
-            this.$axios
-                .get('/cody', {
-                    params: {
-                        search_key: this.search_key,
-                        search_value: this.search_value,
-                        page: this.currentPage - 1,
-                    },
-                    })
-                    .then((res) => {
-                    this.list = res.data.content;
-                    this.totalPages = res.data.totalPages;
-                    })
-                    .catch((err) => {
-                    console.error(err);
-                });
+            this.$axios.get('/cody', {
+                params: {
+                    //search_key : this.search_key,
+                    formNum: this.$route.query.formNum,
+                    currentPage: this.currentPage,
+                    pageSize: this.pageSize
+                }
+            })
+            .then((res) => {
+                console.log('res.data.content : ' + JSON.stringify(res.data.content));
+                this.codyList = res.data.content;
+                console.log('this.codyList : ' + this.codyList);
+                this.totalPages = Math.ceil(this.codyList[0].codyCount / this.pageSize);
+                console.log('this.codyList : ' + JSON.stringify(this.codyList));
+                console.log('this.totalPages : ' + this.totalPages);
+            }).catch((err) => {
+                console.log(err);
+            });
         },
         nextPage() {
             if (this.currentPage < this.totalPages) {
