@@ -28,9 +28,7 @@
                             </div>
                             <div class="id_pwd_enroll">
                                 <a href="#" class="link-separator" @click.prevent="forgotId()">아이디 찾기 | </a>
-                                <!-- <v-btn text color="primary" @click="forgotId()">아이디 찾기</v-btn> | -->
                                 <a href="#" class="link-separator" @click.prevent="forgotPwd()">비밀번호 찾기 | </a>
-                                <!-- <v-btn text color="primary" @click="forgotPwd()">비밀번호 찾기</v-btn> | -->
                                 <router-link to="/enroll" class="">회원가입</router-link>
                             </div>
                             <hr content="SNS로 3초 로그인" class="SNS" />
@@ -104,7 +102,7 @@ export default {
                 console.log('fnNaverLogin() 실행됨')
                 console.log('response data : ' + res.data);
                 const requrl = res.data;
-                window.location.href = requrl;
+                location.href = requrl;
             })
             .catch((err) => {
                 console.error(err);
