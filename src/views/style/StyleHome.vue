@@ -263,12 +263,8 @@ export default {
             //(document.body.offsetWidth - 900)/2 - 
             const abTop = window.scrollY + this.$refs.drop_zone.getBoundingClientRect().top;
             const abLeft = this.$refs.drop_zone.getBoundingClientRect().left;
-            console.log('abLeft : ' + abLeft);
-            console.log('abTop : ' + abTop);
-            console.log('event.clientX : ' + event.clientX);
-            console.log('event.clientY : ' + event.clientY);
             const dropX = event.clientX - 50  - abLeft;//-abTop//
-            const dropY = event.clientY -50  - abTop;//-abLeft//
+            const dropY = event.clientY - 50  - abTop;//-abLeft//
             const itemIndex = this.codyDragList.findIndex((item) => item.id === Number(itemId));
             
 
@@ -412,7 +408,7 @@ export default {
             }else{
                 s_w = Math.floor(tempData.shoulder_w*600);
                 s_x = Math.floor(tempData.shoulder_x*360);
-                s_y = Math.floor(tempData.shoulder_y*270);
+                s_y = Math.floor(tempData.shoulder_y*300);
                 h_w = Math.floor(tempData.hip_w*990);
                 h_x = Math.floor(tempData.hip_x*340);
                 h_y = Math.floor(tempData.hip_y*340);
@@ -585,7 +581,7 @@ export default {
             }
         },
         fnCodyInsert(){
-            this.$router.push({'path' : '/style/codyinsert'});
+            this.$router.push({'path' : '/style/codyselect'});
             //console.log('this.$admin : ' + this.$admin);
         },
         isAdmin(){

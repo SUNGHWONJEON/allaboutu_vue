@@ -122,27 +122,84 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div>
-    <p>
+  <div class="face-login-container">
+    <div class="pic-title-box">
+        <div class="pic-titile">
+            FACE LOGIN
+        </div>
+        <div class="pic-titile-sub">
+            얼굴을 인식하여 로그인합니다.
+        </div>
+    </div>
+
+    <p class="face-login-pbox">
       <video
         ref="cameraView"
         width="720"
         height="480"
       />
     </p>
-    <div style="text-align: center;">
-      <label for="email">아이디 : </label>
-      <input
+    <div class="idInputBox">
+      <v-text-field
+        label-position="left"
+        name="login"
+        label="아이디"
+        type="text"
         id="email"
         v-model="email"
-        type="text"
+        outlined
+        style="text-align: left;"
       >
-      <button @click="openCamera">
-        카메라 켜기
-      </button><br>
-      <button @click="closeCamera">
-        카메라 끄기
-      </button>
+      </v-text-field>
     </div>
-  </div>
+      <div>
+        <button class="camBtn" @click="openCamera">
+          카메라 켜기
+        </button>
+        <button class="camBtn" @click="closeCamera">
+          카메라 끄기
+        </button>
+      </div>
+    </div>
 </template>
+
+<style scoped>
+.idInputBox {
+  margin-top: 20px;
+  width: 260px;
+  color: #d558c3;
+}
+
+.camBtn {
+  margin: 30px;
+  padding: 10px;
+  border: 2px solid #d558c3;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.camBtn:hover {
+  background-color: #d558c3;
+  color: #fff;
+}
+
+.face-login-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.face-login-pbox {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pic-titile-sub {
+  text-align: center;
+}
+
+</style>
