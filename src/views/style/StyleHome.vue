@@ -51,7 +51,7 @@
     <div class="pic-btn-box">
         <button class="pic-btn" ref="result_btn"
             v-on:click="fnTypeClick">치수보기</button>
-        <button class="pic-btn codyinsert" ref="codyinsert_btn" @click="fnCodyInsert">코디 입력</button>
+        <button class="pic-btn codyinsert" ref="codyinsert_btn" v-if="isAdmin()" @click="fnCodyInsert">코디 입력</button>
     </div>
     <div class="dropzone-box">
         <div class="pic-upload dropzone" 
@@ -587,7 +587,16 @@ export default {
         fnCodyInsert(){
             this.$router.push({'path' : '/style/codyinsert'});
             //console.log('this.$admin : ' + this.$admin);
-        }
+        },
+        isAdmin(){
+            const userId = sessionStorage.getItem("userId")
+            if(userId != null && userId.includes('admin')){
+                return true
+            }
+            else {
+                return false
+            }
+        },
     }
 }
 </script>
@@ -609,7 +618,6 @@ export default {
     width: 150px;
     background: #ff6d6d;
     color: #fff;
-    display: none;
 }
 
 $border-line : #969696;

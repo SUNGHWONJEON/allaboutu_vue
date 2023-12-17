@@ -36,6 +36,7 @@ import PageFindID from '@/views/member/PageFindID.vue'
 import PageFindPwd from '@/views/member/PageFindPwd.vue'
 import PageChangePwd from '@/views/member/PageChangePwd.vue'
 import PageNaverCallback from '@/views/member/PageNaverCallback.vue'
+import FaceLogin from '@/views/member/FaceLogin.vue'
 
 import WebSiteMain from '@/views/website/WebSiteMain.vue'
 import WebSiteInsert from '@/views/website/WebSiteInsert.vue'
@@ -216,6 +217,11 @@ const routes = [
         path: '/login/naver/callback',
         name: 'PageNaverCallback',
         component: PageNaverCallback
+    },
+    {
+        path: '/login/face',
+        name: 'FaceLogin',
+        component: FaceLogin
     }
 ]
 
