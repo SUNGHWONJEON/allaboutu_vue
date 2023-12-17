@@ -5,8 +5,8 @@
       <div class="signupForm">
         <div>
           <label for="id">아이디</label>
-          <input type="text" id="id" placeholder="아이디를 입력해주세요." v-model="userId" @blur="checkDupId" />
-          <span class="checkDupId" v-if="!isDupId">이미 사용중인 아이디입니다.</span>
+          <input type="text" id="id" placeholder="아이디를 입력해주세요." v-model="userId" />
+          <!-- <span class="checkDupId" v-if="!isDupId">이미 사용중인 아이디입니다.</span> -->
         </div>
         <div>
           <label for="name">이름</label>
