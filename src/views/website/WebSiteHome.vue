@@ -40,9 +40,10 @@
           삭제
         </button>
       </div>
-      <div class="register-button-container">
-        <button @click="goToInsert" class="register-btn" v-if="isAdmin()">등록</button>
-      </div>
+      
+    </div>
+    <div class="register-button-container">
+      <button @click="goToInsert" class="register-btn" v-if="isAdmin()">등록</button>
     </div>
   </div>
 </template>
