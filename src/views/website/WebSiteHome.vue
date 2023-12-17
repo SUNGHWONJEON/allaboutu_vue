@@ -145,7 +145,6 @@ export default {
 }
 
 .register-button-container {
-  position: fixed;
   bottom: 0;
   right: 50px;
   padding: 20px;
