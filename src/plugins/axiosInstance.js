@@ -42,7 +42,6 @@ axiosIns.interceptors.request.use(config => {
       config.headers.common = config.headers.common || {};
     }
 
-
     // 리프레시 토큰을 요청 헤더에 추가합니다.
     config.headers['refresh'] = `${refresh}`;
 
