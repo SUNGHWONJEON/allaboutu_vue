@@ -155,7 +155,7 @@ export default {
     created() {
         this.loginUserId = sessionStorage.getItem("userId");
         
-        if (this.loginUserId == "") {
+        if (this.loginUserId == "" || this.loginUserId == null) {
             return;
         }
         

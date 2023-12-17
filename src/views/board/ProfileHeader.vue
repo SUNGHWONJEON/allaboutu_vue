@@ -6,7 +6,7 @@
         </div>
         <div class="profile-text">
             <div class="profile-name div-flex-bottom">
-                {{ writer.userName }}({{ writer.userId }})
+                {{ writer.userName }}
             </div>
             <div class="profile-hashtag div-flex-top">
                 {{ hashtags }}

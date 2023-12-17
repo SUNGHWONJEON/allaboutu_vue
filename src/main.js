@@ -12,7 +12,7 @@ import * as directives from 'vuetify/directives'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { createVueKakaoSdk } from 'vue3-kakao-sdk';
-app.use(createVueKakaoSdk('dd784338fdd67a80ba971146b1de232b'))
+app.use(createVueKakaoSdk('77ce8b02401feae3023839c702816a35'))
 
 const vuetify = createVuetify({
     components,

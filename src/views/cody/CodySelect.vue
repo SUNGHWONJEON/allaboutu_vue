@@ -229,22 +229,14 @@ export default ({
         onDelete(type, num){
             console.log('type : ' + type);
             console.log('num : ' + num);
-
+            
             if(confirm('정말 삭제하시겠습니까?')){
-                this.$axios.delete('/cody/all', {
-                    params: {
-                        //search_key: this.search_key,
-                        currentPage: this.currentPage,
-                        pageSize: this.pageSize
-                    }
-                })
+                this.$axios.delete('/cody/'+type + '/' + num)
                 .then((res) => {
                     console.log('all = res.data.content : ' + JSON.stringify(res.data.content));
-                    this.codyList = res.data.content;
-                    console.log('all = this.codyList : ' + this.codyList);
-                    this.totalPages = Math.ceil(this.codyList[0].codyCount / this.pageSize);
-                    console.log('all = this.codyList : ' + JSON.stringify(this.codyList));
-                    console.log('all = this.totalPages : ' + this.totalPages);
+                    alert('삭제되었습니다.')
+                    //this.$router.push({'path' : '/style/codyselect'});
+                    this.fnPage();
                 }).catch((err) => {
                     console.log(err);
                 });

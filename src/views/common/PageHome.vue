@@ -94,7 +94,13 @@
         </div>
         
         <div class="main-con main-style">
-            <BoardRank ref="board_rank"/>
+            <div class="thumbnail-list">
+                <div class="thumbnail-box" data-aos="fade-up">
+                    <BoardRank ref="board_rank"/>
+                </div>
+                
+            </div>
+            
             <!--
             <router-link 
                 class="comunity-box thumbnail-list" data-aos="fade-up"

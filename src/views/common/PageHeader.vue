@@ -212,6 +212,9 @@ export default ({
             sessionStorage.removeItem('accessToken');
             sessionStorage.removeItem('refreshToken');
             sessionStorage.removeItem('userId');
+            sessionStorage.removeItem('role');
+            sessionStorage.removeItem('enrollType');
+
 
             this.$router.push('/');
         },

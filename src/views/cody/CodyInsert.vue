@@ -424,6 +424,7 @@ export default ({
 @import '@/assets/scss/cody_insert.scss';
 
 .insert-btn {
+    position: absolute;
     left: calc(50% - 75px);
 
 }

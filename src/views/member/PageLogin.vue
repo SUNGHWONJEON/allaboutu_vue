@@ -28,15 +28,14 @@
                             </div>
                             <div class="id_pwd_enroll">
                                 <a href="#" class="link-separator" @click.prevent="forgotId()">아이디 찾기 | </a>
-                                <!-- <v-btn text color="primary" @click="forgotId()">아이디 찾기</v-btn> | -->
                                 <a href="#" class="link-separator" @click.prevent="forgotPwd()">비밀번호 찾기 | </a>
-                                <!-- <v-btn text color="primary" @click="forgotPwd()">비밀번호 찾기</v-btn> | -->
                                 <router-link to="/enroll" class="">회원가입</router-link>
                             </div>
                             <hr content="SNS로 3초 로그인" class="SNS" />
                             <div class="mb-4">
                                 <div class="social-button mb-2">
-                                    <a href="https://kauth.kakao.com/oauth/authorize?client_id=b2f72c2fd16ce9a5b5ee4b0c3c6b28e2&redirect_uri=http://localhost:2222/auth/login&response_type=code">
+                                    <a href="" @click.prevent="kakaoLogin">
+                                    <!-- <a href="https://kauth.kakao.com/oauth/authorize?client_id=b2f72c2fd16ce9a5b5ee4b0c3c6b28e2&redirect_uri=http://localhost:2222/auth/login&response_type=code"> -->
                                         <img src="@/assets/images/KakaoLoginCircle.png" />
                                     </a>
                                     
@@ -46,7 +45,11 @@
                                     
                                     <a href=""><img src="@/assets/images/GoogleLoginCircle.png" /></a>
                                     
-                                    <a href=""><img src="@/assets/images/FaceLoginCircle.png" /></a>
+                                    <router-link to="/login/face" class="">
+                                        <a><img src="@/assets/images/FaceLoginCircle.png" /></a>
+                                    </router-link>
+
+                                    <!-- <a href="@/views/member/FaceLogin"><img src="@/assets/images/FaceLoginCircle.png" /></a> -->
                                 </div>
                             </div>
                         </form>
@@ -58,6 +61,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -67,6 +72,69 @@ export default {
         };
     },
     methods: {
+        async kakaoLogin() {
+            try {
+                const success = await new Promise((resolve, reject) => {
+                window.Kakao.Auth.login({
+                    success: resolve,
+                    fail: reject,
+                });
+                });
+
+                console.log(success);
+
+                const accessToken = success.access_token;
+                const apiUrl = 'https://kapi.kakao.com/v2/user/me';
+
+                // 카카오 API를 호출하여 사용자 정보 및 이메일 가져오기
+                const { data } = await this.$axios.post(apiUrl, null, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                params: {
+                    property_keys: '["kakao_account.email"]',
+                },
+                });
+
+                const email = data.kakao_account?.email;
+                const kakaoInfo = {
+                accessToken: accessToken,
+                refreshToken: success.refresh_token,
+                userId: email,
+                };
+
+                this.performKakaoLogin(kakaoInfo);
+            } catch (error) {
+                console.error('카카오 로그인 실패:', error);
+            }
+        },
+        performKakaoLogin (kakaoInfo) {
+            axios.post('/login/kakao', kakaoInfo, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            })
+                .then(response => {
+                console.log("=====Response from server:", response)
+
+                const { accessToken, refreshToken, role } = response.data
+
+                sessionStorage.setItem('accessToken', accessToken)
+                sessionStorage.setItem('refreshToken', refreshToken)
+                sessionStorage.setItem('userId', kakaoInfo.userId)
+                sessionStorage.setItem('enrollType', 'KAKAO')
+                sessionStorage.setItem('role', role)
+                axios.defaults.headers['enrollType'] = 'KAKAO'
+
+                console.log(axios.defaults.headers)
+
+                router.replace("/");
+                })
+                .catch(error => {
+                console.error('로그인:', error)
+                })
+            },
+
         async fnLogin() {
             // API 서버로 POST 요청으로 로그인 요청 보내기
             this.$axios
@@ -104,7 +172,7 @@ export default {
                 console.log('fnNaverLogin() 실행됨')
                 console.log('response data : ' + res.data);
                 const requrl = res.data;
-                window.location.href = requrl;
+                location.href = requrl;
             })
             .catch((err) => {
                 console.error(err);

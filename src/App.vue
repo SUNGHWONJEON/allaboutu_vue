@@ -41,8 +41,9 @@ export default {
       const isFindIdPage = this.$route.path === '/findid';
       const isFindPwdPage = this.$route.path === '/findpwd';
       const isChangePwdPage = this.$route.path === '/chgpwd';
-      this.showHeader = !isLoginPage && !isEnrollPage && !isFindIdPage && !isFindPwdPage && !isChangePwdPage;
-      this.showFooter = !isLoginPage && !isEnrollPage && !isFindIdPage && !isFindPwdPage && !isChangePwdPage;
+      const isNaverCallbackPage = this.$route.path === '/login/naver/callback';
+      this.showHeader = !isLoginPage && !isEnrollPage && !isFindIdPage && !isFindPwdPage && !isChangePwdPage && !isNaverCallbackPage;
+      this.showFooter = !isLoginPage && !isEnrollPage && !isFindIdPage && !isFindPwdPage && !isChangePwdPage && !isNaverCallbackPage;
     },
     fnMain() {
       this.$router.push({
